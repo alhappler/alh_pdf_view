@@ -1,4 +1,4 @@
-
+![Codecov](https://img.shields.io/codecov/c/github/alhappler/alh_pdf_view?style=flat-square)
 ![GitHub branch checks state](https://img.shields.io/github/checks-status/alhappler/alh_pdf_view/master?style=flat-square)
 
 
