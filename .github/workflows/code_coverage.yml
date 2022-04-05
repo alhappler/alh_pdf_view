@@ -24,6 +24,5 @@ jobs:
         uses: codecov/codecov-action@v2.1.0
         with:
           # Repository upload token - get it from codecov.io. Required only for private repositories
-          token: fdf9194d-7f1b-4c84-8e02-59e997c5767e
           # Directory to search for coverage reports.
           directory: coverage
