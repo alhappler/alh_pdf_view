@@ -81,7 +81,8 @@ This is a list of functional parameters.
 | `onPageError`            | Called when there are specific errors on a page. (only Android)       | **-** |
 
 
-###AlhPdfViewController
+### AlhPdfViewController
+
 If you want to start specific actions for the displayed PDF file, you can use `AlhPdfViewController`.
 This controller contains some functionalities to update your view. Here is a list of them.
 
