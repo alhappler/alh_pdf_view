@@ -1,4 +1,7 @@
 
+![GitHub branch checks state](https://img.shields.io/github/checks-status/alhappler/alh_pdf_view/master?style=flat-square)
+
+
 With this widget, you can display a PDF with bytes or a path.
 
 ## Index
