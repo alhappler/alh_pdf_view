@@ -11,3 +11,5 @@ build/
 azure-pipelines.yml
 
 set_flutter_cache_environment_variables.py
+
+coverage/html/
