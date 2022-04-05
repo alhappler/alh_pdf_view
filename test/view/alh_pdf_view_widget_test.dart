@@ -1,9 +1,6 @@
 import 'dart:typed_data';
 
-import 'package:alh_pdf_view/controller/alh_pdf_view_controller.dart';
 import 'package:alh_pdf_view/lib.dart';
-import 'package:alh_pdf_view/model/fit_policy.dart';
-import 'package:alh_pdf_view/view/alh_pdf_view.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';

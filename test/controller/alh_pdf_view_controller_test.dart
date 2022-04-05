@@ -1,6 +1,4 @@
-import 'package:alh_pdf_view/controller/alh_pdf_view_controller.dart';
 import 'package:alh_pdf_view/lib.dart';
-import 'package:alh_pdf_view/view/alh_pdf_view.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';

@@ -2,7 +2,6 @@ import 'dart:typed_data';
 
 import 'package:alh_pdf_view/lib.dart';
 import 'package:alh_pdf_view/model/alh_pdf_view_creation_params.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
