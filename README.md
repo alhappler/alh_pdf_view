@@ -11,7 +11,7 @@ With this widget, you can display a PDF with bytes or a path.
 This package is forked from `flutter_pdfview` ([Link](https://pub.dev/packages/flutter_pdfview)) 
 of [endigo](https://github.com/endigo) and rebuilt from scratch.
 
-The package `alh_pdf_view` also incluces:
+The package `alh_pdf_view` also includes:
 - Displays also PDF with bytes
 - FitPolicy for iOS
 - some blurriness fixes on Android side
