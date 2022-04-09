@@ -124,4 +124,11 @@ class AlhPdfViewController {
     final double zoom = await _channel.invokeMethod('currentZoom');
     return zoom;
   }
+
+  /// Returns the current zoom value.
+  Future<void> setOrienation({required Orientation orientation}) async {
+    await _channel.invokeMethod('setOrientation', {
+      'orientation': orientation.toString(),
+    });
+  }
 }

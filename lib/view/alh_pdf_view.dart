@@ -163,10 +163,47 @@ class AlhPdfView extends StatefulWidget {
   _AlhPdfViewState createState() => _AlhPdfViewState();
 }
 
-class _AlhPdfViewState extends State<AlhPdfView> {
+// ignore: prefer_mixin
+class _AlhPdfViewState extends State<AlhPdfView> with WidgetsBindingObserver {
   static const _viewType = 'alh_pdf_view';
 
   final _controller = Completer<AlhPdfViewController>();
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance!.addObserver(this);
+
+    WidgetsBinding.instance?.addPostFrameCallback((_) {
+      _controller.future.then((controller) {
+        final orientation = MediaQuery.of(context).orientation;
+        controller.setOrienation(orientation: orientation);
+      });
+    });
+  }
+
+  // Todo: grund aufschreiben + read me doku anpassen zu diesem teil
+  @override
+  void didChangeMetrics() {
+    final orientationBefore = MediaQuery.of(context).orientation;
+    WidgetsBinding.instance?.addPostFrameCallback((_) {
+      if (!mounted) {
+        return;
+      }
+      final orientationAfter = MediaQuery.of(context).orientation;
+      if (orientationBefore != orientationAfter) {
+        _controller.future.then((controller) {
+          controller.setOrienation(orientation: orientationAfter);
+        });
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance?.removeObserver(this);
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {

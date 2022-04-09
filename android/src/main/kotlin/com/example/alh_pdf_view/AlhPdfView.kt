@@ -4,6 +4,7 @@ import android.content.Context
 import android.view.View
 import androidx.annotation.NonNull
 import com.example.alh_pdf_view.model.AlhPdfViewConfiguration
+import com.example.alh_pdf_view.model.Orientation
 import com.github.barteksc.pdfviewer.PDFView
 import com.github.barteksc.pdfviewer.util.Constants
 import io.flutter.plugin.common.BinaryMessenger
@@ -23,6 +24,7 @@ internal class AlhPdfView(
     lateinit var configuration: AlhPdfViewConfiguration
     private var pdfView: PDFView = PDFView(context, null) // view.findViewById(R.id.pdfView)
     private var channel: MethodChannel = MethodChannel(messenger, "alh_pdf_view_$id")
+    private lateinit var lastOrientation: Orientation
 
     init {
         channel.setMethodCallHandler(this)
@@ -33,53 +35,7 @@ internal class AlhPdfView(
             Constants.PRELOAD_OFFSET = 3
             Constants.PART_SIZE = 600f // to fix bluriness after zooming
 
-            val pdfViewConfigurator = if (configuration.filePath != null) {
-                pdfView.fromFile(File(configuration.filePath!!))
-            } else {
-                pdfView.fromBytes(configuration.bytes)
-            }
-
-            pdfView.setBackgroundColor(configuration.backgroundColor)
-
-            pdfViewConfigurator
-                .enableAnnotationRendering(true)
-                .enableSwipe(configuration.enableSwipe)
-                .pageFitPolicy(configuration.fitPolicy)
-                .fitEachPage(configuration.fitEachPage)
-                .swipeHorizontal(configuration.swipeHorizontal)
-                .password(configuration.password)
-                .nightMode(configuration.nightMode)
-                .autoSpacing(configuration.autoSpacing)
-                .pageFling(configuration.pageFling)
-                .pageSnap(configuration.pageSnap)
-                .enableDoubletap(configuration.enableDoubleTap)
-                .defaultPage(configuration.defaultPage)
-                .onPageChange { page, total ->
-                    val args: MutableMap<String, Any> = HashMap()
-                    args["page"] = page
-                    args["total"] = total
-                    channel.invokeMethod("onPageChanged", args)
-                }
-                .onError { throwable ->
-                    val args: MutableMap<String, Any> = HashMap()
-                    args["error"] = throwable.toString()
-                    channel.invokeMethod("onError", args)
-                }
-                .onPageError { page, throwable ->
-                    val args: MutableMap<String, Any> = HashMap()
-                    args["page"] = page
-                    args["error"] = throwable.toString()
-                    channel.invokeMethod("onPageError", args)
-                }
-                .onRender { pages ->
-                    if (configuration.defaultZoomFactor > 0) {
-                        pdfView.zoomWithAnimation(configuration.defaultZoomFactor.toFloat())
-                    }
-                    val args: MutableMap<String, Any> = HashMap()
-                    args["pages"] = pages
-                    channel.invokeMethod("onRender", args)
-                }
-                .load()
+            loadPdfView(configuration.defaultPage)
         }
     }
 
@@ -102,6 +58,7 @@ internal class AlhPdfView(
             "resetZoom" -> resetZoom(result)
             "setZoom" -> setZoom(call, result)
             "currentZoom" -> getZoom(result)
+            "setOrientation" -> handleOrientationChange(call.arguments as Map<*, *>, result)
             else -> result.notImplemented()
         }
     }
@@ -145,5 +102,68 @@ internal class AlhPdfView(
     private fun getZoom(result: MethodChannel.Result) {
         val zoom = pdfView.zoom.toDouble()
         result.success(zoom)
+    }
+
+    // Todo: grund aufschreiben
+    private fun handleOrientationChange(arguments: Map<*, *>, result: MethodChannel.Result) {
+        val newDeviceOrientation = Orientation.fromString(arguments["orientation"] as String)
+
+        if (newDeviceOrientation != null) {
+            if (this::lastOrientation.isInitialized && newDeviceOrientation != lastOrientation) {
+                loadPdfView(defaultPage = pdfView.currentPage)
+            }
+            lastOrientation = newDeviceOrientation
+        }
+        result.success(null)
+    }
+
+    private fun loadPdfView(defaultPage: Int) {
+        val pdfViewConfigurator = if (configuration.filePath != null) {
+            pdfView.fromFile(File(configuration.filePath!!))
+        } else {
+            pdfView.fromBytes(configuration.bytes)
+        }
+
+        pdfView.setBackgroundColor(configuration.backgroundColor)
+
+        pdfViewConfigurator
+            .enableAnnotationRendering(true)
+            .enableSwipe(configuration.enableSwipe)
+            .pageFitPolicy(configuration.fitPolicy)
+            .fitEachPage(configuration.fitEachPage)
+            .swipeHorizontal(configuration.swipeHorizontal)
+            .password(configuration.password)
+            .nightMode(configuration.nightMode)
+            .autoSpacing(configuration.autoSpacing)
+            .pageFling(configuration.pageFling)
+            .pageSnap(configuration.pageSnap)
+            .enableDoubletap(configuration.enableDoubleTap)
+            .defaultPage(defaultPage)
+            .onPageChange { page, total ->
+                val args: MutableMap<String, Any> = HashMap()
+                args["page"] = page
+                args["total"] = total
+                channel.invokeMethod("onPageChanged", args)
+            }
+            .onError { throwable ->
+                val args: MutableMap<String, Any> = HashMap()
+                args["error"] = throwable.toString()
+                channel.invokeMethod("onError", args)
+            }
+            .onPageError { page, throwable ->
+                val args: MutableMap<String, Any> = HashMap()
+                args["page"] = page
+                args["error"] = throwable.toString()
+                channel.invokeMethod("onPageError", args)
+            }
+            .onRender { pages ->
+                if (configuration.defaultZoomFactor > 0) {
+                    pdfView.zoomWithAnimation(configuration.defaultZoomFactor.toFloat())
+                }
+                val args: MutableMap<String, Any> = HashMap()
+                args["pages"] = pages
+                channel.invokeMethod("onRender", args)
+            }
+            .load()
     }
 }
