@@ -3,12 +3,10 @@ import 'package:flutter/material.dart';
 class PdfPageInfo extends StatelessWidget {
   final int currentPage;
   final int totalPages;
-  final double currentZoom;
 
   const PdfPageInfo({
     required this.currentPage,
     required this.totalPages,
-    required this.currentZoom,
     Key? key,
   }) : super(key: key);
 
@@ -21,7 +19,7 @@ class PdfPageInfo extends StatelessWidget {
         margin: const EdgeInsets.only(top: 20),
         padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
         child: Text(
-          'Page ${currentPage + 1}/${totalPages - 1}\nZoom: $currentZoom',
+          'Page ${currentPage + 1}/${totalPages - 1}',
           textAlign: TextAlign.center,
           style: const TextStyle(
             color: Colors.white,

@@ -119,6 +119,8 @@ class AlhPdfView extends StatefulWidget {
   final PageChangedCallback? onPageChanged;
 
   /// Called when changing the zoom.
+  ///
+  /// This callback works only for iOS.
   final ZoomChangedCallback? onZoomChanged;
 
   /// When there are errors happening, this methods returns a message.

@@ -26,7 +26,6 @@ class _PDFScreenState extends State<PDFScreen> {
   String errorMessage = '';
   bool isActive = true;
   double defaultScale = 1.0;
-  late double scale = defaultScale;
   double top = 200.0;
   bool enableSwipe = true;
 
@@ -34,97 +33,75 @@ class _PDFScreenState extends State<PDFScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return OrientationBuilder(
-        builder: (BuildContext context, Orientation orientation) {
-      if (orientation == Orientation.portrait) {
-        return Scaffold(
-          appBar: AppBar(title: const Text("Document Portrait")),
-          body: Stack(
-            children: <Widget>[
-              Column(
-                children: [
-                  Expanded(
-                    child: Container(
-                      color: Colors.black,
-                      child: _getAlhPdfView(),
-                    ),
-                  ),
-                  PdfViewBottomBar(
-                    pdfViewController: pdfViewController,
-                    currentPage: currentPage,
-                    totalPages: pages,
-                    currentZoom: scale,
-                  ),
-                ],
+    return Scaffold(
+      appBar: AppBar(title: const Text("Document Portrait")),
+      body: Stack(
+        children: <Widget>[
+          Column(
+            children: [
+              Expanded(
+                child: AlhPdfView(
+                  filePath: widget.path,
+                  bytes: widget.bytes,
+                  enableSwipe: true,
+                  nightMode: false,
+                  password: 'password',
+                  fitEachPage: false,
+                  fitPolicy: FitPolicy.height,
+                  swipeHorizontal: false,
+                  autoSpacing: true,
+                  pageFling: false,
+                  defaultZoomFactor: defaultScale,
+                  pageSnap: true,
+                  onRender: (pages) {
+                    setState(() {
+                      this.pages = pages + 1;
+                      isReady = true;
+                    });
+                  },
+                  onError: (error) {
+                    setState(() {
+                      errorMessage = error.toString();
+                    });
+                    print(error.toString());
+                  },
+                  onPageError: (page, error) {
+                    setState(() {
+                      errorMessage = '$page: ${error.toString()}';
+                    });
+                    print('$page: ${error.toString()}');
+                  },
+                  onViewCreated: (controller) {
+                    pdfViewController = controller;
+                  },
+                  onPageChanged: (int page, int total) {
+                    setState(() {
+                      currentPage = page;
+                    });
+                  },
+                ),
               ),
-              if (errorMessage.isEmpty)
-                if (!isReady)
-                  const Center(
-                    child: CircularProgressIndicator(),
-                  )
-                else
-                  PdfPageInfo(
-                    currentPage: currentPage,
-                    totalPages: pages,
-                    currentZoom: scale,
-                  )
-              else
-                Center(child: Text(errorMessage))
+              PdfViewBottomBar(
+                pdfViewController: pdfViewController,
+                currentPage: currentPage,
+                totalPages: pages,
+              ),
             ],
           ),
-        );
-      } else {
-        return Scaffold(
-          appBar: AppBar(title: const Text("Document Landscape")),
-          body: _getAlhPdfView(),
-        );
-      }
-    });
+          if (errorMessage.isEmpty)
+            if (!isReady)
+              const Center(
+                child: CircularProgressIndicator(),
+              )
+            else
+              PdfPageInfo(
+                currentPage: currentPage,
+                totalPages: pages,
+              )
+          else
+            Center(child: Text(errorMessage))
+        ],
+      ),
+    );
   }
-
-  Widget _getAlhPdfView() => AlhPdfView(
-        filePath: widget.path,
-        bytes: widget.bytes,
-        enableSwipe: true,
-        nightMode: false,
-        password: 'password',
-        fitEachPage: false,
-        fitPolicy: FitPolicy.height,
-        swipeHorizontal: false,
-        autoSpacing: true,
-        pageFling: false,
-        defaultZoomFactor: defaultScale,
-        pageSnap: true,
-        onRender: (pages) {
-          setState(() {
-            this.pages = pages + 1;
-            isReady = true;
-          });
-        },
-        onError: (error) {
-          setState(() {
-            errorMessage = error.toString();
-          });
-          print(error.toString());
-        },
-        onPageError: (page, error) {
-          setState(() {
-            errorMessage = '$page: ${error.toString()}';
-          });
-          print('$page: ${error.toString()}');
-        },
-        onViewCreated: (controller) {
-          pdfViewController = controller;
-        },
-        onPageChanged: (int page, int total) {
-          setState(() {
-            currentPage = page;
-          });
-        },
-        onZoomChanged: (double zoom) {
-          setState(() {
-            scale = zoom;
-          });
-        },
-      );
 }

@@ -10,10 +10,12 @@ import PDFKit
 
 class EmbeddedPdfView : UIView {
     let pdfView: PDFView
-    private let configuration: AlhPdfViewConfiguration
     
     // This factor should equals the scale factor of 1.0
     var initPdfViewScaleFactor: CGFloat = 0.0
+    var hasInitializedView = false
+    
+    private let configuration: AlhPdfViewConfiguration
     
     init(configuration: AlhPdfViewConfiguration) {
         self.configuration = configuration
@@ -41,12 +43,12 @@ class EmbeddedPdfView : UIView {
         super.layoutSubviews()
         
         self.pdfView.usePageViewController(configuration.pageFling, withViewOptions: nil)
-        initPdfScaleFactor()
-        if let document = self.pdfView.document {
-            let pageCount = document.pageCount;
-            let defaultPage = configuration.defaultPage < pageCount ? configuration.defaultPage : pageCount - 1
-            self.pdfView.go(to: document.page(at: defaultPage)!)
+
+        if(!hasInitializedView) {
+            initPdfDefaultScaleFactor()
+            goToDefaultPage()
         }
+        hasInitializedView = true
     }
     
     private func initPdfView() {
@@ -80,15 +82,10 @@ class EmbeddedPdfView : UIView {
         }
     }
     
-    func initPdfScaleFactor() {
+   private func initPdfDefaultScaleFactor() {
         let initScaleFactor = getPdfScaleFactor()
         initPdfViewScaleFactor = initScaleFactor
         self.pdfView.scaleFactor = initScaleFactor * configuration.defaultZoomFactor
-
-        // fixes the problem when changing the scale factor that the pdfView is not on top
-        if let scrollView = pdfView.subviews.first as? UIScrollView {
-            // scrollView.contentOffset.y = 0.0
-        }
     }
     
     /**
@@ -111,6 +108,14 @@ class EmbeddedPdfView : UIView {
             return parentSize.width / pageSize.width
         }
         
+    }
+    
+    private func goToDefaultPage() {
+        if let document = self.pdfView.document {
+            let pageCount = document.pageCount;
+            let defaultPage = configuration.defaultPage < pageCount ? configuration.defaultPage : pageCount - 1
+            self.pdfView.go(to: document.page(at: defaultPage)!)
+        }
     }
     
     func getPdfPageSize() -> CGSize {
@@ -141,5 +146,31 @@ class EmbeddedPdfView : UIView {
     
     func resetPdfZoom() {
         self.pdfView.scaleFactor = self.initPdfViewScaleFactor * configuration.defaultZoomFactor
+    }
+    
+    func goToPage(pageIndex: Int) {
+        if let page = pdfView.document?.page(at: pageIndex) {
+            pdfView.go(to: page)
+        }
+    }
+    
+    func getCurrentPageIndex() -> Int? {
+        if let currentPage = pdfView.currentPage {
+            return pdfView.document?.index(for: currentPage)
+        }
+        return nil
+    }
+    
+    func goToCurrentPage() {
+        if let currentPageIndex = self.getCurrentPageIndex(){
+            self.goToPage(pageIndex: currentPageIndex)
+        }
+    }
+    
+    func getPageCount() -> Int? {
+        if let document = self.pdfView.document {
+            return document.pageCount;
+        }
+        return nil
     }
 }

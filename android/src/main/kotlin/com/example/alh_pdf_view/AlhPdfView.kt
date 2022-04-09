@@ -134,15 +134,12 @@ internal class AlhPdfView(
         val newZoom = configuration.defaultZoomFactor.toFloat()
         pdfView.zoomWithAnimation(newZoom)
         result.success(true)
-        channel.invokeMethod("onZoomChanged", mapOf("zoom" to newZoom))
     }
 
     private fun setZoom(call: MethodCall, result: MethodChannel.Result) {
         val zoom = call.argument<Any>("newZoom") as Double
         pdfView.zoomWithAnimation(zoom.toFloat())
         result.success(null);
-        // using as callback to have the same logic as iOS when updating zoom
-        channel.invokeMethod("onZoomChanged", mapOf("zoom" to zoom))
     }
 
     private fun getZoom(result: MethodChannel.Result) {
