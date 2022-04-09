@@ -104,7 +104,12 @@ internal class AlhPdfView(
         result.success(zoom)
     }
 
-    // Todo: grund aufschreiben
+    /**
+     * Fixing the bug having a white screen when changing the orientation.
+     *
+     * This method reloads the PDF when the orientation changed.
+     * The last page will still be shown but the current zoom value is reset.
+     */
     private fun handleOrientationChange(arguments: Map<*, *>, result: MethodChannel.Result) {
         val newDeviceOrientation = Orientation.fromString(arguments["orientation"] as String)
 

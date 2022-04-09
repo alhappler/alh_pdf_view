@@ -182,7 +182,6 @@ class _AlhPdfViewState extends State<AlhPdfView> with WidgetsBindingObserver {
     });
   }
 
-  // Todo: grund aufschreiben + read me doku anpassen zu diesem teil
   @override
   void didChangeMetrics() {
     final orientationBefore = MediaQuery.of(context).orientation;
@@ -191,6 +190,10 @@ class _AlhPdfViewState extends State<AlhPdfView> with WidgetsBindingObserver {
         return;
       }
       final orientationAfter = MediaQuery.of(context).orientation;
+
+      // Fixing the bug having a white screen on Android
+      // Calling a native method that reloads the PDF
+      // This prevents reloading the whole widget, because on iOS it works
       if (orientationBefore != orientationAfter) {
         _controller.future.then((controller) {
           controller.setOrienation(orientation: orientationAfter);

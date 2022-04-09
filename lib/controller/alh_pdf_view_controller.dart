@@ -125,7 +125,12 @@ class AlhPdfViewController {
     return zoom;
   }
 
-  /// Returns the current zoom value.
+  /// Notifies the current [orientation].
+  ///
+  /// This notification is handled by [AlhPdfView] and is important to make sure
+  /// that the PDF is still displayed when changing the orientation. Otherwise
+  /// a blank screen will be shown.
+  /// Only for Android.
   Future<void> setOrienation({required Orientation orientation}) async {
     await _channel.invokeMethod('setOrientation', {
       'orientation': orientation.toString(),
