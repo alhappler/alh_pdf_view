@@ -38,7 +38,8 @@ class AlhPdfViewFactory: NSObject, FlutterPlatformViewFactory {
 class AlhPdfView: NSObject, FlutterPlatformView {
     private var _embeddedPdfView: EmbeddedPdfView
     
-    private var _channel: FlutterMethodChannel
+    private var _pdfViewChannel: FlutterMethodChannel
+    private var _pdfChannel: FlutterMethodChannel
     
     private var configuration: AlhPdfViewConfiguration
     
@@ -48,7 +49,8 @@ class AlhPdfView: NSObject, FlutterPlatformView {
         arguments args: Any?,
         binaryMessenger messenger: FlutterBinaryMessenger?
     ) {
-        _channel = FlutterMethodChannel(name: "alh_pdf_view_\(viewId)", binaryMessenger: messenger!)
+        _pdfViewChannel = FlutterMethodChannel(name: "alh_pdf_view_\(viewId)", binaryMessenger: messenger!)
+        _pdfChannel = FlutterMethodChannel(name: "alh_pdf_\(viewId)", binaryMessenger: messenger!)
         
         let arguments = args as! Dictionary<String, Any>
         configuration = AlhPdfViewConfiguration.init(arguments: arguments)
@@ -56,20 +58,23 @@ class AlhPdfView: NSObject, FlutterPlatformView {
         
         super.init()
         
-        _channel.setMethodCallHandler(handle)
+        _pdfViewChannel.setMethodCallHandler(handle)
+        _pdfChannel.setMethodCallHandler(handle)
         
         UIDevice.current.beginGeneratingDeviceOrientationNotifications()
         
         initSwipeGestures()
         
+        DispatchQueue.main.async {
+            self.handleRenderCompleted()
+        }
+        
         if let document = _embeddedPdfView.pdfView.document {
             initObservers()
-            DispatchQueue.main.async {
-                self.handleRenderCompleted(pages: document.pageCount as NSNumber)
-            }
+            
         } else{
             let arguments = ["error" : "cannot create document: File not in PDF format or corrupted."]
-            _channel.invokeMethod("onError", arguments: arguments)
+            _pdfViewChannel.invokeMethod("onError", arguments: arguments)
         }
         
     }
@@ -79,26 +84,19 @@ class AlhPdfView: NSObject, FlutterPlatformView {
     }
     
     func handle(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
-        let pdfView = _embeddedPdfView.pdfView
-        
         switch(call.method) {
         case "pageCount":
-            let pageCount = pdfView.document?.pageCount
+            let pageCount = _embeddedPdfView.getPageCount() ?? -1
             result(pageCount)
             break
         case "currentPage":
-            if let currentPage = pdfView.currentPage {
-                let currentPageIndex = pdfView.document?.index(for: currentPage)
-                result(currentPageIndex)
-            }
-            result(-1)
+            let currentPageIndex = _embeddedPdfView.getCurrentPageIndex() ?? -1
+            result(currentPageIndex)
             break
         case "setPage":
             let arguments = call.arguments as! Dictionary<String, Any>
             let pageIndex = arguments["page"] as! Int
-            if let page = pdfView.document?.page(at: pageIndex) {
-                pdfView.go(to: page)
-            }
+            _embeddedPdfView.goToPage(pageIndex: pageIndex)
             result(nil)
             break
         case "pageSize":
@@ -112,12 +110,17 @@ class AlhPdfView: NSObject, FlutterPlatformView {
             result(nil)
             break
         case "currentZoom":
-            result(pdfView.scaleFactor)
+            result(_embeddedPdfView.getCurrentLogicalScaleFactor())
             break
         case "setZoom":
             let arguments = call.arguments as! Dictionary<String, Any>
             let zoom = arguments["newZoom"] as! CGFloat
             self._embeddedPdfView.zoomPdfView(zoomFactor: zoom)
+            result(nil)
+            break
+        case "updateCreationParams":
+            let arguments = call.arguments as! Dictionary<String, Any>
+            _embeddedPdfView.updateConfiguration(newConfiguration: AlhPdfViewConfiguration.init(arguments: arguments))
             result(nil)
             break
         default:
@@ -153,21 +156,18 @@ class AlhPdfView: NSObject, FlutterPlatformView {
         NotificationCenter.default.addObserver(self, selector: #selector(self.handleZoomChanged(notification:)), name: Notification.Name.PDFViewScaleChanged, object: nil)
     }
     
-    func handleRenderCompleted(pages: NSNumber) {
-        _channel.invokeMethod("onRender", arguments: ["pages": pages])
+    func handleRenderCompleted() {
+        let pagesCount = _embeddedPdfView.getPageCount() ?? -1
+        _pdfViewChannel.invokeMethod("onRender", arguments: ["pages": pagesCount])
     }
     
     @objc func handlePageChanged(notification: NSNotification) {
-        let pdfView = _embeddedPdfView.pdfView
-        
-        if let document = pdfView.document, let currentPage = pdfView.currentPage {
-            let page = document.index(for: currentPage) as NSNumber
-            let total = document.pageCount as NSNumber
-            _channel.invokeMethod("onPageChanged", arguments: ["page": page, "total": total])
+        if let totalPagesCount = _embeddedPdfView.getPageCount(), let currentPageIndex = _embeddedPdfView.getCurrentPageIndex() {
+            _pdfViewChannel.invokeMethod("onPageChanged", arguments: ["page": currentPageIndex, "total": totalPagesCount])
         }
     }
     
     @objc func handleZoomChanged(notification: NSNotification) {
-        _channel.invokeMethod("onZoomChanged", arguments: ["zoom": self._embeddedPdfView.getCurrentLogicalScaleFactor()])
+        _pdfViewChannel.invokeMethod("onZoomChanged", arguments: ["zoom": self._embeddedPdfView.getCurrentLogicalScaleFactor()])
     }
 }

@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:typed_data';
 
+import 'package:alh_pdf_view/controller/alh_pdf_controller.dart';
 import 'package:alh_pdf_view/controller/alh_pdf_view_controller.dart';
 import 'package:alh_pdf_view/model/alh_pdf_view_creation_params.dart';
 import 'package:alh_pdf_view/model/fit_policy.dart';
@@ -29,6 +30,10 @@ class AlhPdfView extends StatefulWidget {
   final Uint8List? bytes;
 
   /// Defines how the PDF should fit inside the widget.
+  ///
+  /// The fitPolicy is also updated after rotating the screen.
+  /// On Android, the PDF view will be rebuilt and
+  /// on iOS the scaleFactor to fit is recalculated.
   ///
   /// Default value: [FitPolicy.both].
   final FitPolicy fitPolicy;
@@ -119,6 +124,8 @@ class AlhPdfView extends StatefulWidget {
   final PageChangedCallback? onPageChanged;
 
   /// Called when changing the zoom.
+  ///
+  /// This callback works only for iOS.
   final ZoomChangedCallback? onZoomChanged;
 
   /// When there are errors happening, this methods returns a message.
@@ -161,30 +168,59 @@ class AlhPdfView extends StatefulWidget {
   _AlhPdfViewState createState() => _AlhPdfViewState();
 }
 
-class _AlhPdfViewState extends State<AlhPdfView> {
+// ignore: prefer_mixin
+class _AlhPdfViewState extends State<AlhPdfView> with WidgetsBindingObserver {
   static const _viewType = 'alh_pdf_view';
 
-  final _controller = Completer<AlhPdfViewController>();
+  AlhPdfController? _alhPdfController;
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance!.addObserver(this);
+
+    WidgetsBinding.instance?.addPostFrameCallback((_) {
+      _handleRotationChanged();
+    });
+  }
+
+  @override
+  void didUpdateWidget(covariant AlhPdfView oldWidget) {
+    if (widget != oldWidget) {
+      _alhPdfController?.updateCreationParams(
+        creationParams: _creationParams.toMap(),
+      );
+    }
+    super.didUpdateWidget(oldWidget);
+  }
+
+  @override
+  void didChangeMetrics() {
+    final orientationBefore = MediaQuery.of(context).orientation;
+    WidgetsBinding.instance?.addPostFrameCallback((_) {
+      if (!mounted) {
+        return;
+      }
+      final orientationAfter = MediaQuery.of(context).orientation;
+
+      // Fixing the bug having a white screen on Android
+      // Calling a native method that reloads the PDF
+      // This prevents reloading the whole widget, because on iOS it works
+      if (orientationBefore != orientationAfter) {
+        _handleRotationChanged();
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance?.removeObserver(this);
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
-    final alhPdfViewCreationParams = AlhPdfViewCreationParams(
-      autoSpacing: widget.autoSpacing,
-      backgroundColor: widget.backgroundColor,
-      bytes: widget.bytes,
-      defaultPage: widget.defaultPage,
-      defaultZoomFactor: widget.defaultZoomFactor,
-      enableSwipe: widget.enableSwipe,
-      filePath: widget.filePath,
-      fitEachPage: widget.fitEachPage,
-      fitPolicy: widget.fitPolicy,
-      nightMode: widget.nightMode,
-      pageFling: widget.pageFling,
-      pageSnap: widget.pageSnap,
-      password: widget.password,
-      swipeHorizontal: widget.swipeHorizontal,
-      enableDoubleTap: widget.enableDoubleTap,
-    );
+    final alhPdfViewCreationParamsMap = _creationParams.toMap();
 
     switch (defaultTargetPlatform) {
       case TargetPlatform.android:
@@ -192,7 +228,7 @@ class _AlhPdfViewState extends State<AlhPdfView> {
           viewType: _viewType,
           onPlatformViewCreated: _onPlatformViewCreated,
           gestureRecognizers: widget.gestureRecognizers,
-          creationParams: alhPdfViewCreationParams.toMap(),
+          creationParams: alhPdfViewCreationParamsMap,
           creationParamsCodec: const StandardMessageCodec(),
         );
       case TargetPlatform.iOS:
@@ -200,7 +236,7 @@ class _AlhPdfViewState extends State<AlhPdfView> {
           viewType: _viewType,
           onPlatformViewCreated: _onPlatformViewCreated,
           gestureRecognizers: widget.gestureRecognizers,
-          creationParams: alhPdfViewCreationParams.toMap(),
+          creationParams: alhPdfViewCreationParamsMap,
           creationParamsCodec: const StandardMessageCodec(),
         );
       default:
@@ -214,7 +250,7 @@ class _AlhPdfViewState extends State<AlhPdfView> {
   ///
   /// Callback after native view was created.
   void _onPlatformViewCreated(int id) {
-    final controller = AlhPdfViewController(
+    final alhPdfViewController = AlhPdfViewController(
       id: id,
       onError: widget.onError,
       onPageChanged: widget.onPageChanged,
@@ -222,10 +258,45 @@ class _AlhPdfViewState extends State<AlhPdfView> {
       onRender: widget.onRender,
       onZoomChanged: widget.onZoomChanged,
     );
-    _controller.complete(controller);
+    _alhPdfController = AlhPdfController(id: id);
 
-    if (widget.onViewCreated != null) {
-      widget.onViewCreated!(controller);
+    widget.onViewCreated?.call(alhPdfViewController);
+  }
+
+  /// Calling setOrientation of [_alhPdfController] for rebuilding this widget.
+  ///
+  /// On Android, there is a problem when the rotation changes. It results
+  /// to a white screen. To prevent that, this widget rebuilds the PDF view
+  /// with all current params.
+  /// This delay is necessary to ensure that the rebuild on flutter side was
+  /// finished after the rotation.
+  void _handleRotationChanged() {
+    if (defaultTargetPlatform == TargetPlatform.android) {
+      Future.delayed(const Duration(milliseconds: 300)).then((_) {
+        final orientation = MediaQuery.of(context).orientation;
+        _alhPdfController?.setOrienation(
+          orientation: orientation,
+          creationParams: _creationParams.toMap(),
+        );
+      });
     }
   }
+
+  AlhPdfViewCreationParams get _creationParams => AlhPdfViewCreationParams(
+        autoSpacing: widget.autoSpacing,
+        backgroundColor: widget.backgroundColor,
+        bytes: widget.bytes,
+        defaultPage: widget.defaultPage,
+        defaultZoomFactor: widget.defaultZoomFactor,
+        enableSwipe: widget.enableSwipe,
+        filePath: widget.filePath,
+        fitEachPage: widget.fitEachPage,
+        fitPolicy: widget.fitPolicy,
+        nightMode: widget.nightMode,
+        pageFling: widget.pageFling,
+        pageSnap: widget.pageSnap,
+        password: widget.password,
+        swipeHorizontal: widget.swipeHorizontal,
+        enableDoubleTap: widget.enableDoubleTap,
+      );
 }

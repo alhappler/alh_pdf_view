@@ -4,6 +4,7 @@ import android.content.Context
 import android.view.View
 import androidx.annotation.NonNull
 import com.example.alh_pdf_view.model.AlhPdfViewConfiguration
+import com.example.alh_pdf_view.model.Orientation
 import com.github.barteksc.pdfviewer.PDFView
 import com.github.barteksc.pdfviewer.util.Constants
 import io.flutter.plugin.common.BinaryMessenger
@@ -20,66 +21,24 @@ internal class AlhPdfView(
     messenger: BinaryMessenger,
     creationParams: Map<*, *>?
 ) : MethodChannel.MethodCallHandler, PlatformView {
-    lateinit var configuration: AlhPdfViewConfiguration
     private var pdfView: PDFView = PDFView(context, null) // view.findViewById(R.id.pdfView)
-    private var channel: MethodChannel = MethodChannel(messenger, "alh_pdf_view_$id")
+    private var alhPdfViewChannel: MethodChannel = MethodChannel(messenger, "alh_pdf_view_$id")
+    private var alhPdfChannel: MethodChannel = MethodChannel(messenger, "alh_pdf_$id")
+    private lateinit var lastOrientation: Orientation
+    private lateinit var pdfViewConfigurator: PDFView.Configurator
+    private lateinit var alhPdfViewConfiguration: AlhPdfViewConfiguration
 
     init {
-        channel.setMethodCallHandler(this)
+        alhPdfViewChannel.setMethodCallHandler(this)
+        alhPdfChannel.setMethodCallHandler(this)
 
         if (creationParams != null) {
-            configuration = AlhPdfViewConfiguration.fromArguments(creationParams)
+            alhPdfViewConfiguration = AlhPdfViewConfiguration.fromArguments(creationParams)
 
             Constants.PRELOAD_OFFSET = 3
             Constants.PART_SIZE = 600f // to fix bluriness after zooming
 
-            val pdfViewConfigurator = if (configuration.filePath != null) {
-                pdfView.fromFile(File(configuration.filePath!!))
-            } else {
-                pdfView.fromBytes(configuration.bytes)
-            }
-
-            pdfView.setBackgroundColor(configuration.backgroundColor)
-
-            pdfViewConfigurator
-                .enableAnnotationRendering(true)
-                .enableSwipe(configuration.enableSwipe)
-                .pageFitPolicy(configuration.fitPolicy)
-                .fitEachPage(configuration.fitEachPage)
-                .swipeHorizontal(configuration.swipeHorizontal)
-                .password(configuration.password)
-                .nightMode(configuration.nightMode)
-                .autoSpacing(configuration.autoSpacing)
-                .pageFling(configuration.pageFling)
-                .pageSnap(configuration.pageSnap)
-                .enableDoubletap(configuration.enableDoubleTap)
-                .defaultPage(configuration.defaultPage)
-                .onPageChange { page, total ->
-                    val args: MutableMap<String, Any> = HashMap()
-                    args["page"] = page
-                    args["total"] = total
-                    channel.invokeMethod("onPageChanged", args)
-                }
-                .onError { throwable ->
-                    val args: MutableMap<String, Any> = HashMap()
-                    args["error"] = throwable.toString()
-                    channel.invokeMethod("onError", args)
-                }
-                .onPageError { page, throwable ->
-                    val args: MutableMap<String, Any> = HashMap()
-                    args["page"] = page
-                    args["error"] = throwable.toString()
-                    channel.invokeMethod("onPageError", args)
-                }
-                .onRender { pages ->
-                    if (configuration.defaultZoomFactor > 0) {
-                        pdfView.zoomWithAnimation(configuration.defaultZoomFactor.toFloat())
-                    }
-                    val args: MutableMap<String, Any> = HashMap()
-                    args["pages"] = pages
-                    channel.invokeMethod("onRender", args)
-                }
-                .load()
+            loadPdfView(alhPdfViewConfiguration.defaultPage)
         }
     }
 
@@ -88,7 +47,8 @@ internal class AlhPdfView(
     }
 
     override fun dispose() {
-        channel.setMethodCallHandler(null)
+        alhPdfViewChannel.setMethodCallHandler(null)
+        alhPdfChannel.setMethodCallHandler(null)
     }
 
     override fun onMethodCall(@NonNull call: MethodCall, @NonNull result: MethodChannel.Result) {
@@ -102,8 +62,59 @@ internal class AlhPdfView(
             "resetZoom" -> resetZoom(result)
             "setZoom" -> setZoom(call, result)
             "currentZoom" -> getZoom(result)
+            "setOrientation" -> handleOrientationChange(call.arguments as Map<*, *>, result)
             else -> result.notImplemented()
         }
+    }
+
+    private fun loadPdfView(defaultPage: Int) {
+        pdfViewConfigurator = if (alhPdfViewConfiguration.filePath != null) {
+            pdfView.fromFile(File(alhPdfViewConfiguration.filePath!!))
+        } else {
+            pdfView.fromBytes(alhPdfViewConfiguration.bytes)
+        }
+
+        pdfView.setBackgroundColor(alhPdfViewConfiguration.backgroundColor)
+
+        pdfViewConfigurator
+            .enableAnnotationRendering(true)
+            .enableSwipe(alhPdfViewConfiguration.enableSwipe)
+            .pageFitPolicy(alhPdfViewConfiguration.fitPolicy)
+            .fitEachPage(alhPdfViewConfiguration.fitEachPage)
+            .swipeHorizontal(alhPdfViewConfiguration.swipeHorizontal)
+            .password(alhPdfViewConfiguration.password)
+            .nightMode(alhPdfViewConfiguration.nightMode)
+            .autoSpacing(alhPdfViewConfiguration.autoSpacing)
+            .pageFling(alhPdfViewConfiguration.pageFling)
+            .pageSnap(alhPdfViewConfiguration.pageSnap)
+            .enableDoubletap(alhPdfViewConfiguration.enableDoubleTap)
+            .defaultPage(defaultPage)
+            .onPageChange { page, total ->
+                val args: MutableMap<String, Any> = HashMap()
+                args["page"] = page
+                args["total"] = total
+                alhPdfViewChannel.invokeMethod("onPageChanged", args)
+            }
+            .onError { throwable ->
+                val args: MutableMap<String, Any> = HashMap()
+                args["error"] = throwable.toString()
+                alhPdfViewChannel.invokeMethod("onError", args)
+            }
+            .onPageError { page, throwable ->
+                val args: MutableMap<String, Any> = HashMap()
+                args["page"] = page
+                args["error"] = throwable.toString()
+                alhPdfViewChannel.invokeMethod("onPageError", args)
+            }
+            .onRender { pages ->
+                if (alhPdfViewConfiguration.defaultZoomFactor > 0) {
+                    pdfView.zoomWithAnimation(alhPdfViewConfiguration.defaultZoomFactor.toFloat())
+                }
+                val args: MutableMap<String, Any> = HashMap()
+                args["pages"] = pages
+                alhPdfViewChannel.invokeMethod("onRender", args)
+            }
+            .load()
     }
 
     private fun getPageWidth(result: MethodChannel.Result) {
@@ -131,22 +142,38 @@ internal class AlhPdfView(
     }
 
     private fun resetZoom(result: MethodChannel.Result) {
-        val newZoom = configuration.defaultZoomFactor.toFloat()
+        val newZoom = alhPdfViewConfiguration.defaultZoomFactor.toFloat()
         pdfView.zoomWithAnimation(newZoom)
         result.success(true)
-        channel.invokeMethod("onZoomChanged", mapOf("zoom" to newZoom))
     }
 
     private fun setZoom(call: MethodCall, result: MethodChannel.Result) {
         val zoom = call.argument<Any>("newZoom") as Double
         pdfView.zoomWithAnimation(zoom.toFloat())
         result.success(null);
-        // using as callback to have the same logic as iOS when updating zoom
-        channel.invokeMethod("onZoomChanged", mapOf("zoom" to zoom))
     }
 
     private fun getZoom(result: MethodChannel.Result) {
         val zoom = pdfView.zoom.toDouble()
         result.success(zoom)
+    }
+
+    /**
+     * Fixing the bug having a white screen when changing the orientation.
+     *
+     * This method reloads the PDF when the orientation changed.
+     * The last page will still be shown but the current zoom value is reset.
+     */
+    private fun handleOrientationChange(arguments: Map<*, *>, result: MethodChannel.Result) {
+        val newDeviceOrientation = Orientation.fromString(arguments["orientation"] as String)
+
+        if (newDeviceOrientation != null) {
+            if (this::lastOrientation.isInitialized && newDeviceOrientation != lastOrientation) {
+                alhPdfViewConfiguration = AlhPdfViewConfiguration.fromArguments(arguments)
+                loadPdfView(defaultPage = pdfView.currentPage)
+            }
+            lastOrientation = newDeviceOrientation
+        }
+        result.success(null)
     }
 }

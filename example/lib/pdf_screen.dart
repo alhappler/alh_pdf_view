@@ -26,7 +26,6 @@ class _PDFScreenState extends State<PDFScreen> {
   String errorMessage = '';
   bool isActive = true;
   double defaultScale = 1.0;
-  late double scale = defaultScale;
   double top = 200.0;
   bool enableSwipe = true;
 
@@ -35,8 +34,7 @@ class _PDFScreenState extends State<PDFScreen> {
   @override
   Widget build(BuildContext context) {
     return OrientationBuilder(
-        builder: (BuildContext context, Orientation orientation) {
-      if (orientation == Orientation.portrait) {
+      builder: (context, orientation) {
         return Scaffold(
           appBar: AppBar(title: const Text("Document Portrait")),
           body: Stack(
@@ -44,17 +42,55 @@ class _PDFScreenState extends State<PDFScreen> {
               Column(
                 children: [
                   Expanded(
-                    child: Container(
-                      color: Colors.black,
-                      child: _getAlhPdfView(),
+                    child: AlhPdfView(
+                      filePath: widget.path,
+                      bytes: widget.bytes,
+                      enableSwipe: true,
+                      nightMode: false,
+                      password: 'password',
+                      fitEachPage: false,
+                      fitPolicy: orientation == Orientation.portrait
+                          ? FitPolicy.both
+                          : FitPolicy.width,
+                      swipeHorizontal: false,
+                      autoSpacing: true,
+                      pageFling: false,
+                      defaultZoomFactor: defaultScale,
+                      pageSnap: true,
+                      onRender: (pages) {
+                        setState(() {
+                          this.pages = pages + 1;
+                          isReady = true;
+                        });
+                      },
+                      onError: (error) {
+                        setState(() {
+                          errorMessage = error.toString();
+                        });
+                        print(error.toString());
+                      },
+                      onPageError: (page, error) {
+                        setState(() {
+                          errorMessage = '$page: ${error.toString()}';
+                        });
+                        print('$page: ${error.toString()}');
+                      },
+                      onViewCreated: (controller) {
+                        pdfViewController = controller;
+                      },
+                      onPageChanged: (int page, int total) {
+                        setState(() {
+                          currentPage = page;
+                        });
+                      },
                     ),
                   ),
-                  PdfViewBottomBar(
-                    pdfViewController: pdfViewController,
-                    currentPage: currentPage,
-                    totalPages: pages,
-                    currentZoom: scale,
-                  ),
+                  if (orientation == Orientation.portrait)
+                    PdfViewBottomBar(
+                      pdfViewController: pdfViewController,
+                      currentPage: currentPage,
+                      totalPages: pages,
+                    ),
                 ],
               ),
               if (errorMessage.isEmpty)
@@ -66,65 +102,13 @@ class _PDFScreenState extends State<PDFScreen> {
                   PdfPageInfo(
                     currentPage: currentPage,
                     totalPages: pages,
-                    currentZoom: scale,
                   )
               else
                 Center(child: Text(errorMessage))
             ],
           ),
         );
-      } else {
-        return Scaffold(
-          appBar: AppBar(title: const Text("Document Landscape")),
-          body: _getAlhPdfView(),
-        );
-      }
-    });
+      },
+    );
   }
-
-  Widget _getAlhPdfView() => AlhPdfView(
-        filePath: widget.path,
-        bytes: widget.bytes,
-        enableSwipe: true,
-        nightMode: false,
-        password: 'password',
-        fitEachPage: false,
-        fitPolicy: FitPolicy.height,
-        swipeHorizontal: false,
-        autoSpacing: true,
-        pageFling: false,
-        defaultZoomFactor: defaultScale,
-        pageSnap: true,
-        onRender: (pages) {
-          setState(() {
-            this.pages = pages + 1;
-            isReady = true;
-          });
-        },
-        onError: (error) {
-          setState(() {
-            errorMessage = error.toString();
-          });
-          print(error.toString());
-        },
-        onPageError: (page, error) {
-          setState(() {
-            errorMessage = '$page: ${error.toString()}';
-          });
-          print('$page: ${error.toString()}');
-        },
-        onViewCreated: (controller) {
-          pdfViewController = controller;
-        },
-        onPageChanged: (int page, int total) {
-          setState(() {
-            currentPage = page;
-          });
-        },
-        onZoomChanged: (double zoom) {
-          setState(() {
-            scale = zoom;
-          });
-        },
-      );
 }

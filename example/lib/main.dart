@@ -7,7 +7,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:path_provider/path_provider.dart';
 
-void main() => runApp(const MyApp());
+void main() => runApp(
+      const MaterialApp(
+        title: 'Alh PDF View',
+        home: MyApp(),
+      ),
+    );
 
 class MyApp extends StatefulWidget {
   const MyApp({Key? key}) : super(key: key);
@@ -54,41 +59,38 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Alh PDF View',
-      home: Scaffold(
-        appBar: AppBar(title: const Text('Plugin example app')),
-        body: Center(
-          child: Builder(
-            builder: (BuildContext context) {
-              return Column(
-                children: <Widget>[
-                  ElevatedButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => PDFScreen(path: pathSmallPDF),
-                        ),
-                      );
-                    },
-                    child: const Text("Open small PDF with path"),
-                  ),
-                  ElevatedButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => PDFScreen(bytes: bytesSmallPDF),
-                        ),
-                      );
-                    },
-                    child: const Text("Open small PDF with bytes"),
-                  ),
-                ],
-              );
-            },
-          ),
+    return Scaffold(
+      appBar: AppBar(title: const Text('Plugin example app')),
+      body: Center(
+        child: Builder(
+          builder: (BuildContext context) {
+            return Column(
+              children: <Widget>[
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => PDFScreen(path: pathSmallPDF),
+                      ),
+                    );
+                  },
+                  child: const Text("Open small PDF with path"),
+                ),
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => PDFScreen(bytes: bytesSmallPDF),
+                      ),
+                    );
+                  },
+                  child: const Text("Open small PDF with bytes"),
+                ),
+              ],
+            );
+          },
         ),
       ),
     );

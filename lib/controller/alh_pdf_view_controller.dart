@@ -1,3 +1,4 @@
+import 'package:alh_pdf_view/lib.dart';
 import 'package:alh_pdf_view/view/alh_pdf_view.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
@@ -124,4 +125,5 @@ class AlhPdfViewController {
     final double zoom = await _channel.invokeMethod('currentZoom');
     return zoom;
   }
+
 }

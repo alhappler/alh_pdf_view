@@ -16,9 +16,10 @@ of [endigo](https://github.com/endigo) and rebuilt from scratch.
 
 The package `alh_pdf_view` also includes:
 - Displays also PDF with bytes
-- FitPolicy for iOS
+- FitPolicy for iOS and Android
 - some blurriness fixes on Android side
 - some more functionalities
+- Rotation works on iOS and Android
 - Tests for the whole written code on `Dart`
 
 Android:
@@ -68,8 +69,6 @@ This is a list of all parameters that can be used for this widget. Consider that
 | `backgroundColor` | Setting backgroundColor of remaining space around the pdf view.                          | **`Colors.transparent`** |
 | `password` | Unlocks PDF page with this password.                                                     |          **`""`**          |
 | `enableDoubleTap` | When double tapping, the zoom of the page changes. (only Android)                        |        **`1.0`**         |
-| `defaultZoomFactor` | Defines how much the displayed PDF page should zoomed when rendered.                     |        **`1.0`**         |
-| `defaultZoomFactor` | Defines how much the displayed PDF page should zoomed when rendered.                     |        **`1.0`**         |
 
 This is a list of functional parameters.
 
@@ -79,7 +78,7 @@ This is a list of functional parameters.
 | `onViewCreated`      | If not null invoked once the native view is created.                  | **-** |
 | `onRender`           | Callback once the PDF page was loaded.                                | **-** |
 | `onPageChanged`      | When changing the page, this method will be called with the new page. | **-** |
-| `onZoomChanged`      | Called when changing the zoom.                                        | **-** |
+| `onZoomChanged`      | Called when changing the zoom. (only iOS)                             | **-** |
 | `onError`            | When there are errors happening, this methods returns a message.      | **-** |
 | `onPageError`            | Called when there are specific errors on a page. (only Android)       | **-** |
 
