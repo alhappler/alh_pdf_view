@@ -125,5 +125,4 @@ class AlhPdfViewController {
     final double zoom = await _channel.invokeMethod('currentZoom');
     return zoom;
   }
-
 }
