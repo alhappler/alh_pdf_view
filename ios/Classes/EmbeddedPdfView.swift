@@ -12,10 +12,13 @@ class EmbeddedPdfView : UIView {
     let pdfView: PDFView
     
     // This factor should equals the scale factor of 1.0
-    var initPdfViewScaleFactor: CGFloat = 0.0
-    var hasInitializedView = false
+    private var initPdfViewScaleFactor: CGFloat = 0.0
+    private var hasInitializedView = false
     
-    private let configuration: AlhPdfViewConfiguration
+    private var configuration: AlhPdfViewConfiguration
+    
+    // Ensure to update after layoutSubviews was called to get correct sizes, e. g. after rotating the screen
+    private var updatedConfiguration: AlhPdfViewConfiguration?
     
     init(configuration: AlhPdfViewConfiguration) {
         self.configuration = configuration
@@ -47,6 +50,8 @@ class EmbeddedPdfView : UIView {
         if(!hasInitializedView) {
             initPdfDefaultScaleFactor()
             goToDefaultPage()
+        } else if let updatedConfiguration = self.updatedConfiguration {
+            handleUpdatedConfiguration(updatedConfiguration: updatedConfiguration)
         }
         hasInitializedView = true
     }
@@ -80,6 +85,10 @@ class EmbeddedPdfView : UIView {
         } else {
             return nil
         }
+    }
+    
+    func updateConfiguration(newConfiguration: AlhPdfViewConfiguration) {
+        updatedConfiguration = newConfiguration
     }
     
    private func initPdfDefaultScaleFactor() {
@@ -116,6 +125,14 @@ class EmbeddedPdfView : UIView {
             let defaultPage = configuration.defaultPage < pageCount ? configuration.defaultPage : pageCount - 1
             self.pdfView.go(to: document.page(at: defaultPage)!)
         }
+    }
+    
+    private func handleUpdatedConfiguration(updatedConfiguration: AlhPdfViewConfiguration) {
+        if(updatedConfiguration.fitPolicy != configuration.fitPolicy) {
+            self.configuration = updatedConfiguration
+            initPdfDefaultScaleFactor()
+        }
+        self.updatedConfiguration = nil
     }
     
     func getPdfPageSize() -> CGSize {

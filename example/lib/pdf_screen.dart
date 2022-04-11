@@ -33,75 +33,82 @@ class _PDFScreenState extends State<PDFScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text("Document Portrait")),
-      body: Stack(
-        children: <Widget>[
-          Column(
-            children: [
-              Expanded(
-                child: AlhPdfView(
-                  filePath: widget.path,
-                  bytes: widget.bytes,
-                  enableSwipe: true,
-                  nightMode: false,
-                  password: 'password',
-                  fitEachPage: false,
-                  fitPolicy: FitPolicy.height,
-                  swipeHorizontal: false,
-                  autoSpacing: true,
-                  pageFling: false,
-                  defaultZoomFactor: defaultScale,
-                  pageSnap: true,
-                  onRender: (pages) {
-                    setState(() {
-                      this.pages = pages + 1;
-                      isReady = true;
-                    });
-                  },
-                  onError: (error) {
-                    setState(() {
-                      errorMessage = error.toString();
-                    });
-                    print(error.toString());
-                  },
-                  onPageError: (page, error) {
-                    setState(() {
-                      errorMessage = '$page: ${error.toString()}';
-                    });
-                    print('$page: ${error.toString()}');
-                  },
-                  onViewCreated: (controller) {
-                    pdfViewController = controller;
-                  },
-                  onPageChanged: (int page, int total) {
-                    setState(() {
-                      currentPage = page;
-                    });
-                  },
-                ),
+    return OrientationBuilder(
+      builder: (context, orientation) {
+        return Scaffold(
+          appBar: AppBar(title: const Text("Document Portrait")),
+          body: Stack(
+            children: <Widget>[
+              Column(
+                children: [
+                  Expanded(
+                    child: AlhPdfView(
+                      filePath: widget.path,
+                      bytes: widget.bytes,
+                      enableSwipe: true,
+                      nightMode: false,
+                      password: 'password',
+                      fitEachPage: false,
+                      fitPolicy: orientation == Orientation.portrait
+                          ? FitPolicy.both
+                          : FitPolicy.width,
+                      swipeHorizontal: false,
+                      autoSpacing: true,
+                      pageFling: false,
+                      defaultZoomFactor: defaultScale,
+                      pageSnap: true,
+                      onRender: (pages) {
+                        setState(() {
+                          this.pages = pages + 1;
+                          isReady = true;
+                        });
+                      },
+                      onError: (error) {
+                        setState(() {
+                          errorMessage = error.toString();
+                        });
+                        print(error.toString());
+                      },
+                      onPageError: (page, error) {
+                        setState(() {
+                          errorMessage = '$page: ${error.toString()}';
+                        });
+                        print('$page: ${error.toString()}');
+                      },
+                      onViewCreated: (controller) {
+                        pdfViewController = controller;
+                      },
+                      onPageChanged: (int page, int total) {
+                        setState(() {
+                          currentPage = page;
+                        });
+                      },
+                    ),
+                  ),
+                  if (orientation == Orientation.portrait)
+                    PdfViewBottomBar(
+                      pdfViewController: pdfViewController,
+                      currentPage: currentPage,
+                      totalPages: pages,
+                    ),
+                ],
               ),
-              PdfViewBottomBar(
-                pdfViewController: pdfViewController,
-                currentPage: currentPage,
-                totalPages: pages,
-              ),
+              if (errorMessage.isEmpty)
+                if (!isReady)
+                  const Center(
+                    child: CircularProgressIndicator(),
+                  )
+                else
+                  PdfPageInfo(
+                    currentPage: currentPage,
+                    totalPages: pages,
+                  )
+              else
+                Center(child: Text(errorMessage))
             ],
           ),
-          if (errorMessage.isEmpty)
-            if (!isReady)
-              const Center(
-                child: CircularProgressIndicator(),
-              )
-            else
-              PdfPageInfo(
-                currentPage: currentPage,
-                totalPages: pages,
-              )
-          else
-            Center(child: Text(errorMessage))
-        ],
-      ),
+        );
+      },
     );
   }
 }
