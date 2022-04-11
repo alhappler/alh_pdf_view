@@ -121,10 +121,12 @@ void main() {
   testWidgets(
       "GIVEN platform == TargetPlatform.android, bytes and all parameters "
       "WHEN pumping [AlhPdfView] "
-      "THEN should show [AndroidView] with expected creationParams",
+      "THEN should show [AndroidView] with expected creationParams and "
+      "should call setOrientation of [AlhPdfController]",
       (WidgetTester tester) async {
     // given
     debugDefaultTargetPlatformOverride = TargetPlatform.android;
+    changeOrientation(tester, landscape: false);
 
     final givenBytes = Uint8List(9);
     const givenFilePath = 'path';
@@ -133,6 +135,9 @@ void main() {
     const givenFitPolicy = FitPolicy.height;
     const givenDefaultPage = 99;
     const givenBackgroundColor = Colors.blue;
+
+    final viewsController = FakeAndroidPlatformViewsController();
+    viewsController.registerViewType('alh_pdf_view');
 
     // when
     await tester.pumpWidget(
@@ -159,6 +164,17 @@ void main() {
       ),
     );
 
+    final viewId = viewsController.views.first.id;
+    final channel = MethodChannel('alh_pdf_$viewId');
+    MethodCall? methodCall;
+    channel.setMockMethodCallHandler((call) async {
+      if (call.method == 'setOrientation') {
+        methodCall = call;
+      }
+    });
+
+    await tester.pumpAndSettle(const Duration(milliseconds: 300));
+
     // then
     expect(
         find.byWidgetPredicate((widget) =>
@@ -181,6 +197,108 @@ void main() {
             widget.creationParams['password'] == givenPassword &&
             !widget.creationParams['enableDoubleTap']),
         findsOneWidget);
+    expect(methodCall?.method, equals('setOrientation'));
+    expect(methodCall?.arguments['orientation'],
+        equals(Orientation.portrait.toString()));
+
+    debugDefaultTargetPlatformOverride = null;
+  });
+
+  testWidgets(
+      "GIVEN platform == TargetPlatform.android, [AlhPdfView] and orientation = portrait "
+      "WHEN changing orientation "
+      "THEN should call setRotation of [AlhPdfController]",
+      (WidgetTester tester) async {
+    // given
+    debugDefaultTargetPlatformOverride = TargetPlatform.android;
+    changeOrientation(tester, landscape: false);
+
+    const givenFilePath = 'path';
+
+    final viewsController = FakeAndroidPlatformViewsController();
+    viewsController.registerViewType('alh_pdf_view');
+
+    // when
+    await tester.pumpWidget(
+      const MaterialApp(
+        home: Scaffold(
+          body: AlhPdfView(
+            filePath: givenFilePath,
+          ),
+        ),
+      ),
+    );
+
+    final viewId = viewsController.views.first.id;
+    final channel = MethodChannel('alh_pdf_$viewId');
+    MethodCall? methodCall;
+    channel.setMockMethodCallHandler((call) async {
+      if (call.method == 'setOrientation') {
+        methodCall = call;
+      }
+    });
+
+    await tester.pumpAndSettle(const Duration(milliseconds: 300));
+
+    changeOrientation(tester, landscape: true);
+    await tester.pumpAndSettle(const Duration(milliseconds: 300));
+
+    // then
+    expect(
+        find.byWidgetPredicate((widget) =>
+            widget is AndroidView &&
+            widget.creationParams['filePath'] == givenFilePath),
+        findsOneWidget);
+    expect(methodCall?.method, equals('setOrientation'));
+    expect(methodCall?.arguments['orientation'],
+        equals(Orientation.landscape.toString()));
+
+    clearTestValues(tester);
+    debugDefaultTargetPlatformOverride = null;
+  });
+
+  testWidgets(
+      "GIVEN platform = .iOS, filePath, updated fitPolicy and [AlhPdfView] "
+      "WHEN updating fitPolicy "
+      "THEN should updateCreationParams of [AlhPdfController]",
+      (WidgetTester tester) async {
+    // given
+    debugDefaultTargetPlatformOverride = TargetPlatform.iOS;
+
+    const givenFilePath = 'path';
+    const givenFitPolicy = FitPolicy.both;
+    const givenUpdatedFitPolicy = FitPolicy.width;
+
+    final viewsController = FakeIosPlatformViewsController();
+    viewsController.registerViewType('alh_pdf_view');
+
+    await tester.pumpWidget(
+      const MaterialApp(
+        home: _UpdateAlhPdfViewTest(
+          filePath: givenFilePath,
+          fitPolicy: givenFitPolicy,
+          updatedFitPolicy: givenUpdatedFitPolicy,
+        ),
+      ),
+    );
+    await tester.pumpAndSettle(const Duration(milliseconds: 300));
+
+    final viewId = viewsController.views.first.id;
+    final channel = MethodChannel('alh_pdf_$viewId');
+    MethodCall? methodCall;
+    channel.setMockMethodCallHandler((call) async {
+      if (call.method == 'updateCreationParams') {
+        methodCall = call;
+      }
+    });
+
+    // when
+    await tester.tap(find.byType(TextButton));
+    await tester.pumpAndSettle();
+
+    // then
+    expect(methodCall?.arguments['fitPolicy'],
+        equals(givenUpdatedFitPolicy.toString()));
 
     debugDefaultTargetPlatformOverride = null;
   });
@@ -422,4 +540,52 @@ void main() {
       debugDefaultTargetPlatformOverride = null;
     });
   });
+}
+
+class _UpdateAlhPdfViewTest extends StatefulWidget {
+  final String filePath;
+  final FitPolicy fitPolicy;
+  final FitPolicy updatedFitPolicy;
+
+  const _UpdateAlhPdfViewTest({
+    required this.filePath,
+    required this.fitPolicy,
+    required this.updatedFitPolicy,
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  State<_UpdateAlhPdfViewTest> createState() => _UpdateAlhPdfViewTestState();
+}
+
+class _UpdateAlhPdfViewTestState extends State<_UpdateAlhPdfViewTest> {
+  late FitPolicy fitPolicy;
+
+  @override
+  void initState() {
+    fitPolicy = widget.fitPolicy;
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Expanded(
+          child: AlhPdfView(
+            filePath: widget.filePath,
+            fitPolicy: fitPolicy,
+          ),
+        ),
+        TextButton(
+          onPressed: () {
+            setState(() {
+              fitPolicy = widget.updatedFitPolicy;
+            });
+          },
+          child: const Text('update'),
+        ),
+      ],
+    );
+  }
 }

@@ -31,6 +31,10 @@ class AlhPdfView extends StatefulWidget {
 
   /// Defines how the PDF should fit inside the widget.
   ///
+  /// The fitPolicy is also updated after rotating the screen.
+  /// On Android, the PDF view will be rebuilt and
+  /// on iOS the scaleFactor to fit is recalculated.
+  ///
   /// Default value: [FitPolicy.both].
   final FitPolicy fitPolicy;
 
@@ -168,7 +172,6 @@ class AlhPdfView extends StatefulWidget {
 class _AlhPdfViewState extends State<AlhPdfView> with WidgetsBindingObserver {
   static const _viewType = 'alh_pdf_view';
 
-  AlhPdfViewController? _alhPdfViewController;
   AlhPdfController? _alhPdfController;
 
   @override
@@ -191,11 +194,6 @@ class _AlhPdfViewState extends State<AlhPdfView> with WidgetsBindingObserver {
     super.didUpdateWidget(oldWidget);
   }
 
-  /*
-  read me updaten
-  h4u testen, vor allem nochmal schauen, dass die pdf view nur einmal geladen wird!
-  generell nochmal ios und android testen
-   */
   @override
   void didChangeMetrics() {
     final orientationBefore = MediaQuery.of(context).orientation;
@@ -260,13 +258,12 @@ class _AlhPdfViewState extends State<AlhPdfView> with WidgetsBindingObserver {
       onRender: widget.onRender,
       onZoomChanged: widget.onZoomChanged,
     );
-    _alhPdfViewController = alhPdfViewController;
     _alhPdfController = AlhPdfController(id: id);
 
     widget.onViewCreated?.call(alhPdfViewController);
   }
 
-  /// Calling setOrientation of [_alhPdfViewController] for rebuilding this widget.
+  /// Calling setOrientation of [_alhPdfController] for rebuilding this widget.
   ///
   /// On Android, there is a problem when the rotation changes. It results
   /// to a white screen. To prevent that, this widget rebuilds the PDF view
