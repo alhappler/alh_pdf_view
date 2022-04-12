@@ -28,3 +28,15 @@ jobs:
       # Runs a single command using the runners shell
       - name: Flutter action
         uses: subosito/flutter-action@v1.5.3
+        
+      # Uncomment this step to verify the use of 'dart format' on each commit.
+      - name: Verify formatting
+        run: flutter format --output=none --set-exit-if-changed .
+
+      # Consider passing '--fatal-infos' for slightly stricter analysis.
+      - name: Analyze project source
+        run: flutter analyze
+        
+      # Consider passing '--fatal-infos' for slightly stricter analysis.
+      - name: Analyze project source
+        run: flutter test
