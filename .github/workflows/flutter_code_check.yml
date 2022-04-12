@@ -18,7 +18,7 @@ jobs:
   # This workflow contains a single job called "build"
   build:
     # The type of runner that the job will run on
-    runs-on: macos-latest
+    runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v2
@@ -26,6 +26,8 @@ jobs:
         with:
           channel: 'stable' # or: 'beta' or 'master'
       - run: flutter --version
+      
+      - run: flutter pub get
         
       # Uncomment this step to verify the use of 'flutter format' on each commit.
       - name: Verify formatting
