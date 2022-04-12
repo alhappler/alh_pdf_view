@@ -1,3 +1,7 @@
+## 0.1.1
+⚽️ New Feature:
+* added parameter `minZoom` and `maxZoom`
+
 ## 0.1.0
 
 🐛 Fixed some bugs:
