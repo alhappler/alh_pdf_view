@@ -66,9 +66,11 @@ This is a list of all parameters that can be used for this widget. Consider that
 | `pageSnap`          | Snap pages to screen boundaries when changing the current page. (only Android)           |        **`true`**        |
 | `defaultPage`       | Describes which page should be shown at first.                                           |         **`0`**          |
 | `defaultZoomFactor` | Defines how much the displayed PDF page should zoomed when rendered.                     |        **`1.0`**         |
-| `backgroundColor` | Setting backgroundColor of remaining space around the pdf view.                          | **`Colors.transparent`** |
-| `password` | Unlocks PDF page with this password.                                                     |          **`""`**          |
-| `enableDoubleTap` | When double tapping, the zoom of the page changes. (only Android)                        |        **`1.0`**         |
+| `backgroundColor`   | Setting backgroundColor of remaining space around the pdf view.                          | **`Colors.transparent`** |
+| `password`          | Unlocks PDF page with this password.                                                     |         **`""`**         |
+| `enableDoubleTap`   | When double tapping, the zoom of the page changes. (only Android)                        |        **`1.0`**         |
+| `minZoom`           | Min zoom value that the user can reach while zooming.                                    |        **`0.5`**         |
+| `maxZoom`           | Max zoom value that the user can reach while zooming.                                    |        **`4.0`**         |
 
 This is a list of functional parameters.
 

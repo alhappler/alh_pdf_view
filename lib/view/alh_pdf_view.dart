@@ -103,6 +103,16 @@ class AlhPdfView extends StatefulWidget {
   /// Default value: true
   final bool enableDoubleTap;
 
+  /// Min zoom value that the user can reach.
+  ///
+  /// Default value: 0.5
+  final double minZoom;
+
+  /// Max zoom value that the user can reach.
+  ///
+  /// Default value: 4.0
+  final double maxZoom;
+
   /// Which gestures should be consumed by the pdf view.
   ///
   /// It is possible for other gesture recognizers to be competing with the pdf view on pointer
@@ -159,9 +169,13 @@ class AlhPdfView extends StatefulWidget {
     this.backgroundColor = Colors.transparent,
     this.defaultZoomFactor = 1.0,
     this.enableDoubleTap = true,
+    this.minZoom = 0.5,
+    this.maxZoom = 4.0,
     Key? key,
   })  : assert(filePath != null || bytes != null),
         assert(defaultZoomFactor > 0.0),
+        assert(minZoom > 0),
+        assert(maxZoom > 0),
         super(key: key);
 
   @override
@@ -298,5 +312,7 @@ class _AlhPdfViewState extends State<AlhPdfView> with WidgetsBindingObserver {
         password: widget.password,
         swipeHorizontal: widget.swipeHorizontal,
         enableDoubleTap: widget.enableDoubleTap,
+        minZoom: widget.minZoom,
+        maxZoom: widget.maxZoom,
       );
 }

@@ -61,8 +61,6 @@ class EmbeddedPdfView : UIView {
             self.pdfView.autoresizesSubviews = true
             self.pdfView.autoresizingMask = .flexibleWidth
             self.pdfView.displayDirection = configuration.swipeHorizontal ? .horizontal : .vertical
-            self.pdfView.minScaleFactor = self.pdfView.scaleFactorForSizeToFit
-            self.pdfView.maxScaleFactor = 4.0
             self.pdfView.backgroundColor = configuration.backgroundColor
             self.pdfView.document = document
             self.pdfView.displayMode = .singlePageContinuous
@@ -94,7 +92,9 @@ class EmbeddedPdfView : UIView {
    private func initPdfDefaultScaleFactor() {
         let initScaleFactor = getPdfScaleFactor()
         initPdfViewScaleFactor = initScaleFactor
-        self.pdfView.scaleFactor = initScaleFactor * configuration.defaultZoomFactor
+        self.pdfView.scaleFactor = configuration.defaultZoomFactor * initScaleFactor
+        self.pdfView.minScaleFactor = configuration.minZoom * initScaleFactor
+        self.pdfView.maxScaleFactor = configuration.maxZoom * initScaleFactor
     }
     
     /**
