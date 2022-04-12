@@ -23,6 +23,8 @@ class AlhPdfViewConfiguration {
     var defaultPage: Int
     var defaultZoomFactor: CGFloat
     var backgroundColor: UIColor
+    var minZoom: CGFloat
+    var maxZoom: CGFloat
     
     init(arguments: Dictionary<String, Any>) {
         self.filePath = arguments["filePath"] as? String
@@ -44,6 +46,8 @@ class AlhPdfViewConfiguration {
         self.defaultPage = arguments["defaultPage"] as! Int
         self.defaultZoomFactor = arguments["defaultZoomFactor"] as! CGFloat
         self.backgroundColor = (arguments["backgroundColor"] as! UInt).toUIColor()
+        self.minZoom = arguments["minZoom"] as! CGFloat
+        self.maxZoom = arguments["maxZoom"] as! CGFloat
     }
 }
 

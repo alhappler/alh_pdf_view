@@ -27,6 +27,8 @@ void main() {
       const givenBackgroundColor = Colors.blue;
       const givenPassword = 'password';
       const givenEnableDoubleTap = true;
+      const givenMinZoom = 0.1;
+      const givenMaxZoom = 5.0;
       final givenAlhPdfViewCreationParams = AlhPdfViewCreationParams(
         filePath: givenFilePath,
         bytes: givenBytes,
@@ -43,6 +45,8 @@ void main() {
         backgroundColor: givenBackgroundColor,
         password: givenPassword,
         enableDoubleTap: givenEnableDoubleTap,
+        minZoom: givenMinZoom,
+        maxZoom: givenMaxZoom,
       );
 
       // when
@@ -65,6 +69,8 @@ void main() {
         'backgroundColor': givenBackgroundColor.value,
         'password': givenPassword,
         'enableDoubleTap': givenEnableDoubleTap,
+        'minZoom': givenMinZoom,
+        'maxZoom': givenMaxZoom,
       };
       expect(actual, equals(expectedMap));
     });

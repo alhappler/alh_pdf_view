@@ -21,6 +21,8 @@ class AlhPdfViewCreationParams {
   final Color backgroundColor;
   final String password;
   final bool enableDoubleTap; // only: iOS
+  final double minZoom;
+  final double maxZoom;
 
   const AlhPdfViewCreationParams({
     required this.filePath,
@@ -38,6 +40,8 @@ class AlhPdfViewCreationParams {
     required this.backgroundColor,
     required this.password,
     required this.enableDoubleTap,
+    required this.minZoom,
+    required this.maxZoom,
   });
 
   Map<String, dynamic> toMap() => {
@@ -56,5 +60,7 @@ class AlhPdfViewCreationParams {
         'backgroundColor': this.backgroundColor.value,
         'password': this.password,
         'enableDoubleTap': this.enableDoubleTap,
+        'minZoom': this.minZoom,
+        'maxZoom': this.maxZoom,
       };
 }

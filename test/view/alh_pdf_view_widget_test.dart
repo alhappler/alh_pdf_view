@@ -51,6 +51,50 @@ void main() {
       // then
       expect(pumpWidget, throwsAssertionError);
     });
+
+    testWidgets(
+        "GIVEN bytes and minZoom < 0 "
+        "WHEN pumping [AlhPdfView] "
+        "THEN should throw [AssertionError]", (WidgetTester tester) async {
+      // given
+
+      // when
+      Future<void> pumpWidget() => tester.pumpWidget(
+            MaterialApp(
+              home: Scaffold(
+                body: AlhPdfView(
+                  bytes: Uint8List(10),
+                  minZoom: -1.0,
+                ),
+              ),
+            ),
+          );
+
+      // then
+      expect(pumpWidget, throwsAssertionError);
+    });
+
+    testWidgets(
+        "GIVEN bytes and maxZoom < 0 "
+        "WHEN pumping [AlhPdfView] "
+        "THEN should throw [AssertionError]", (WidgetTester tester) async {
+      // given
+
+      // when
+      Future<void> pumpWidget() => tester.pumpWidget(
+            MaterialApp(
+              home: Scaffold(
+                body: AlhPdfView(
+                  bytes: Uint8List(10),
+                  maxZoom: -1.0,
+                ),
+              ),
+            ),
+          );
+
+      // then
+      expect(pumpWidget, throwsAssertionError);
+    });
   });
 
   testWidgets(
@@ -92,7 +136,9 @@ void main() {
             widget.defaultPage == 0 &&
             widget.backgroundColor == Colors.transparent &&
             widget.defaultZoomFactor == 1.0 &&
-            widget.enableDoubleTap),
+            widget.enableDoubleTap &&
+            widget.minZoom == 0.5 &&
+            widget.maxZoom == 4.0),
         findsOneWidget);
     expect(
         find.byWidgetPredicate((widget) =>
@@ -112,7 +158,9 @@ void main() {
             widget.creationParams['backgroundColor'] ==
                 Colors.transparent.value &&
             widget.creationParams['password'] == '' &&
-            widget.creationParams['enableDoubleTap']),
+            widget.creationParams['enableDoubleTap'] &&
+            widget.creationParams['minZoom'] == 0.5 &&
+            widget.creationParams['maxZoom'] == 4.0),
         findsOneWidget);
 
     debugDefaultTargetPlatformOverride = null;
@@ -135,6 +183,8 @@ void main() {
     const givenFitPolicy = FitPolicy.height;
     const givenDefaultPage = 99;
     const givenBackgroundColor = Colors.blue;
+    const givenMinZoom = 0.04;
+    const givenMaxZoom = 100.0;
 
     final viewsController = FakeAndroidPlatformViewsController();
     viewsController.registerViewType('alh_pdf_view');
@@ -159,6 +209,8 @@ void main() {
             defaultPage: givenDefaultPage,
             backgroundColor: givenBackgroundColor,
             autoSpacing: false,
+            minZoom: givenMinZoom,
+            maxZoom: givenMaxZoom,
           ),
         ),
       ),
@@ -195,7 +247,9 @@ void main() {
             widget.creationParams['backgroundColor'] ==
                 givenBackgroundColor.value &&
             widget.creationParams['password'] == givenPassword &&
-            !widget.creationParams['enableDoubleTap']),
+            !widget.creationParams['enableDoubleTap'] &&
+            widget.creationParams['minZoom'] == givenMinZoom &&
+            widget.creationParams['maxZoom'] == givenMaxZoom),
         findsOneWidget);
     expect(methodCall?.method, equals('setOrientation'));
     expect(methodCall?.arguments['orientation'],

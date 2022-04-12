@@ -17,7 +17,9 @@ class AlhPdfViewConfiguration(
     val defaultZoomFactor: Double,
     val fitPolicy: FitPolicy,
     val backgroundColor: Int,
-    val enableDoubleTap: Boolean
+    val enableDoubleTap: Boolean,
+    val minZoom: Float,
+    val maxZoom: Float
 ) {
     companion object {
         fun fromArguments(map: Map<*, *>): AlhPdfViewConfiguration {
@@ -37,6 +39,8 @@ class AlhPdfViewConfiguration(
             val backgroundColor: Int =
                 if (map["backgroundColor"] is Int) (map["backgroundColor"] as Int) else (map["backgroundColor"] as Long).toInt()
             val enableDoubleTap = map["enableDoubleTap"] as Boolean
+            val minZoom = map["minZoom"] as Double
+            val maxZoom = map["maxZoom"] as Double
 
             return AlhPdfViewConfiguration(
                 filePath,
@@ -52,8 +56,10 @@ class AlhPdfViewConfiguration(
                 defaultPage,
                 defaultZoomFactor,
                 fitPolicy,
-                backgroundColor.toInt(),
-                enableDoubleTap
+                backgroundColor,
+                enableDoubleTap,
+                minZoom.toFloat(),
+                maxZoom.toFloat()
             )
         }
 

@@ -25,7 +25,6 @@ internal class AlhPdfView(
     private var alhPdfViewChannel: MethodChannel = MethodChannel(messenger, "alh_pdf_view_$id")
     private var alhPdfChannel: MethodChannel = MethodChannel(messenger, "alh_pdf_$id")
     private lateinit var lastOrientation: Orientation
-    private lateinit var pdfViewConfigurator: PDFView.Configurator
     private lateinit var alhPdfViewConfiguration: AlhPdfViewConfiguration
 
     init {
@@ -68,13 +67,15 @@ internal class AlhPdfView(
     }
 
     private fun loadPdfView(defaultPage: Int) {
-        pdfViewConfigurator = if (alhPdfViewConfiguration.filePath != null) {
+        val pdfViewConfigurator = if (alhPdfViewConfiguration.filePath != null) {
             pdfView.fromFile(File(alhPdfViewConfiguration.filePath!!))
         } else {
             pdfView.fromBytes(alhPdfViewConfiguration.bytes)
         }
 
         pdfView.setBackgroundColor(alhPdfViewConfiguration.backgroundColor)
+        pdfView.minZoom = alhPdfViewConfiguration.minZoom
+        pdfView.maxZoom = alhPdfViewConfiguration.maxZoom
 
         pdfViewConfigurator
             .enableAnnotationRendering(true)
