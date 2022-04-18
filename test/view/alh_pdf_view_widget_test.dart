@@ -98,15 +98,20 @@ void main() {
   });
 
   testWidgets(
-      "GIVEN platform == TargetPlatform.iOS, filePath and no other parameters "
+      "GIVEN platform == TargetPlatform.android, filePath and no other parameters "
       "WHEN pumping [AlhPdfView] "
       "THEN should have expected default parameters and "
-      "should show [UiKitView] with expected creationParams",
+      "should show [UiKitView] with expected creationParams and "
+      "should call setOrientation of [AlhPdfController]",
       (WidgetTester tester) async {
     // given
-    debugDefaultTargetPlatformOverride = TargetPlatform.iOS;
+    debugDefaultTargetPlatformOverride = TargetPlatform.android;
+    changeOrientation(tester, landscape: false);
 
     const givenFilePath = 'path';
+
+    final viewsController = FakeAndroidPlatformViewsController();
+    viewsController.registerViewType('alh_pdf_view');
 
     // when
     await tester.pumpWidget(
@@ -118,6 +123,16 @@ void main() {
         ),
       ),
     );
+
+    final viewId = viewsController.views.first.id;
+    final channel = MethodChannel('alh_pdf_$viewId');
+    MethodCall? methodCall;
+    channel.setMockMethodCallHandler((call) async {
+      if (call.method == 'setOrientation') {
+        methodCall = call;
+      }
+    });
+    await tester.pumpAndSettle(const Duration(milliseconds: 300));
 
     // then
     expect(
@@ -142,119 +157,13 @@ void main() {
         findsOneWidget);
     expect(
         find.byWidgetPredicate((widget) =>
-            widget is UiKitView &&
-            widget.creationParams['filePath'] == givenFilePath &&
-            widget.creationParams['bytes'] == null &&
-            widget.creationParams['fitPolicy'] == FitPolicy.both.toString() &&
-            widget.creationParams['fitEachPage'] &&
-            widget.creationParams['enableSwipe'] &&
-            !widget.creationParams['swipeHorizontal'] &&
-            !widget.creationParams['nightMode'] &&
-            widget.creationParams['autoSpacing'] &&
-            widget.creationParams['pageFling'] &&
-            widget.creationParams['pageSnap'] &&
-            widget.creationParams['defaultPage'] == 0 &&
-            widget.creationParams['defaultZoomFactor'] == 1.0 &&
-            widget.creationParams['backgroundColor'] ==
-                Colors.transparent.value &&
-            widget.creationParams['password'] == '' &&
-            widget.creationParams['enableDoubleTap'] &&
-            widget.creationParams['minZoom'] == 0.5 &&
-            widget.creationParams['maxZoom'] == 4.0),
-        findsOneWidget);
-
-    debugDefaultTargetPlatformOverride = null;
-  });
-
-  testWidgets(
-      "GIVEN platform == TargetPlatform.android, bytes and all parameters "
-      "WHEN pumping [AlhPdfView] "
-      "THEN should show [AndroidView] with expected creationParams and "
-      "should call setOrientation of [AlhPdfController]",
-      (WidgetTester tester) async {
-    // given
-    debugDefaultTargetPlatformOverride = TargetPlatform.android;
-    changeOrientation(tester, landscape: false);
-
-    final givenBytes = Uint8List(9);
-    const givenFilePath = 'path';
-    const givenDefaultZoomFactor = 200.0;
-    const givenPassword = 'password secret';
-    const givenFitPolicy = FitPolicy.height;
-    const givenDefaultPage = 99;
-    const givenBackgroundColor = Colors.blue;
-    const givenMinZoom = 0.04;
-    const givenMaxZoom = 100.0;
-
-    final viewsController = FakeAndroidPlatformViewsController();
-    viewsController.registerViewType('alh_pdf_view');
-
-    // when
-    await tester.pumpWidget(
-      MaterialApp(
-        home: Scaffold(
-          body: AlhPdfView(
-            filePath: givenFilePath,
-            bytes: givenBytes,
-            defaultZoomFactor: givenDefaultZoomFactor,
-            enableDoubleTap: false,
-            swipeHorizontal: true,
-            password: givenPassword,
-            nightMode: true,
-            pageSnap: false,
-            pageFling: false,
-            fitPolicy: givenFitPolicy,
-            enableSwipe: false,
-            fitEachPage: false,
-            defaultPage: givenDefaultPage,
-            backgroundColor: givenBackgroundColor,
-            autoSpacing: false,
-            minZoom: givenMinZoom,
-            maxZoom: givenMaxZoom,
-          ),
-        ),
-      ),
-    );
-
-    final viewId = viewsController.views.first.id;
-    final channel = MethodChannel('alh_pdf_$viewId');
-    MethodCall? methodCall;
-    channel.setMockMethodCallHandler((call) async {
-      if (call.method == 'setOrientation') {
-        methodCall = call;
-      }
-    });
-
-    await tester.pumpAndSettle(const Duration(milliseconds: 300));
-
-    // then
-    expect(
-        find.byWidgetPredicate((widget) =>
-            widget is AndroidView &&
-            widget.creationParams['filePath'] == givenFilePath &&
-            widget.creationParams['bytes'] == givenBytes &&
-            widget.creationParams['fitPolicy'] == givenFitPolicy.toString() &&
-            !widget.creationParams['fitEachPage'] &&
-            !widget.creationParams['enableSwipe'] &&
-            widget.creationParams['swipeHorizontal'] &&
-            widget.creationParams['nightMode'] &&
-            !widget.creationParams['autoSpacing'] &&
-            !widget.creationParams['pageFling'] &&
-            !widget.creationParams['pageSnap'] &&
-            widget.creationParams['defaultPage'] == givenDefaultPage &&
-            widget.creationParams['defaultZoomFactor'] ==
-                givenDefaultZoomFactor &&
-            widget.creationParams['backgroundColor'] ==
-                givenBackgroundColor.value &&
-            widget.creationParams['password'] == givenPassword &&
-            !widget.creationParams['enableDoubleTap'] &&
-            widget.creationParams['minZoom'] == givenMinZoom &&
-            widget.creationParams['maxZoom'] == givenMaxZoom),
+            widget is PlatformViewLink && widget.viewType == 'alh_pdf_view'),
         findsOneWidget);
     expect(methodCall?.method, equals('setOrientation'));
     expect(methodCall?.arguments['orientation'],
         equals(Orientation.portrait.toString()));
 
+    clearTestValues(tester);
     debugDefaultTargetPlatformOverride = null;
   });
 
@@ -296,18 +205,91 @@ void main() {
 
     changeOrientation(tester, landscape: true);
     await tester.pumpAndSettle(const Duration(milliseconds: 300));
+    await tester.pumpAndSettle(const Duration(milliseconds: 300));
+    await tester.pumpAndSettle(const Duration(milliseconds: 300));
 
     // then
-    expect(
-        find.byWidgetPredicate((widget) =>
-            widget is AndroidView &&
-            widget.creationParams['filePath'] == givenFilePath),
-        findsOneWidget);
     expect(methodCall?.method, equals('setOrientation'));
     expect(methodCall?.arguments['orientation'],
         equals(Orientation.landscape.toString()));
 
     clearTestValues(tester);
+    debugDefaultTargetPlatformOverride = null;
+  });
+
+  testWidgets(
+      "GIVEN platform == TargetPlatform.iOS, bytes and all parameters "
+      "WHEN pumping [AlhPdfView] "
+      "THEN should show [UiKitView] with expected creationParams",
+      (WidgetTester tester) async {
+    // given
+    debugDefaultTargetPlatformOverride = TargetPlatform.iOS;
+
+    final givenBytes = Uint8List(9);
+    const givenFilePath = 'path';
+    const givenDefaultZoomFactor = 200.0;
+    const givenPassword = 'password secret';
+    const givenFitPolicy = FitPolicy.height;
+    const givenDefaultPage = 99;
+    const givenBackgroundColor = Colors.blue;
+    const givenMinZoom = 0.04;
+    const givenMaxZoom = 100.0;
+
+    final viewsController = FakeIosPlatformViewsController();
+    viewsController.registerViewType('alh_pdf_view');
+
+    // when
+    await tester.pumpWidget(
+      MaterialApp(
+        home: Scaffold(
+          body: AlhPdfView(
+            filePath: givenFilePath,
+            bytes: givenBytes,
+            defaultZoomFactor: givenDefaultZoomFactor,
+            enableDoubleTap: false,
+            swipeHorizontal: true,
+            password: givenPassword,
+            nightMode: true,
+            pageSnap: false,
+            pageFling: false,
+            fitPolicy: givenFitPolicy,
+            enableSwipe: false,
+            fitEachPage: false,
+            defaultPage: givenDefaultPage,
+            backgroundColor: givenBackgroundColor,
+            autoSpacing: false,
+            minZoom: givenMinZoom,
+            maxZoom: givenMaxZoom,
+          ),
+        ),
+      ),
+    );
+
+    // then
+    expect(
+        find.byWidgetPredicate((widget) =>
+            widget is UiKitView &&
+            widget.creationParams['filePath'] == givenFilePath &&
+            widget.creationParams['bytes'] == givenBytes &&
+            widget.creationParams['fitPolicy'] == givenFitPolicy.toString() &&
+            !widget.creationParams['fitEachPage'] &&
+            !widget.creationParams['enableSwipe'] &&
+            widget.creationParams['swipeHorizontal'] &&
+            widget.creationParams['nightMode'] &&
+            !widget.creationParams['autoSpacing'] &&
+            !widget.creationParams['pageFling'] &&
+            !widget.creationParams['pageSnap'] &&
+            widget.creationParams['defaultPage'] == givenDefaultPage &&
+            widget.creationParams['defaultZoomFactor'] ==
+                givenDefaultZoomFactor &&
+            widget.creationParams['backgroundColor'] ==
+                givenBackgroundColor.value &&
+            widget.creationParams['password'] == givenPassword &&
+            !widget.creationParams['enableDoubleTap'] &&
+            widget.creationParams['minZoom'] == givenMinZoom &&
+            widget.creationParams['maxZoom'] == givenMaxZoom),
+        findsOneWidget);
+
     debugDefaultTargetPlatformOverride = null;
   });
 
