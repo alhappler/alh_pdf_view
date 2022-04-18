@@ -1,3 +1,7 @@
+## 0.1.2
+🐛 **Bugfixes**
+* Pdf View disappearing when opening Keyboard on Android
+
 ## 0.1.1
 ⚽️ New Feature:
 * added parameter `minZoom` and `maxZoom`
