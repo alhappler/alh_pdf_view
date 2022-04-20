@@ -1,3 +1,8 @@
+## 0.1.3
+🏆 **Improvement**
+* Removed delay on android when orientation changes and PDF is rebuilding
+* Minor coding changes
+
 ## 0.1.2
 🐛 **Bugfixes**
 * Pdf View disappearing when opening Keyboard on Android
