@@ -1,3 +1,6 @@
+## 0.1.4
+* Static analyzes to 130 points
+
 ## 0.1.3
 🏆 **Improvement**
 * Removed delay on android when orientation changes and PDF is rebuilding

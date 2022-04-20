@@ -66,7 +66,6 @@ class AlhPdfViewController {
     }
   }
 
-
   /// Returns the number of pages  for the PDF.
   Future<int> getPageCount() async {
     final int pageCount = await _channel.invokeMethod('pageCount');
