@@ -66,13 +66,6 @@ class AlhPdfViewController {
     }
   }
 
-  /// Returns the size of the given [page] index.
-  ///
-  /// Only working for iOS.
-  Future<Size> getPageSize({required int page}) async {
-    final sizeMap = await _channel.invokeMethod('pageSize', {'page': page});
-    return Size(sizeMap["width"], sizeMap["height"]);
-  }
 
   /// Returns the number of pages  for the PDF.
   Future<int> getPageCount() async {
@@ -95,19 +88,6 @@ class AlhPdfViewController {
     });
   }
 
-  /// Jumping to [page] with an animation.
-  ///
-  /// Only working for Android. For iOS, the method [setPage] will be used.
-  Future<void> setPageWithAnimation({required int page}) async {
-    if (defaultTargetPlatform == TargetPlatform.android) {
-      await _channel.invokeMethod('setPageWithAnimation', <String, dynamic>{
-        'page': page,
-      });
-    } else {
-      await setPage(page: page);
-    }
-  }
-
   /// Setting the scale factor to the default zoom factor.
   Future<void> resetZoom() async {
     await _channel.invokeMethod('resetZoom');
@@ -124,5 +104,27 @@ class AlhPdfViewController {
   Future<double> getZoom() async {
     final double zoom = await _channel.invokeMethod('currentZoom');
     return zoom;
+  }
+
+  /// Jumping to [page] with an animation.
+  ///
+  /// Only working for Android.
+  /// For iOS, the method [setPage] will be used.
+  Future<void> setPageWithAnimation({required int page}) async {
+    if (defaultTargetPlatform == TargetPlatform.android) {
+      await _channel.invokeMethod('setPageWithAnimation', <String, dynamic>{
+        'page': page,
+      });
+    } else {
+      await setPage(page: page);
+    }
+  }
+
+  /// Returns the size of the given [page] index.
+  ///
+  /// Only working for iOS.
+  Future<Size> getPageSize({required int page}) async {
+    final sizeMap = await _channel.invokeMethod('pageSize', {'page': page});
+    return Size(sizeMap["width"], sizeMap["height"]);
   }
 }

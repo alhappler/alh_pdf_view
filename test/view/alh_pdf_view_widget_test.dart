@@ -97,483 +97,486 @@ void main() {
     });
   });
 
-  testWidgets(
-      "GIVEN platform == TargetPlatform.android, filePath and no other parameters "
-      "WHEN pumping [AlhPdfView] "
-      "THEN should have expected default parameters and "
-      "should show [UiKitView] with expected creationParams and "
-      "should call setOrientation of [AlhPdfController]",
-      (WidgetTester tester) async {
-    // given
-    debugDefaultTargetPlatformOverride = TargetPlatform.android;
-    changeOrientation(tester, landscape: false);
-
-    const givenFilePath = 'path';
-
-    final viewsController = FakeAndroidPlatformViewsController();
-    viewsController.registerViewType('alh_pdf_view');
-
-    // when
-    await tester.pumpWidget(
-      const MaterialApp(
-        home: Scaffold(
-          body: AlhPdfView(
-            filePath: givenFilePath,
-          ),
-        ),
-      ),
-    );
-
-    final viewId = viewsController.views.first.id;
-    final channel = MethodChannel('alh_pdf_$viewId');
-    MethodCall? methodCall;
-    channel.setMockMethodCallHandler((call) async {
-      if (call.method == 'setOrientation') {
-        methodCall = call;
-      }
-    });
-    await tester.pumpAndSettle(const Duration(milliseconds: 300));
-
-    // then
-    expect(
-        find.byWidgetPredicate((widget) =>
-            widget is AlhPdfView &&
-            widget.filePath == givenFilePath &&
-            widget.bytes == null &&
-            widget.fitPolicy == FitPolicy.both &&
-            widget.fitEachPage &&
-            widget.enableSwipe &&
-            widget.password.isEmpty &&
-            !widget.nightMode &&
-            widget.autoSpacing &&
-            widget.pageFling &&
-            widget.pageSnap &&
-            widget.defaultPage == 0 &&
-            widget.backgroundColor == Colors.transparent &&
-            widget.defaultZoomFactor == 1.0 &&
-            widget.enableDoubleTap &&
-            widget.minZoom == 0.5 &&
-            widget.maxZoom == 4.0),
-        findsOneWidget);
-    expect(
-        find.byWidgetPredicate((widget) =>
-            widget is PlatformViewLink && widget.viewType == 'alh_pdf_view'),
-        findsOneWidget);
-    expect(methodCall?.method, equals('setOrientation'));
-    expect(methodCall?.arguments['orientation'],
-        equals(Orientation.portrait.toString()));
-
-    clearTestValues(tester);
-    debugDefaultTargetPlatformOverride = null;
-  });
-
-  testWidgets(
-      "GIVEN platform == TargetPlatform.android, [AlhPdfView] and orientation = portrait "
-      "WHEN changing orientation "
-      "THEN should call setRotation of [AlhPdfController]",
-      (WidgetTester tester) async {
-    // given
-    debugDefaultTargetPlatformOverride = TargetPlatform.android;
-    changeOrientation(tester, landscape: false);
-
-    const givenFilePath = 'path';
-
-    final viewsController = FakeAndroidPlatformViewsController();
-    viewsController.registerViewType('alh_pdf_view');
-
-    // when
-    await tester.pumpWidget(
-      const MaterialApp(
-        home: Scaffold(
-          body: AlhPdfView(
-            filePath: givenFilePath,
-          ),
-        ),
-      ),
-    );
-
-    final viewId = viewsController.views.first.id;
-    final channel = MethodChannel('alh_pdf_$viewId');
-    MethodCall? methodCall;
-    channel.setMockMethodCallHandler((call) async {
-      if (call.method == 'setOrientation') {
-        methodCall = call;
-      }
-    });
-
-    await tester.pumpAndSettle(const Duration(milliseconds: 300));
-
-    changeOrientation(tester, landscape: true);
-    await tester.pumpAndSettle(const Duration(milliseconds: 300));
-    await tester.pumpAndSettle(const Duration(milliseconds: 300));
-    await tester.pumpAndSettle(const Duration(milliseconds: 300));
-
-    // then
-    expect(methodCall?.method, equals('setOrientation'));
-    expect(methodCall?.arguments['orientation'],
-        equals(Orientation.landscape.toString()));
-
-    clearTestValues(tester);
-    debugDefaultTargetPlatformOverride = null;
-  });
-
-  testWidgets(
-      "GIVEN platform == TargetPlatform.iOS, bytes and all parameters "
-      "WHEN pumping [AlhPdfView] "
-      "THEN should show [UiKitView] with expected creationParams",
-      (WidgetTester tester) async {
-    // given
-    debugDefaultTargetPlatformOverride = TargetPlatform.iOS;
-
-    final givenBytes = Uint8List(9);
-    const givenFilePath = 'path';
-    const givenDefaultZoomFactor = 200.0;
-    const givenPassword = 'password secret';
-    const givenFitPolicy = FitPolicy.height;
-    const givenDefaultPage = 99;
-    const givenBackgroundColor = Colors.blue;
-    const givenMinZoom = 0.04;
-    const givenMaxZoom = 100.0;
-
-    final viewsController = FakeIosPlatformViewsController();
-    viewsController.registerViewType('alh_pdf_view');
-
-    // when
-    await tester.pumpWidget(
-      MaterialApp(
-        home: Scaffold(
-          body: AlhPdfView(
-            filePath: givenFilePath,
-            bytes: givenBytes,
-            defaultZoomFactor: givenDefaultZoomFactor,
-            enableDoubleTap: false,
-            swipeHorizontal: true,
-            password: givenPassword,
-            nightMode: true,
-            pageSnap: false,
-            pageFling: false,
-            fitPolicy: givenFitPolicy,
-            enableSwipe: false,
-            fitEachPage: false,
-            defaultPage: givenDefaultPage,
-            backgroundColor: givenBackgroundColor,
-            autoSpacing: false,
-            minZoom: givenMinZoom,
-            maxZoom: givenMaxZoom,
-          ),
-        ),
-      ),
-    );
-
-    // then
-    expect(
-        find.byWidgetPredicate((widget) =>
-            widget is UiKitView &&
-            widget.creationParams['filePath'] == givenFilePath &&
-            widget.creationParams['bytes'] == givenBytes &&
-            widget.creationParams['fitPolicy'] == givenFitPolicy.toString() &&
-            !widget.creationParams['fitEachPage'] &&
-            !widget.creationParams['enableSwipe'] &&
-            widget.creationParams['swipeHorizontal'] &&
-            widget.creationParams['nightMode'] &&
-            !widget.creationParams['autoSpacing'] &&
-            !widget.creationParams['pageFling'] &&
-            !widget.creationParams['pageSnap'] &&
-            widget.creationParams['defaultPage'] == givenDefaultPage &&
-            widget.creationParams['defaultZoomFactor'] ==
-                givenDefaultZoomFactor &&
-            widget.creationParams['backgroundColor'] ==
-                givenBackgroundColor.value &&
-            widget.creationParams['password'] == givenPassword &&
-            !widget.creationParams['enableDoubleTap'] &&
-            widget.creationParams['minZoom'] == givenMinZoom &&
-            widget.creationParams['maxZoom'] == givenMaxZoom),
-        findsOneWidget);
-
-    debugDefaultTargetPlatformOverride = null;
-  });
-
-  testWidgets(
-      "GIVEN platform = .iOS, filePath, updated fitPolicy and [AlhPdfView] "
-      "WHEN updating fitPolicy "
-      "THEN should updateCreationParams of [AlhPdfController]",
-      (WidgetTester tester) async {
-    // given
-    debugDefaultTargetPlatformOverride = TargetPlatform.iOS;
-
-    const givenFilePath = 'path';
-    const givenFitPolicy = FitPolicy.both;
-    const givenUpdatedFitPolicy = FitPolicy.width;
-
-    final viewsController = FakeIosPlatformViewsController();
-    viewsController.registerViewType('alh_pdf_view');
-
-    await tester.pumpWidget(
-      const MaterialApp(
-        home: _UpdateAlhPdfViewTest(
-          filePath: givenFilePath,
-          fitPolicy: givenFitPolicy,
-          updatedFitPolicy: givenUpdatedFitPolicy,
-        ),
-      ),
-    );
-    await tester.pumpAndSettle(const Duration(milliseconds: 300));
-
-    final viewId = viewsController.views.first.id;
-    final channel = MethodChannel('alh_pdf_$viewId');
-    MethodCall? methodCall;
-    channel.setMockMethodCallHandler((call) async {
-      if (call.method == 'updateCreationParams') {
-        methodCall = call;
-      }
-    });
-
-    // when
-    await tester.tap(find.byType(TextButton));
-    await tester.pumpAndSettle();
-
-    // then
-    expect(methodCall?.arguments['fitPolicy'],
-        equals(givenUpdatedFitPolicy.toString()));
-
-    debugDefaultTargetPlatformOverride = null;
-  });
-
-  group('Platform = .iOS and invoking method calls', () {
-    Future<void> pumpWidget(
-      WidgetTester tester, {
-      PDFViewCreatedCallback? onViewCreated,
-      ErrorCallback? onError,
-      RenderCallback? onRender,
-      PageChangedCallback? onPageChanged,
-      PageErrorCallback? onPageError,
-      ZoomChangedCallback? onZoomChanged,
-    }) =>
-        tester.pumpWidget(
-          MaterialApp(
-            home: Scaffold(
-              body: AlhPdfView(
-                filePath: 'path',
-                onViewCreated: onViewCreated,
-                onError: onError,
-                onRender: onRender,
-                onPageChanged: onPageChanged,
-                onPageError: onPageError,
-                onZoomChanged: onZoomChanged,
-              ),
-            ),
-          ),
-        );
-
+  group('platform == TargetPlatform.android', () {
     testWidgets(
-        "GIVEN platform = .iOS, path and [AlhPdfView] "
-        "WHEN pumping finished "
-        "THEN should call #onViewCreated", (WidgetTester tester) async {
+        "GIVEN platform == TargetPlatform.android, filePath and no other parameters "
+        "WHEN pumping [AlhPdfView] "
+        "THEN should have expected default parameters and "
+        "should show [UiKitView] with expected creationParams and "
+        "should call setOrientation of [AlhPdfController]",
+        (WidgetTester tester) async {
       // given
-      debugDefaultTargetPlatformOverride = TargetPlatform.iOS;
+      debugDefaultTargetPlatformOverride = TargetPlatform.android;
+      changeOrientation(tester, landscape: false);
 
-      AlhPdfViewController? actualController;
+      const givenFilePath = 'path';
 
-      final viewsController = FakeIosPlatformViewsController();
+      final viewsController = FakeAndroidPlatformViewsController();
       viewsController.registerViewType('alh_pdf_view');
 
+      const channel = MethodChannel('alh_pdf_0');
+      MethodCall? methodCall;
+      channel.setMockMethodCallHandler((call) async {
+        if (call.method == 'setOrientation') {
+          methodCall = call;
+        }
+      });
+
       // when
-      await pumpWidget(
-        tester,
-        onViewCreated: (controller) {
-          actualController = controller;
-        },
+      await tester.pumpWidget(
+        const MaterialApp(
+          home: Scaffold(
+            body: AlhPdfView(
+              filePath: givenFilePath,
+            ),
+          ),
+        ),
       );
       await tester.pumpAndSettle();
 
       // then
-      expect(actualController, isNotNull);
+      expect(
+          find.byWidgetPredicate((widget) =>
+              widget is AlhPdfView &&
+              widget.filePath == givenFilePath &&
+              widget.bytes == null &&
+              widget.fitPolicy == FitPolicy.both &&
+              widget.fitEachPage &&
+              widget.enableSwipe &&
+              widget.password.isEmpty &&
+              !widget.nightMode &&
+              widget.autoSpacing &&
+              widget.pageFling &&
+              widget.pageSnap &&
+              widget.defaultPage == 0 &&
+              widget.backgroundColor == Colors.transparent &&
+              widget.defaultZoomFactor == 1.0 &&
+              widget.enableDoubleTap &&
+              widget.minZoom == 0.5 &&
+              widget.maxZoom == 4.0),
+          findsOneWidget);
+      expect(
+          find.byWidgetPredicate((widget) =>
+              widget is PlatformViewLink && widget.viewType == 'alh_pdf_view'),
+          findsOneWidget);
+      expect(methodCall?.method, equals('setOrientation'));
+      expect(methodCall?.arguments['orientation'],
+          equals(Orientation.portrait.toString()));
+
+      clearTestValues(tester);
+      debugDefaultTargetPlatformOverride = null;
+    });
+
+    testWidgets(
+        "GIVEN platform == TargetPlatform.android, [AlhPdfView] and orientation = portrait "
+        "WHEN changing orientation "
+        "THEN should call setRotation of [AlhPdfController]",
+        (WidgetTester tester) async {
+      // given
+      debugDefaultTargetPlatformOverride = TargetPlatform.android;
+      changeOrientation(tester, landscape: false);
+
+      const givenFilePath = 'path';
+
+      final viewsController = FakeAndroidPlatformViewsController();
+      viewsController.registerViewType('alh_pdf_view');
+
+      // when
+      await tester.pumpWidget(
+        const MaterialApp(
+          home: Scaffold(
+            body: AlhPdfView(
+              filePath: givenFilePath,
+            ),
+          ),
+        ),
+      );
+
+      final viewId = viewsController.views.first.id;
+      final channel = MethodChannel('alh_pdf_$viewId');
+      MethodCall? methodCall;
+      channel.setMockMethodCallHandler((call) async {
+        if (call.method == 'setOrientation') {
+          methodCall = call;
+        }
+      });
+
+      await tester.pumpAndSettle();
+
+      changeOrientation(tester, landscape: true);
+      await tester.pumpAndSettle();
+      await tester.pumpAndSettle();
+      await tester.pumpAndSettle();
+
+      // then
+      expect(methodCall?.method, equals('setOrientation'));
+      expect(methodCall?.arguments['orientation'],
+          equals(Orientation.landscape.toString()));
+
+      clearTestValues(tester);
+      debugDefaultTargetPlatformOverride = null;
+    });
+  });
+
+  group('platform == TargetPlatform.iOS', () {
+    testWidgets(
+        "GIVEN bytes and all parameters "
+        "WHEN pumping [AlhPdfView] "
+        "THEN should show [UiKitView] with expected creationParams",
+        (WidgetTester tester) async {
+      // given
+      debugDefaultTargetPlatformOverride = TargetPlatform.iOS;
+
+      final givenBytes = Uint8List(9);
+      const givenFilePath = 'path';
+      const givenDefaultZoomFactor = 200.0;
+      const givenPassword = 'password secret';
+      const givenFitPolicy = FitPolicy.height;
+      const givenDefaultPage = 99;
+      const givenBackgroundColor = Colors.blue;
+      const givenMinZoom = 0.04;
+      const givenMaxZoom = 100.0;
+
+      final viewsController = FakeIosPlatformViewsController();
+      viewsController.registerViewType('alh_pdf_view');
+
+      // when
+      await tester.pumpWidget(
+        MaterialApp(
+          home: Scaffold(
+            body: AlhPdfView(
+              filePath: givenFilePath,
+              bytes: givenBytes,
+              defaultZoomFactor: givenDefaultZoomFactor,
+              enableDoubleTap: false,
+              swipeHorizontal: true,
+              password: givenPassword,
+              nightMode: true,
+              pageSnap: false,
+              pageFling: false,
+              fitPolicy: givenFitPolicy,
+              enableSwipe: false,
+              fitEachPage: false,
+              defaultPage: givenDefaultPage,
+              backgroundColor: givenBackgroundColor,
+              autoSpacing: false,
+              minZoom: givenMinZoom,
+              maxZoom: givenMaxZoom,
+            ),
+          ),
+        ),
+      );
+
+      // then
+      expect(
+          find.byWidgetPredicate((widget) =>
+              widget is UiKitView &&
+              widget.creationParams['filePath'] == givenFilePath &&
+              widget.creationParams['bytes'] == givenBytes &&
+              widget.creationParams['fitPolicy'] == givenFitPolicy.toString() &&
+              !widget.creationParams['fitEachPage'] &&
+              !widget.creationParams['enableSwipe'] &&
+              widget.creationParams['swipeHorizontal'] &&
+              widget.creationParams['nightMode'] &&
+              !widget.creationParams['autoSpacing'] &&
+              !widget.creationParams['pageFling'] &&
+              !widget.creationParams['pageSnap'] &&
+              widget.creationParams['defaultPage'] == givenDefaultPage &&
+              widget.creationParams['defaultZoomFactor'] ==
+                  givenDefaultZoomFactor &&
+              widget.creationParams['backgroundColor'] ==
+                  givenBackgroundColor.value &&
+              widget.creationParams['password'] == givenPassword &&
+              !widget.creationParams['enableDoubleTap'] &&
+              widget.creationParams['minZoom'] == givenMinZoom &&
+              widget.creationParams['maxZoom'] == givenMaxZoom),
+          findsOneWidget);
 
       debugDefaultTargetPlatformOverride = null;
     });
 
     testWidgets(
-        "GIVEN platform = .iOS, path and [AlhPdfView] "
-        "WHEN invoking onError "
-        "THEN should call #onError with given error",
+        "GIVEN filePath, updated fitPolicy and [AlhPdfView] "
+        "WHEN updating fitPolicy "
+        "THEN should updateCreationParams of [AlhPdfController]",
         (WidgetTester tester) async {
       // given
       debugDefaultTargetPlatformOverride = TargetPlatform.iOS;
 
-      const givenError = 'error 123';
-      dynamic actualError;
+      const givenFilePath = 'path';
+      const givenFitPolicy = FitPolicy.both;
+      const givenUpdatedFitPolicy = FitPolicy.width;
 
       final viewsController = FakeIosPlatformViewsController();
       viewsController.registerViewType('alh_pdf_view');
 
-      await pumpWidget(
-        tester,
-        onError: (error) {
-          actualError = error;
-        },
+      await tester.pumpWidget(
+        const MaterialApp(
+          home: _UpdateAlhPdfViewTest(
+            filePath: givenFilePath,
+            fitPolicy: givenFitPolicy,
+            updatedFitPolicy: givenUpdatedFitPolicy,
+          ),
+        ),
       );
+      await tester.pumpAndSettle();
+
       final viewId = viewsController.views.first.id;
+      final channel = MethodChannel('alh_pdf_$viewId');
+      MethodCall? methodCall;
+      channel.setMockMethodCallHandler((call) async {
+        if (call.method == 'updateCreationParams') {
+          methodCall = call;
+        }
+      });
 
       // when
-      await invokeMethodCall(
-        const MethodCall('onError', {'error': givenError}),
-        channelName: 'alh_pdf_view_$viewId',
-      );
+      await tester.tap(find.byType(TextButton));
+      await tester.pumpAndSettle();
 
       // then
-      expect(actualError, equals(givenError));
+      expect(methodCall?.arguments['fitPolicy'],
+          equals(givenUpdatedFitPolicy.toString()));
 
       debugDefaultTargetPlatformOverride = null;
     });
 
-    testWidgets(
-        "GIVEN platform = .iOS, path and [AlhPdfView] "
-        "WHEN invoking onRender "
-        "THEN should call #onRender with given pages",
-        (WidgetTester tester) async {
-      // given
-      debugDefaultTargetPlatformOverride = TargetPlatform.iOS;
+    group('invoking method calls', () {
+      Future<void> pumpWidget(
+        WidgetTester tester, {
+        PDFViewCreatedCallback? onViewCreated,
+        ErrorCallback? onError,
+        RenderCallback? onRender,
+        PageChangedCallback? onPageChanged,
+        PageErrorCallback? onPageError,
+        ZoomChangedCallback? onZoomChanged,
+      }) =>
+          tester.pumpWidget(
+            MaterialApp(
+              home: Scaffold(
+                body: AlhPdfView(
+                  filePath: 'path',
+                  onViewCreated: onViewCreated,
+                  onError: onError,
+                  onRender: onRender,
+                  onPageChanged: onPageChanged,
+                  onPageError: onPageError,
+                  onZoomChanged: onZoomChanged,
+                ),
+              ),
+            ),
+          );
 
-      const givenPages = 9999;
-      int? actualPages;
+      testWidgets(
+          "GIVEN path and [AlhPdfView] "
+          "WHEN pumping finished "
+          "THEN should call #onViewCreated", (WidgetTester tester) async {
+        // given
+        debugDefaultTargetPlatformOverride = TargetPlatform.iOS;
 
-      final viewsController = FakeIosPlatformViewsController();
-      viewsController.registerViewType('alh_pdf_view');
+        AlhPdfViewController? actualController;
 
-      await pumpWidget(
-        tester,
-        onRender: (pages) {
-          actualPages = pages;
-        },
-      );
-      final viewId = viewsController.views.first.id;
+        final viewsController = FakeIosPlatformViewsController();
+        viewsController.registerViewType('alh_pdf_view');
 
-      // when
-      await invokeMethodCall(
-        const MethodCall('onRender', {'pages': givenPages}),
-        channelName: 'alh_pdf_view_$viewId',
-      );
+        // when
+        await pumpWidget(
+          tester,
+          onViewCreated: (controller) {
+            actualController = controller;
+          },
+        );
+        await tester.pumpAndSettle();
 
-      // then
-      expect(actualPages, equals(givenPages));
+        // then
+        expect(actualController, isNotNull);
 
-      debugDefaultTargetPlatformOverride = null;
-    });
+        debugDefaultTargetPlatformOverride = null;
+      });
 
-    testWidgets(
-        "GIVEN platform = .iOS, path and [AlhPdfView] "
-        "WHEN invoking onPageChanged "
-        "THEN should call #onPageChanged with given page and total",
-        (WidgetTester tester) async {
-      // given
-      debugDefaultTargetPlatformOverride = TargetPlatform.iOS;
+      testWidgets(
+          "GIVEN path and [AlhPdfView] "
+          "WHEN invoking onError "
+          "THEN should call #onError with given error",
+          (WidgetTester tester) async {
+        // given
+        debugDefaultTargetPlatformOverride = TargetPlatform.iOS;
 
-      const givenPage = 9;
-      const givenTotal = 10;
-      int? actualPage;
-      int? actualTotal;
+        const givenError = 'error 123';
+        dynamic actualError;
 
-      final viewsController = FakeIosPlatformViewsController();
-      viewsController.registerViewType('alh_pdf_view');
+        final viewsController = FakeIosPlatformViewsController();
+        viewsController.registerViewType('alh_pdf_view');
 
-      await pumpWidget(
-        tester,
-        onPageChanged: (page, total) {
-          actualPage = page;
-          actualTotal = total;
-        },
-      );
-      final viewId = viewsController.views.first.id;
+        await pumpWidget(
+          tester,
+          onError: (error) {
+            actualError = error;
+          },
+        );
+        final viewId = viewsController.views.first.id;
 
-      // when
-      await invokeMethodCall(
-        const MethodCall('onPageChanged', {
-          'page': givenPage,
-          'total': givenTotal,
-        }),
-        channelName: 'alh_pdf_view_$viewId',
-      );
+        // when
+        await invokeMethodCall(
+          const MethodCall('onError', {'error': givenError}),
+          channelName: 'alh_pdf_view_$viewId',
+        );
 
-      // then
-      expect(actualPage, equals(givenPage));
-      expect(actualTotal, equals(givenTotal));
+        // then
+        expect(actualError, equals(givenError));
 
-      debugDefaultTargetPlatformOverride = null;
-    });
+        debugDefaultTargetPlatformOverride = null;
+      });
 
-    testWidgets(
-        "GIVEN platform = .iOS, path and [AlhPdfView] "
-        "WHEN invoking onPageError "
-        "THEN should call #onPageError with given page and error",
-        (WidgetTester tester) async {
-      // given
-      debugDefaultTargetPlatformOverride = TargetPlatform.iOS;
+      testWidgets(
+          "GIVEN path and [AlhPdfView] "
+          "WHEN invoking onRender "
+          "THEN should call #onRender with given pages",
+          (WidgetTester tester) async {
+        // given
+        debugDefaultTargetPlatformOverride = TargetPlatform.iOS;
 
-      const givenPage = 9;
-      const givenError = 'error aaaaaaaaa';
-      int? actualPage;
-      dynamic actualError;
+        const givenPages = 9999;
+        int? actualPages;
 
-      final viewsController = FakeIosPlatformViewsController();
-      viewsController.registerViewType('alh_pdf_view');
+        final viewsController = FakeIosPlatformViewsController();
+        viewsController.registerViewType('alh_pdf_view');
 
-      await pumpWidget(
-        tester,
-        onPageError: (page, error) {
-          actualPage = page;
-          actualError = error;
-        },
-      );
-      final viewId = viewsController.views.first.id;
+        await pumpWidget(
+          tester,
+          onRender: (pages) {
+            actualPages = pages;
+          },
+        );
+        final viewId = viewsController.views.first.id;
 
-      // when
-      await invokeMethodCall(
-        const MethodCall('onPageError', {
-          'page': givenPage,
-          'error': givenError,
-        }),
-        channelName: 'alh_pdf_view_$viewId',
-      );
+        // when
+        await invokeMethodCall(
+          const MethodCall('onRender', {'pages': givenPages}),
+          channelName: 'alh_pdf_view_$viewId',
+        );
 
-      // then
-      expect(actualPage, equals(givenPage));
-      expect(actualError, equals(givenError));
+        // then
+        expect(actualPages, equals(givenPages));
 
-      debugDefaultTargetPlatformOverride = null;
-    });
+        debugDefaultTargetPlatformOverride = null;
+      });
 
-    testWidgets(
-        "GIVEN platform = .iOS, path and [AlhPdfView] "
-        "WHEN invoking onZoomChanged "
-        "THEN should call #onZoomChanged with given zoom",
-        (WidgetTester tester) async {
-      // given
-      debugDefaultTargetPlatformOverride = TargetPlatform.iOS;
+      testWidgets(
+          "GIVEN path and [AlhPdfView] "
+          "WHEN invoking onPageChanged "
+          "THEN should call #onPageChanged with given page and total",
+          (WidgetTester tester) async {
+        // given
+        debugDefaultTargetPlatformOverride = TargetPlatform.iOS;
 
-      const givenZoom = 234.4;
-      double? actualZoom;
+        const givenPage = 9;
+        const givenTotal = 10;
+        int? actualPage;
+        int? actualTotal;
 
-      final viewsController = FakeIosPlatformViewsController();
-      viewsController.registerViewType('alh_pdf_view');
+        final viewsController = FakeIosPlatformViewsController();
+        viewsController.registerViewType('alh_pdf_view');
 
-      await pumpWidget(
-        tester,
-        onZoomChanged: (zoom) {
-          actualZoom = zoom;
-        },
-      );
-      final viewId = viewsController.views.first.id;
+        await pumpWidget(
+          tester,
+          onPageChanged: (page, total) {
+            actualPage = page;
+            actualTotal = total;
+          },
+        );
+        final viewId = viewsController.views.first.id;
 
-      // when
-      await invokeMethodCall(
-        const MethodCall('onZoomChanged', {'zoom': givenZoom}),
-        channelName: 'alh_pdf_view_$viewId',
-      );
+        // when
+        await invokeMethodCall(
+          const MethodCall('onPageChanged', {
+            'page': givenPage,
+            'total': givenTotal,
+          }),
+          channelName: 'alh_pdf_view_$viewId',
+        );
 
-      // then
-      expect(actualZoom, equals(givenZoom));
+        // then
+        expect(actualPage, equals(givenPage));
+        expect(actualTotal, equals(givenTotal));
 
-      debugDefaultTargetPlatformOverride = null;
+        debugDefaultTargetPlatformOverride = null;
+      });
+
+      testWidgets(
+          "GIVEN path and [AlhPdfView] "
+          "WHEN invoking onPageError "
+          "THEN should call #onPageError with given page and error",
+          (WidgetTester tester) async {
+        // given
+        debugDefaultTargetPlatformOverride = TargetPlatform.iOS;
+
+        const givenPage = 9;
+        const givenError = 'error aaaaaaaaa';
+        int? actualPage;
+        dynamic actualError;
+
+        final viewsController = FakeIosPlatformViewsController();
+        viewsController.registerViewType('alh_pdf_view');
+
+        await pumpWidget(
+          tester,
+          onPageError: (page, error) {
+            actualPage = page;
+            actualError = error;
+          },
+        );
+        final viewId = viewsController.views.first.id;
+
+        // when
+        await invokeMethodCall(
+          const MethodCall('onPageError', {
+            'page': givenPage,
+            'error': givenError,
+          }),
+          channelName: 'alh_pdf_view_$viewId',
+        );
+
+        // then
+        expect(actualPage, equals(givenPage));
+        expect(actualError, equals(givenError));
+
+        debugDefaultTargetPlatformOverride = null;
+      });
+
+      testWidgets(
+          "GIVEN path and [AlhPdfView] "
+          "WHEN invoking onZoomChanged "
+          "THEN should call #onZoomChanged with given zoom",
+          (WidgetTester tester) async {
+        // given
+        debugDefaultTargetPlatformOverride = TargetPlatform.iOS;
+
+        const givenZoom = 234.4;
+        double? actualZoom;
+
+        final viewsController = FakeIosPlatformViewsController();
+        viewsController.registerViewType('alh_pdf_view');
+
+        await pumpWidget(
+          tester,
+          onZoomChanged: (zoom) {
+            actualZoom = zoom;
+          },
+        );
+        final viewId = viewsController.views.first.id;
+
+        // when
+        await invokeMethodCall(
+          const MethodCall('onZoomChanged', {'zoom': givenZoom}),
+          channelName: 'alh_pdf_view_$viewId',
+        );
+
+        // then
+        expect(actualZoom, equals(givenZoom));
+
+        debugDefaultTargetPlatformOverride = null;
+      });
     });
   });
 }

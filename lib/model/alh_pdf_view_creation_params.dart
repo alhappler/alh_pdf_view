@@ -9,20 +9,21 @@ class AlhPdfViewCreationParams {
   final Uint8List? bytes;
 
   final FitPolicy fitPolicy;
-  final bool fitEachPage; // only: Android
   final bool enableSwipe;
   final bool swipeHorizontal;
-  final bool nightMode; // only: Android
-  final bool autoSpacing; // only: Android
   final bool pageFling;
-  final bool pageSnap; // only: Android
   final int defaultPage;
   final double defaultZoomFactor;
   final Color backgroundColor;
   final String password;
-  final bool enableDoubleTap; // only: iOS
   final double minZoom;
   final double maxZoom;
+
+  final bool pageSnap; // only: Android
+  final bool fitEachPage; // only: Android
+  final bool nightMode; // only: Android
+  final bool autoSpacing; // only: Android
+  final bool enableDoubleTap; // only: Android
 
   const AlhPdfViewCreationParams({
     required this.filePath,

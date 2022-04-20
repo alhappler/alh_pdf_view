@@ -11,8 +11,9 @@ import PDFKit
 class EmbeddedPdfView : UIView {
     let pdfView: PDFView
     
-    // This factor should equals the scale factor of 1.0
-    private var initPdfViewScaleFactor: CGFloat = 0.0
+    // This factor is a translated value of the scale factor 1.0 that is used on flutter side
+    private var initPdfViewScaleFactor: CGFloat
+    
     private var hasInitializedView = false
     
     private var configuration: AlhPdfViewConfiguration
@@ -23,6 +24,7 @@ class EmbeddedPdfView : UIView {
     init(configuration: AlhPdfViewConfiguration) {
         self.configuration = configuration
         self.pdfView = PDFView.init(frame: .zero)
+        self.initPdfViewScaleFactor = 0.0 // just a default value
         
         super.init(frame: .zero)
         
@@ -98,7 +100,7 @@ class EmbeddedPdfView : UIView {
     }
     
     /**
-     The calculated scale factor is equal to 1.0 and depends on the fitPolicy.
+     The calculated scale factor depends on the fitPolicy.
      */
     private func getPdfScaleFactor() -> CGFloat {
         let parentSize = self.frame.size
@@ -147,10 +149,7 @@ class EmbeddedPdfView : UIView {
     }
     
     /**
-     Translates the scaleFactor of PdfView to a scaleFactor that is more logical for the user.
-     
-     E. g. the scaleFactor 1 means that the whole pdf page should be visible depending on the fitpolicy.
-     Usually the PdfView is using another scaleFactor, e. g. 1 would equal 0.5.
+     Translates the scaleFactor of PdfView to a scale factor that is used on flutter side.
      */
     func getCurrentLogicalScaleFactor() -> CGFloat {
         return pdfView.scaleFactor / self.initPdfViewScaleFactor

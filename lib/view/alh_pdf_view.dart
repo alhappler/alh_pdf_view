@@ -1,7 +1,6 @@
-import 'dart:async';
 import 'dart:typed_data';
 
-import 'package:alh_pdf_view/controller/alh_pdf_controller.dart';
+import 'package:alh_pdf_view/controller/alh_pdf_internal_controller.dart';
 import 'package:alh_pdf_view/controller/alh_pdf_view_controller.dart';
 import 'package:alh_pdf_view/model/alh_pdf_view_creation_params.dart';
 import 'package:alh_pdf_view/model/fit_policy.dart';
@@ -39,12 +38,6 @@ class AlhPdfView extends StatefulWidget {
   /// Default value: [FitPolicy.both].
   final FitPolicy fitPolicy;
 
-  /// Each page of the PDF will fit inside the given space.
-  ///
-  /// Working only for Android.
-  /// Default value: true
-  final bool fitEachPage;
-
   /// The current page will be changed when swiping.
   ///
   /// Default value: true
@@ -55,28 +48,10 @@ class AlhPdfView extends StatefulWidget {
   /// Default value: false
   final bool swipeHorizontal;
 
-  /// Inverting colors of pages to have the look of a dark mode.
-  ///
-  /// Working only for Android.
-  /// Default value: false
-  final bool nightMode;
-
-  /// If true, spacing will be added to fit each page on its own on the screen.
-  ///
-  /// Working only for Android.
-  /// Default value: true
-  final bool autoSpacing;
-
   /// Making a fling change.
   ///
   /// Default value: true
   final bool pageFling;
-
-  /// Snap pages to screen boundaries when changing the current page.
-  ///
-  /// Working only for Android.
-  /// Default value: true
-  final bool pageSnap;
 
   /// Describes which page should be shown at first.
   ///
@@ -98,12 +73,6 @@ class AlhPdfView extends StatefulWidget {
   /// Default value: ''
   final String password;
 
-  /// When double tapping, the zoom of the page changes.
-  ///
-  /// Only working on Android. On iOS, the double tap cannot be disabled.
-  /// Default value: true
-  final bool enableDoubleTap;
-
   /// Min zoom value that the user can reach.
   ///
   /// Default value: 0.5
@@ -113,6 +82,36 @@ class AlhPdfView extends StatefulWidget {
   ///
   /// Default value: 4.0
   final double maxZoom;
+
+  /// Each page of the PDF will fit inside the given space.
+  ///
+  /// Working only for Android.
+  /// Default value: true
+  final bool fitEachPage;
+
+  /// Inverting colors of pages to have the look of a dark mode.
+  ///
+  /// Working only for Android.
+  /// Default value: false
+  final bool nightMode;
+
+  /// If true, spacing will be added to fit each page on its own on the screen.
+  ///
+  /// Working only for Android.
+  /// Default value: true
+  final bool autoSpacing;
+
+  /// Snap pages to screen boundaries when changing the current page.
+  ///
+  /// Working only for Android.
+  /// Default value: true
+  final bool pageSnap;
+
+  /// When double tapping, the zoom of the page changes.
+  ///
+  /// Only working on Android. On iOS, the double tap cannot be disabled.
+  /// Default value: true
+  final bool enableDoubleTap;
 
   /// Which gestures should be consumed by the pdf view.
   ///
@@ -187,22 +186,18 @@ class AlhPdfView extends StatefulWidget {
 class _AlhPdfViewState extends State<AlhPdfView> with WidgetsBindingObserver {
   static const _viewType = 'alh_pdf_view';
 
-  AlhPdfController? _alhPdfController;
+  AlhPdfInternalController? _alhPdfInternalController;
 
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance!.addObserver(this);
-
-    WidgetsBinding.instance?.addPostFrameCallback((_) {
-      _handleRotationChanged();
-    });
+    WidgetsBinding.instance?.addObserver(this);
   }
 
   @override
   void didUpdateWidget(covariant AlhPdfView oldWidget) {
     if (widget != oldWidget) {
-      _alhPdfController?.updateCreationParams(
+      _alhPdfInternalController?.updateCreationParams(
         creationParams: _creationParams.toMap(),
       );
     }
@@ -222,7 +217,7 @@ class _AlhPdfViewState extends State<AlhPdfView> with WidgetsBindingObserver {
       // Calling a native method that reloads the PDF
       // This prevents reloading the whole widget, because on iOS it works
       if (orientationBefore != orientationAfter) {
-        _handleRotationChanged();
+        _handleRotationChanged(orientation: orientationAfter);
       }
     });
   }
@@ -295,27 +290,26 @@ class _AlhPdfViewState extends State<AlhPdfView> with WidgetsBindingObserver {
       onRender: widget.onRender,
       onZoomChanged: widget.onZoomChanged,
     );
-    _alhPdfController = AlhPdfController(id: id);
+    _alhPdfInternalController = AlhPdfInternalController(id: id);
+
+    _handleRotationChanged(orientation: MediaQuery.of(context).orientation);
 
     widget.onViewCreated?.call(alhPdfViewController);
   }
 
-  /// Calling setOrientation of [_alhPdfController] for rebuilding this widget.
+  /// Calling setOrientation of [_alhPdfInternalController] for rebuilding this widget.
   ///
   /// On Android, there is a problem when the rotation changes. It results
   /// to a white screen. To prevent that, this widget rebuilds the PDF view
   /// with all current params.
-  /// This delay is necessary to ensure that the rebuild on flutter side was
-  /// finished after the rotation.
-  void _handleRotationChanged() {
+  /// This postFrameCallBack is necessary to ensure that the rebuild was finished
+  /// before the native part can calculate the FitPolicy for the PDF.
+  void _handleRotationChanged({required Orientation orientation}) {
     if (defaultTargetPlatform == TargetPlatform.android) {
-      Future.delayed(const Duration(milliseconds: 300)).then((_) {
-        final orientation = MediaQuery.of(context).orientation;
-        _alhPdfController?.setOrienation(
-          orientation: orientation,
-          creationParams: _creationParams.toMap(),
-        );
-      });
+      _alhPdfInternalController?.setOrienation(
+        orientation: orientation,
+        creationParams: _creationParams.toMap(),
+      );
     }
   }
 

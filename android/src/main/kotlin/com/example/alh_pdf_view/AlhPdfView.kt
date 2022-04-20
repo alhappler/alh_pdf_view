@@ -21,9 +21,14 @@ internal class AlhPdfView(
     messenger: BinaryMessenger,
     creationParams: Map<*, *>?
 ) : MethodChannel.MethodCallHandler, PlatformView {
-    private var pdfView: PDFView = PDFView(context, null) // view.findViewById(R.id.pdfView)
+    private var pdfView: PDFView = PDFView(context, null)
+
+    // This channel is called by user actions, e. g. when to update the current page
     private var alhPdfViewChannel: MethodChannel = MethodChannel(messenger, "alh_pdf_view_$id")
+
+    // This channel is only called inside the package and should not be used by the user, e. g. it handles updated configuration values
     private var alhPdfChannel: MethodChannel = MethodChannel(messenger, "alh_pdf_$id")
+
     private lateinit var lastOrientation: Orientation
     private lateinit var alhPdfViewConfiguration: AlhPdfViewConfiguration
 

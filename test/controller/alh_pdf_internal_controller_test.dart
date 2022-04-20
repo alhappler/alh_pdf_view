@@ -1,4 +1,4 @@
-import 'package:alh_pdf_view/controller/alh_pdf_controller.dart';
+import 'package:alh_pdf_view/controller/alh_pdf_internal_controller.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
@@ -7,12 +7,12 @@ import 'package:flutter_test/flutter_test.dart';
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
-  late AlhPdfController controller;
+  late AlhPdfInternalController controller;
   const givenId = 0;
   const channel = MethodChannel('alh_pdf_$givenId');
 
   setUp(() {
-    controller = AlhPdfController(id: givenId);
+    controller = AlhPdfInternalController(id: givenId);
   });
 
   tearDown(() {

@@ -38,7 +38,10 @@ class AlhPdfViewFactory: NSObject, FlutterPlatformViewFactory {
 class AlhPdfView: NSObject, FlutterPlatformView {
     private var _embeddedPdfView: EmbeddedPdfView
     
+    // This channel is called by user actions, e. g. when to update the current page
     private var _pdfViewChannel: FlutterMethodChannel
+    
+    // This channel is only called inside the package and should not be used by the user, e. g. it handles updated configuration values
     private var _pdfChannel: FlutterMethodChannel
     
     private var configuration: AlhPdfViewConfiguration

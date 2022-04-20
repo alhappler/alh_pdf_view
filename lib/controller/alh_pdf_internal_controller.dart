@@ -6,10 +6,10 @@ import 'package:flutter/services.dart';
 /// Should be used for general configurations for the native PDF.
 ///
 /// This controller is not accessible outside this package.
-class AlhPdfController {
+class AlhPdfInternalController {
   late final MethodChannel _channel;
 
-  AlhPdfController({required int id}) {
+  AlhPdfInternalController({required int id}) {
     _channel = MethodChannel('alh_pdf_$id');
   }
 
@@ -17,7 +17,9 @@ class AlhPdfController {
   ///
   /// This notification is handled by [AlhPdfView] and is important to make sure
   /// that the PDF is still displayed when changing the orientation. Otherwise
-  /// a blank screen will be shown.
+  /// a blank screen would be visible.
+  ///
+  /// For a short moment, the screen is white, when the device is rotated and redrawn.
   /// Only for Android.
   Future<void> setOrienation({
     required Orientation orientation,
