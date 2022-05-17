@@ -12,7 +12,7 @@ import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugin.platform.PlatformView
 import java.io.File
-
+import com.github.barteksc.pdfviewer.scroll.DefaultScrollHandle
 
 /** AlhPdfViewerPlugin */
 internal class AlhPdfView(
@@ -42,7 +42,7 @@ internal class AlhPdfView(
             Constants.PRELOAD_OFFSET = 3
             Constants.PART_SIZE = 600f // to fix bluriness after zooming
 
-            loadPdfView(alhPdfViewConfiguration.defaultPage)
+            loadPdfView(alhPdfViewConfiguration.defaultPage,context)
         }
     }
 
@@ -71,7 +71,7 @@ internal class AlhPdfView(
         }
     }
 
-    private fun loadPdfView(defaultPage: Int) {
+    private fun loadPdfView(defaultPage: Int ,context:Context ) {
         val pdfViewConfigurator = if (alhPdfViewConfiguration.filePath != null) {
             pdfView.fromFile(File(alhPdfViewConfiguration.filePath!!))
         } else {
@@ -95,6 +95,7 @@ internal class AlhPdfView(
             .pageSnap(alhPdfViewConfiguration.pageSnap)
             .enableDoubletap(alhPdfViewConfiguration.enableDoubleTap)
             .defaultPage(defaultPage)
+            .scrollHandle(DefaultScrollHandle(context))
             .onPageChange { page, total ->
                 val args: MutableMap<String, Any> = HashMap()
                 args["page"] = page
@@ -176,7 +177,7 @@ internal class AlhPdfView(
         if (newDeviceOrientation != null) {
             if (this::lastOrientation.isInitialized && newDeviceOrientation != lastOrientation) {
                 alhPdfViewConfiguration = AlhPdfViewConfiguration.fromArguments(arguments)
-                loadPdfView(defaultPage = pdfView.currentPage)
+                loadPdfView(defaultPage = pdfView.currentPage , context = pdfView.context )
             }
             lastOrientation = newDeviceOrientation
         }
