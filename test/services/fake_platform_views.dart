@@ -85,8 +85,8 @@ class FakeAndroidViewController implements AndroidViewController {
   }
 
   @override
-  Future<void> setSize(Size size) {
-    throw UnimplementedError();
+  Future<Size> setSize(Size size) {
+    return Future<Size>.value(size);
   }
 
   @override
@@ -119,6 +119,13 @@ class FakeAndroidViewController implements AndroidViewController {
   Future<void> create() async {
     created = true;
   }
+
+  @override
+  List<PlatformViewCreatedCallback> get createdCallbacks =>
+      <PlatformViewCreatedCallback>[];
+
+  @override
+  Future<void> setOffset(Offset off) async {}
 }
 
 class FakeAndroidPlatformViewsController {
@@ -154,7 +161,7 @@ class FakeAndroidPlatformViewsController {
     final MethodCodec codec = SystemChannels.platform_views.codec;
     final ByteData data =
         codec.encodeMethodCall(MethodCall('viewFocused', viewId));
-    ServicesBinding.instance!.defaultBinaryMessenger.handlePlatformMessage(
+    ServicesBinding.instance.defaultBinaryMessenger.handlePlatformMessage(
         SystemChannels.platform_views.name, data, (ByteData? data) {});
   }
 
