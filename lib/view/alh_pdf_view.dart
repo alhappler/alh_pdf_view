@@ -191,7 +191,7 @@ class _AlhPdfViewState extends State<AlhPdfView> with WidgetsBindingObserver {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance?.addObserver(this);
+    _ambiguate(WidgetsBinding.instance)!.addObserver(this);
   }
 
   @override
@@ -207,7 +207,7 @@ class _AlhPdfViewState extends State<AlhPdfView> with WidgetsBindingObserver {
   @override
   void didChangeMetrics() {
     final orientationBefore = MediaQuery.of(context).orientation;
-    WidgetsBinding.instance?.addPostFrameCallback((_) {
+    _ambiguate(WidgetsBinding.instance)!.addPostFrameCallback((_) {
       if (!mounted) {
         return;
       }
@@ -224,7 +224,7 @@ class _AlhPdfViewState extends State<AlhPdfView> with WidgetsBindingObserver {
 
   @override
   void dispose() {
-    WidgetsBinding.instance?.removeObserver(this);
+    _ambiguate(WidgetsBinding.instance)!.removeObserver(this);
     super.dispose();
   }
 
@@ -333,3 +333,11 @@ class _AlhPdfViewState extends State<AlhPdfView> with WidgetsBindingObserver {
         maxZoom: widget.maxZoom,
       );
 }
+
+/// This allows a value of type T or T?
+/// to be treated as a value of type T?.
+///
+/// We use this so that APIs that have become
+/// non-nullable can still be used with `!` and `?`
+/// to support older versions of the API as well.
+T? _ambiguate<T>(T? value) => value;
