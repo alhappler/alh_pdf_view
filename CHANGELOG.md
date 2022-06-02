@@ -1,3 +1,6 @@
+## 0.2.0
+* Removed warnings for flutter upgrade `3.0.0`
+
 ## 0.1.4
 * Static analyzes to 130 points
 

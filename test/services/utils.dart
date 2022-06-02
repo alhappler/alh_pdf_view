@@ -6,7 +6,7 @@ Future<void> invokeMethodCall(
   MethodCall methodCall, {
   required String channelName,
 }) =>
-    ServicesBinding.instance!.defaultBinaryMessenger.handlePlatformMessage(
+    ServicesBinding.instance.defaultBinaryMessenger.handlePlatformMessage(
       channelName,
       const StandardMethodCodec().encodeMethodCall(methodCall),
       (data) {},

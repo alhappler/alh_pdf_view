@@ -16,7 +16,7 @@ import com.github.barteksc.pdfviewer.scroll.DefaultScrollHandle
 
 /** AlhPdfViewerPlugin */
 internal class AlhPdfView(
-    context: Context,
+    context: Context?,
     id: Int,
     messenger: BinaryMessenger,
     creationParams: Map<*, *>?
@@ -157,7 +157,7 @@ internal class AlhPdfView(
     private fun setZoom(call: MethodCall, result: MethodChannel.Result) {
         val zoom = call.argument<Any>("newZoom") as Double
         pdfView.zoomWithAnimation(zoom.toFloat())
-        result.success(null);
+        result.success(null)
     }
 
     private fun getZoom(result: MethodChannel.Result) {

@@ -1,6 +1,6 @@
 name: alh_pdf_view
 description: Has the functionality to show PDF with bytes of a file path as widget with some extra functionalities.
-version: 0.1.5
+version: 0.2.0
 repository: https://github.com/alhappler/alh_pdf_view
 
 environment:
