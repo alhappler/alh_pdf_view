@@ -1,6 +1,8 @@
 package com.example.alh_pdf_view
 
 import android.content.Context
+import android.os.Handler
+import android.os.Looper
 import android.view.View
 import androidx.annotation.NonNull
 import com.example.alh_pdf_view.model.AlhPdfViewConfiguration
@@ -53,6 +55,7 @@ internal class AlhPdfView(
     override fun dispose() {
         alhPdfViewChannel.setMethodCallHandler(null)
         alhPdfChannel.setMethodCallHandler(null)
+        pdfView.recycle()
     }
 
     override fun onMethodCall(@NonNull call: MethodCall, @NonNull result: MethodChannel.Result) {
@@ -113,12 +116,19 @@ internal class AlhPdfView(
                 alhPdfViewChannel.invokeMethod("onPageError", args)
             }
             .onRender { pages ->
-                if (alhPdfViewConfiguration.defaultZoomFactor > 0) {
-                    pdfView.zoomWithAnimation(alhPdfViewConfiguration.defaultZoomFactor.toFloat())
-                }
                 val args: MutableMap<String, Any> = HashMap()
                 args["pages"] = pages
-                alhPdfViewChannel.invokeMethod("onRender", args)
+
+                if (alhPdfViewConfiguration.defaultZoomFactor > 0) {
+                    pdfView.zoomWithAnimation(alhPdfViewConfiguration.defaultZoomFactor.toFloat())
+                    // delay of 400 ms to wait for zoom animation before calling onRender that should only be called after finishing loading
+                    // this prevents that the app could crash when disposing this view while it was still loading
+                    Handler(Looper.getMainLooper()).postDelayed({
+                        alhPdfViewChannel.invokeMethod("onRender", args)
+                    }, 400)
+                } else {
+                    alhPdfViewChannel.invokeMethod("onRender", args)
+                }
             }
             .load()
     }
