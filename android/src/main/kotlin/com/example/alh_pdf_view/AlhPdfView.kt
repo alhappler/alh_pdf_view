@@ -118,14 +118,11 @@ internal class AlhPdfView(
             .onRender { pages ->
                 val args: MutableMap<String, Any> = HashMap()
                 args["pages"] = pages
+                val defaultZoomFactor = alhPdfViewConfiguration.defaultZoomFactor
 
-                if (alhPdfViewConfiguration.defaultZoomFactor > 0) {
-                    pdfView.zoomWithAnimation(alhPdfViewConfiguration.defaultZoomFactor.toFloat())
-                    // delay of 400 ms to wait for zoom animation before calling onRender that should only be called after finishing loading
-                    // this prevents that the app could crash when disposing this view while it was still loading
-                    Handler(Looper.getMainLooper()).postDelayed({
-                        alhPdfViewChannel.invokeMethod("onRender", args)
-                    }, 400)
+                if (defaultZoomFactor > 0.0 && defaultZoomFactor != 1.0) {
+                    pdfView.zoomTo(defaultZoomFactor.toFloat())
+                    alhPdfViewChannel.invokeMethod("onRender", args)
                 } else {
                     alhPdfViewChannel.invokeMethod("onRender", args)
                 }
