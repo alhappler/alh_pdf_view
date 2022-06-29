@@ -1,6 +1,8 @@
 package com.example.alh_pdf_view
 
 import android.content.Context
+import android.os.Handler
+import android.os.Looper
 import android.view.View
 import androidx.annotation.NonNull
 import com.example.alh_pdf_view.model.AlhPdfViewConfiguration
@@ -53,6 +55,7 @@ internal class AlhPdfView(
     override fun dispose() {
         alhPdfViewChannel.setMethodCallHandler(null)
         alhPdfChannel.setMethodCallHandler(null)
+        pdfView.recycle()
     }
 
     override fun onMethodCall(@NonNull call: MethodCall, @NonNull result: MethodChannel.Result) {
@@ -113,12 +116,16 @@ internal class AlhPdfView(
                 alhPdfViewChannel.invokeMethod("onPageError", args)
             }
             .onRender { pages ->
-                if (alhPdfViewConfiguration.defaultZoomFactor > 0) {
-                    pdfView.zoomWithAnimation(alhPdfViewConfiguration.defaultZoomFactor.toFloat())
-                }
                 val args: MutableMap<String, Any> = HashMap()
                 args["pages"] = pages
-                alhPdfViewChannel.invokeMethod("onRender", args)
+                val defaultZoomFactor = alhPdfViewConfiguration.defaultZoomFactor
+
+                if (defaultZoomFactor > 0.0 && defaultZoomFactor != 1.0) {
+                    pdfView.zoomTo(defaultZoomFactor.toFloat())
+                    alhPdfViewChannel.invokeMethod("onRender", args)
+                } else {
+                    alhPdfViewChannel.invokeMethod("onRender", args)
+                }
             }
             .load()
     }

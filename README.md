@@ -80,7 +80,7 @@ This is a list of functional parameters.
 | `onViewCreated`      | If not null invoked once the native view is created.                  | **-** |
 | `onRender`           | Callback once the PDF page was loaded.                                | **-** |
 | `onPageChanged`      | When changing the page, this method will be called with the new page. | **-** |
-| `onZoomChanged`      | Called when changing the zoom. (only iOS)                             | **-** |
+| `onZoomChanged`      | Called when changing the zoom.                                        | **-** |
 | `onError`            | When there are errors happening, this methods returns a message.      | **-** |
 | `onPageError`            | Called when there are specific errors on a page. (only Android)       | **-** |
 
