@@ -1,3 +1,9 @@
+## 0.3.2
+
+🏆 **Improvement**
+
+* min sdk version of dart changed from `2.15` to `2.14` (issue [#12](https://github.com/alhappler/alh_pdf_view/issues/12))
+
 ## 0.3.1
 
 🐛 **Bugfixes**
