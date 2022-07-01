@@ -1,3 +1,9 @@
+## 0.3.1
+
+🐛 **Bugfixes**
+
+* fixed white-screen-bug using proguard (issue [#7](https://github.com/alhappler/alh_pdf_view/issues/7))
+
 ## 0.3.0
 
 ⚽️ **Features**
