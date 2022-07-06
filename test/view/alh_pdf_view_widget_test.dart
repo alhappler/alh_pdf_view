@@ -98,6 +98,13 @@ void main() {
   });
 
   group('platform == TargetPlatform.android', () {
+    late FakeAndroidPlatformViewsController viewsController;
+
+    setUp(() {
+      viewsController = FakeAndroidPlatformViewsController();
+      viewsController.registerViewType('alh_pdf_view');
+    });
+
     testWidgets(
         "GIVEN platform == TargetPlatform.android, filePath and no other parameters "
         "WHEN pumping [AlhPdfView] "
@@ -106,13 +113,9 @@ void main() {
         "should call setOrientation of [AlhPdfController]",
         (WidgetTester tester) async {
       // given
-      debugDefaultTargetPlatformOverride = TargetPlatform.android;
       changeOrientation(tester, landscape: false);
 
       const givenFilePath = 'path';
-
-      final viewsController = FakeAndroidPlatformViewsController();
-      viewsController.registerViewType('alh_pdf_view');
 
       const channel = MethodChannel('alh_pdf_0');
       MethodCall? methodCall;
@@ -176,17 +179,12 @@ void main() {
       debugDefaultTargetPlatformOverride = TargetPlatform.android;
       changeOrientation(tester, landscape: false);
 
-      const givenFilePath = 'path';
-
-      final viewsController = FakeAndroidPlatformViewsController();
-      viewsController.registerViewType('alh_pdf_view');
-
       // when
       await tester.pumpWidget(
         const MaterialApp(
           home: Scaffold(
             body: AlhPdfView(
-              filePath: givenFilePath,
+              filePath: 'path',
             ),
           ),
         ),
@@ -219,6 +217,13 @@ void main() {
   });
 
   group('platform == TargetPlatform.iOS', () {
+    late FakeIosPlatformViewsController viewsController;
+
+    setUp(() {
+      viewsController = FakeIosPlatformViewsController();
+      viewsController.registerViewType('alh_pdf_view');
+    });
+
     testWidgets(
         "GIVEN bytes and all parameters "
         "WHEN pumping [AlhPdfView] "
@@ -236,9 +241,6 @@ void main() {
       const givenBackgroundColor = Colors.blue;
       const givenMinZoom = 0.04;
       const givenMaxZoom = 100.0;
-
-      final viewsController = FakeIosPlatformViewsController();
-      viewsController.registerViewType('alh_pdf_view');
 
       // when
       await tester.pumpWidget(
@@ -307,9 +309,6 @@ void main() {
       const givenFitPolicy = FitPolicy.both;
       const givenUpdatedFitPolicy = FitPolicy.width;
 
-      final viewsController = FakeIosPlatformViewsController();
-      viewsController.registerViewType('alh_pdf_view');
-
       await tester.pumpWidget(
         const MaterialApp(
           home: _UpdateAlhPdfViewTest(
@@ -376,9 +375,6 @@ void main() {
 
         AlhPdfViewController? actualController;
 
-        final viewsController = FakeIosPlatformViewsController();
-        viewsController.registerViewType('alh_pdf_view');
-
         // when
         await pumpWidget(
           tester,
@@ -404,9 +400,6 @@ void main() {
 
         const givenError = 'error 123';
         dynamic actualError;
-
-        final viewsController = FakeIosPlatformViewsController();
-        viewsController.registerViewType('alh_pdf_view');
 
         await pumpWidget(
           tester,
@@ -438,9 +431,6 @@ void main() {
 
         const givenPages = 9999;
         int? actualPages;
-
-        final viewsController = FakeIosPlatformViewsController();
-        viewsController.registerViewType('alh_pdf_view');
 
         await pumpWidget(
           tester,
@@ -474,9 +464,6 @@ void main() {
         const givenTotal = 10;
         int? actualPage;
         int? actualTotal;
-
-        final viewsController = FakeIosPlatformViewsController();
-        viewsController.registerViewType('alh_pdf_view');
 
         await pumpWidget(
           tester,
@@ -516,9 +503,6 @@ void main() {
         int? actualPage;
         dynamic actualError;
 
-        final viewsController = FakeIosPlatformViewsController();
-        viewsController.registerViewType('alh_pdf_view');
-
         await pumpWidget(
           tester,
           onPageError: (page, error) {
@@ -554,9 +538,6 @@ void main() {
 
         const givenZoom = 234.4;
         double? actualZoom;
-
-        final viewsController = FakeIosPlatformViewsController();
-        viewsController.registerViewType('alh_pdf_view');
 
         await pumpWidget(
           tester,

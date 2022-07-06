@@ -134,8 +134,6 @@ class AlhPdfView extends StatefulWidget {
   final PageChangedCallback? onPageChanged;
 
   /// Called when changing the zoom.
-  ///
-  /// This callback works only for iOS.
   final ZoomChangedCallback? onZoomChanged;
 
   /// When there are errors happening, this methods returns a message.
@@ -187,10 +185,14 @@ class _AlhPdfViewState extends State<AlhPdfView> with WidgetsBindingObserver {
   static const _viewType = 'alh_pdf_view';
 
   AlhPdfInternalController? _alhPdfInternalController;
+  AlhPdfViewController? _alhPdfViewController;
+  late double _zoom;
 
   @override
   void initState() {
     super.initState();
+
+    _zoom = widget.defaultZoomFactor;
     _ambiguate(WidgetsBinding.instance)!.addObserver(this);
   }
 
@@ -234,34 +236,51 @@ class _AlhPdfViewState extends State<AlhPdfView> with WidgetsBindingObserver {
 
     switch (defaultTargetPlatform) {
       case TargetPlatform.android:
-        return PlatformViewLink(
-          viewType: _viewType,
-          surfaceFactory: (
-            BuildContext context,
-            PlatformViewController controller,
-          ) {
-            return AndroidViewSurface(
-              controller: controller as AndroidViewController,
-              gestureRecognizers: const <
-                  Factory<OneSequenceGestureRecognizer>>{},
-              hitTestBehavior: PlatformViewHitTestBehavior.opaque,
-            );
+        return Listener(
+          onPointerUp: (PointerUpEvent event) async {
+            final onZoomChanged = widget.onZoomChanged;
+            final alhPdfViewController = _alhPdfViewController;
+
+            if (this.mounted &&
+                onZoomChanged != null &&
+                alhPdfViewController != null) {
+              final newZoom = await alhPdfViewController.getZoom();
+
+              if (newZoom != _zoom) {
+                onZoomChanged(newZoom);
+                _zoom = newZoom;
+              }
+            }
           },
-          onCreatePlatformView: (PlatformViewCreationParams params) {
-            return PlatformViewsService.initSurfaceAndroidView(
-              id: params.id,
-              viewType: _viewType,
-              layoutDirection: TextDirection.ltr,
-              creationParams: alhPdfViewCreationParamsMap,
-              creationParamsCodec: const StandardMessageCodec(),
-              onFocus: () {
-                params.onFocusChanged(true);
-              },
-            )
-              ..addOnPlatformViewCreatedListener(params.onPlatformViewCreated)
-              ..addOnPlatformViewCreatedListener(_onPlatformViewCreated)
-              ..create();
-          },
+          child: PlatformViewLink(
+            viewType: _viewType,
+            surfaceFactory: (
+              BuildContext context,
+              PlatformViewController controller,
+            ) {
+              return AndroidViewSurface(
+                controller: controller as AndroidViewController,
+                gestureRecognizers: widget.gestureRecognizers ??
+                    const <Factory<OneSequenceGestureRecognizer>>{},
+                hitTestBehavior: PlatformViewHitTestBehavior.opaque,
+              );
+            },
+            onCreatePlatformView: (PlatformViewCreationParams params) {
+              return PlatformViewsService.initSurfaceAndroidView(
+                id: params.id,
+                viewType: _viewType,
+                layoutDirection: TextDirection.ltr,
+                creationParams: alhPdfViewCreationParamsMap,
+                creationParamsCodec: const StandardMessageCodec(),
+                onFocus: () {
+                  params.onFocusChanged(true);
+                },
+              )
+                ..addOnPlatformViewCreatedListener(params.onPlatformViewCreated)
+                ..addOnPlatformViewCreatedListener(_onPlatformViewCreated)
+                ..create();
+            },
+          ),
         );
       case TargetPlatform.iOS:
         return UiKitView(
@@ -291,6 +310,7 @@ class _AlhPdfViewState extends State<AlhPdfView> with WidgetsBindingObserver {
       onZoomChanged: widget.onZoomChanged,
     );
     _alhPdfInternalController = AlhPdfInternalController(id: id);
+    _alhPdfViewController = alhPdfViewController;
 
     _handleRotationChanged(orientation: MediaQuery.of(context).orientation);
 
