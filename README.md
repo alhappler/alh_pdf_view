@@ -71,6 +71,7 @@ This is a list of all parameters that can be used for this widget. Consider that
 | `enableDoubleTap`   | When double tapping, the zoom of the page changes. (only Android)                        |        **`1.0`**         |
 | `minZoom`           | Min zoom value that the user can reach while zooming.                                    |        **`0.5`**         |
 | `maxZoom`           | Max zoom value that the user can reach while zooming.                                    |        **`4.0`**         |
+| `enableDefaultScrollHandle`           | Adds a button to scroll faster through the document. (only Android)                      |        **false**         |
 
 This is a list of functional parameters.
 
