@@ -1,3 +1,9 @@
+## 0.3.3
+
+⚽️ **Features**
+
+* added `enableDefaultScrollHandle` for Android to have an extra scroll button (issue [#16](https://github.com/alhappler/alh_pdf_view/issues/16))
+
 ## 0.3.2
 
 🏆 **Improvement**

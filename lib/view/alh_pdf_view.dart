@@ -113,6 +113,15 @@ class AlhPdfView extends StatefulWidget {
   /// Default value: true
   final bool enableDoubleTap;
 
+  /// When enabled, you have an extra button to scroll faster.
+  ///
+  /// The button is similar to a scroll bar.
+  /// On iOS, there is always a scrollbar that can be used to scroll faster.
+  ///
+  /// Only working on Android.
+  /// Default value: false
+  final bool enableDefaultScrollHandle;
+
   /// Which gestures should be consumed by the pdf view.
   ///
   /// It is possible for other gesture recognizers to be competing with the pdf view on pointer
@@ -169,6 +178,7 @@ class AlhPdfView extends StatefulWidget {
     this.enableDoubleTap = true,
     this.minZoom = 0.5,
     this.maxZoom = 4.0,
+    this.enableDefaultScrollHandle = false,
     Key? key,
   })  : assert(filePath != null || bytes != null),
         assert(defaultZoomFactor > 0.0),
@@ -351,6 +361,7 @@ class _AlhPdfViewState extends State<AlhPdfView> with WidgetsBindingObserver {
         enableDoubleTap: widget.enableDoubleTap,
         minZoom: widget.minZoom,
         maxZoom: widget.maxZoom,
+        enableDefaultScrollHandle: widget.enableDefaultScrollHandle,
       );
 }
 

@@ -1,13 +1,12 @@
 package com.example.alh_pdf_view
 
 import android.content.Context
-import android.os.Handler
-import android.os.Looper
 import android.view.View
 import androidx.annotation.NonNull
 import com.example.alh_pdf_view.model.AlhPdfViewConfiguration
 import com.example.alh_pdf_view.model.Orientation
 import com.github.barteksc.pdfviewer.PDFView
+import com.github.barteksc.pdfviewer.scroll.DefaultScrollHandle
 import com.github.barteksc.pdfviewer.util.Constants
 import io.flutter.plugin.common.BinaryMessenger
 import io.flutter.plugin.common.MethodCall
@@ -15,10 +14,9 @@ import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugin.platform.PlatformView
 import java.io.File
 
-
 /** AlhPdfViewerPlugin */
 internal class AlhPdfView(
-    context: Context?,
+    private val context: Context?,
     id: Int,
     messenger: BinaryMessenger,
     creationParams: Map<*, *>?
@@ -127,7 +125,11 @@ internal class AlhPdfView(
                     alhPdfViewChannel.invokeMethod("onRender", args)
                 }
             }
-            .load()
+
+        if (context != null && alhPdfViewConfiguration.enableDefaultScrollHandle) {
+            pdfViewConfigurator.scrollHandle(DefaultScrollHandle(context))
+        }
+        pdfViewConfigurator.load()
     }
 
     private fun getPageWidth(result: MethodChannel.Result) {

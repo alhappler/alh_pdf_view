@@ -43,6 +43,7 @@ class _PDFScreenState extends State<PDFScreen> {
                 children: [
                   Expanded(
                     child: AlhPdfView(
+                      enableDefaultScrollHandle: true,
                       filePath: widget.path,
                       bytes: widget.bytes,
                       enableSwipe: true,
