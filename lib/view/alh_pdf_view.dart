@@ -116,6 +116,7 @@ class AlhPdfView extends StatefulWidget {
   /// When enabled, you have an extra button to scroll faster.
   ///
   /// The button is similar to a scroll bar.
+  /// On iOS, there is always a scrollbar that can be used to scroll faster.
   ///
   /// Only working on Android.
   /// Default value: false
