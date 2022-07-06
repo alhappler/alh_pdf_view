@@ -29,6 +29,7 @@ void main() {
       const givenEnableDoubleTap = true;
       const givenMinZoom = 0.1;
       const givenMaxZoom = 5.0;
+      const givenEnableDefaultScrollHandle = true;
       final givenAlhPdfViewCreationParams = AlhPdfViewCreationParams(
         filePath: givenFilePath,
         bytes: givenBytes,
@@ -47,6 +48,7 @@ void main() {
         enableDoubleTap: givenEnableDoubleTap,
         minZoom: givenMinZoom,
         maxZoom: givenMaxZoom,
+        enableDefaultScrollHandle: givenEnableDefaultScrollHandle,
       );
 
       // when
@@ -71,6 +73,7 @@ void main() {
         'enableDoubleTap': givenEnableDoubleTap,
         'minZoom': givenMinZoom,
         'maxZoom': givenMaxZoom,
+        'enableDefaultScrollHandle': givenEnableDefaultScrollHandle,
       };
       expect(actual, equals(expectedMap));
     });

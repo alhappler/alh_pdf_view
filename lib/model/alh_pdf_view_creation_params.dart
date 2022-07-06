@@ -24,6 +24,7 @@ class AlhPdfViewCreationParams {
   final bool nightMode; // only: Android
   final bool autoSpacing; // only: Android
   final bool enableDoubleTap; // only: Android
+  final bool enableDefaultScrollHandle; // only: Android
 
   const AlhPdfViewCreationParams({
     required this.filePath,
@@ -43,6 +44,7 @@ class AlhPdfViewCreationParams {
     required this.enableDoubleTap,
     required this.minZoom,
     required this.maxZoom,
+    required this.enableDefaultScrollHandle,
   });
 
   Map<String, dynamic> toMap() => {
@@ -63,5 +65,6 @@ class AlhPdfViewCreationParams {
         'enableDoubleTap': this.enableDoubleTap,
         'minZoom': this.minZoom,
         'maxZoom': this.maxZoom,
+        'enableDefaultScrollHandle': this.enableDefaultScrollHandle,
       };
 }

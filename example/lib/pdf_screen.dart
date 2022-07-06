@@ -1,11 +1,9 @@
 import 'dart:typed_data';
 
 import 'package:alh_pdf_view/lib.dart';
-
+import 'package:alh_pdf_view_example/pdf_page_info.dart';
+import 'package:alh_pdf_view_example/pdf_view_bottom_bar.dart';
 import 'package:flutter/material.dart';
-
-import 'pdf_page_info.dart';
-import 'pdf_view_bottom_bar.dart';
 
 class PDFScreen extends StatefulWidget {
   final String? path;
@@ -45,6 +43,7 @@ class _PDFScreenState extends State<PDFScreen> {
                 children: [
                   Expanded(
                     child: AlhPdfView(
+                      enableDefaultScrollHandle: true,
                       filePath: widget.path,
                       bytes: widget.bytes,
                       enableSwipe: true,
