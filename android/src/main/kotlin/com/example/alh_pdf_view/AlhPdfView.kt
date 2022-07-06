@@ -1,24 +1,22 @@
 package com.example.alh_pdf_view
 
 import android.content.Context
-import android.os.Handler
-import android.os.Looper
 import android.view.View
 import androidx.annotation.NonNull
 import com.example.alh_pdf_view.model.AlhPdfViewConfiguration
 import com.example.alh_pdf_view.model.Orientation
 import com.github.barteksc.pdfviewer.PDFView
+import com.github.barteksc.pdfviewer.scroll.DefaultScrollHandle
 import com.github.barteksc.pdfviewer.util.Constants
 import io.flutter.plugin.common.BinaryMessenger
 import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugin.platform.PlatformView
 import java.io.File
-import com.github.barteksc.pdfviewer.scroll.DefaultScrollHandle
 
 /** AlhPdfViewerPlugin */
 internal class AlhPdfView(
-    context: Context?,
+    private val context: Context?,
     id: Int,
     messenger: BinaryMessenger,
     creationParams: Map<*, *>?
@@ -44,7 +42,7 @@ internal class AlhPdfView(
             Constants.PRELOAD_OFFSET = 3
             Constants.PART_SIZE = 600f // to fix bluriness after zooming
 
-            loadPdfView(alhPdfViewConfiguration.defaultPage, context)
+            loadPdfView(alhPdfViewConfiguration.defaultPage)
         }
     }
 
@@ -74,7 +72,7 @@ internal class AlhPdfView(
         }
     }
 
-    private fun loadPdfView(defaultPage: Int, context: Context?) {
+    private fun loadPdfView(defaultPage: Int) {
         val pdfViewConfigurator = if (alhPdfViewConfiguration.filePath != null) {
             pdfView.fromFile(File(alhPdfViewConfiguration.filePath!!))
         } else {
@@ -131,7 +129,6 @@ internal class AlhPdfView(
         if (context != null && alhPdfViewConfiguration.enableDefaultScrollHandle) {
             pdfViewConfigurator.scrollHandle(DefaultScrollHandle(context))
         }
-
         pdfViewConfigurator.load()
     }
 
@@ -188,7 +185,7 @@ internal class AlhPdfView(
         if (newDeviceOrientation != null) {
             if (this::lastOrientation.isInitialized && newDeviceOrientation != lastOrientation) {
                 alhPdfViewConfiguration = AlhPdfViewConfiguration.fromArguments(arguments)
-                loadPdfView(defaultPage = pdfView.currentPage, context = pdfView.context)
+                loadPdfView(defaultPage = pdfView.currentPage)
             }
             lastOrientation = newDeviceOrientation
         }
