@@ -37,7 +37,9 @@ internal class AlhPdfView(
 
     private var currentPage: Int? = null
 
-    // flag that will be set to true when changing the page with animation to prevent too much calls onPageChanged
+    // If the page is changed manually with animation, then there is a problem that the callback onPageChanged will be called to often.
+    // The first call is always the old page and is the reason that no callback will be called after that
+    // and only this flag is set to true
     private var hasSetPageWithAnimation: Boolean = false
 
     init {
