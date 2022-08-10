@@ -21,7 +21,7 @@ class AlhPdfInternalController {
   ///
   /// For a short moment, the screen is white, when the device is rotated and redrawn.
   /// Only for Android.
-  Future<void> setOrienation({
+  Future<void> setOrientation({
     required Orientation orientation,
     required Map<String, dynamic> creationParams,
   }) async {

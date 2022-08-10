@@ -1,6 +1,8 @@
 package com.example.alh_pdf_view
 
 import android.content.Context
+import android.os.Handler
+import android.os.Looper
 import android.view.View
 import androidx.annotation.NonNull
 import com.example.alh_pdf_view.model.AlhPdfViewConfiguration

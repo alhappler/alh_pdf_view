@@ -19,7 +19,7 @@ void main() {
     channel.setMockMethodCallHandler(null);
   });
 
-  group('#setOrienation', () {
+  group('#setOrientation', () {
     test(
         'GIVEN creationParams and orientation '
         'WHEN calling #setOrientation '
@@ -36,7 +36,7 @@ void main() {
       });
 
       // when
-      await controller.setOrienation(
+      await controller.setOrientation(
         orientation: givenOrientation,
         creationParams: givenCreationParams,
       );

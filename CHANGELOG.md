@@ -59,8 +59,8 @@
 
 * onZoomChanged removed for Android
 * Fixed rotation bug
-    * Android: resulting to a white screen
-    * iOS: resetting the pdf
+  * Android: resulting to a white screen
+  * iOS: resetting the pdf
 * FitPolicy can be updated on Android and iOS
 
 ## 0.0.1
