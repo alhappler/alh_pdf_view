@@ -1,8 +1,6 @@
 package com.example.alh_pdf_view
 
 import android.content.Context
-import android.os.Handler
-import android.os.Looper
 import android.view.View
 import androidx.annotation.NonNull
 import com.example.alh_pdf_view.model.AlhPdfViewConfiguration
@@ -33,6 +31,14 @@ internal class AlhPdfView(
 
     private lateinit var lastOrientation: Orientation
     private lateinit var alhPdfViewConfiguration: AlhPdfViewConfiguration
+
+    // flag that will be set when the user changes the page manually to prevent multiple calls when changing the page with animation
+    private var destinationPage: Int? = null
+
+    private var currentPage: Int? = null
+
+    // flag that will be set to true when changing the page with animation to prevent too much calls onPageChanged
+    private var hasSetPageWithAnimation: Boolean = false
 
     init {
         alhPdfViewChannel.setMethodCallHandler(this)
@@ -80,6 +86,7 @@ internal class AlhPdfView(
         } else {
             pdfView.fromBytes(alhPdfViewConfiguration.bytes)
         }
+        currentPage = alhPdfViewConfiguration.defaultPage
 
         pdfView.setBackgroundColor(alhPdfViewConfiguration.backgroundColor)
         pdfView.minZoom = alhPdfViewConfiguration.minZoom
@@ -99,10 +106,19 @@ internal class AlhPdfView(
             .enableDoubletap(alhPdfViewConfiguration.enableDoubleTap)
             .defaultPage(defaultPage)
             .onPageChange { page, total ->
-                val args: MutableMap<String, Any> = HashMap()
-                args["page"] = page
-                args["total"] = total
-                alhPdfViewChannel.invokeMethod("onPageChanged", args)
+                if (hasSetPageWithAnimation) {
+                    hasSetPageWithAnimation = false
+                } else {
+                    val args: MutableMap<String, Any> = HashMap()
+                    args["page"] = page
+                    args["total"] = total
+
+                    if ((destinationPage == null || page == destinationPage) && currentPage != page) {
+                        currentPage = page
+                        destinationPage = null
+                        alhPdfViewChannel.invokeMethod("onPageChanged", args)
+                    }
+                }
             }
             .onError { throwable ->
                 val args: MutableMap<String, Any> = HashMap()
@@ -154,6 +170,8 @@ internal class AlhPdfView(
 
     private fun setPage(call: MethodCall, result: MethodChannel.Result, withAnimation: Boolean) {
         val page = call.argument<Any>("page") as Int
+        destinationPage = page
+        hasSetPageWithAnimation = withAnimation
         pdfView.jumpTo(page, withAnimation)
         result.success(true)
     }

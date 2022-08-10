@@ -1,3 +1,8 @@
+## 0.3.4
+🐛 **Bugfix**
+
+* fixed multiple calls on `onPageChanged` during page change on android (issue [#17](https://github.com/alhappler/alh_pdf_view/issues/17))
+
 ## 0.3.3
 
 ⚽️ **Features**
