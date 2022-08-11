@@ -336,7 +336,7 @@ class _AlhPdfViewState extends State<AlhPdfView> with WidgetsBindingObserver {
   /// before the native part can calculate the FitPolicy for the PDF.
   void _handleRotationChanged({required Orientation orientation}) {
     if (defaultTargetPlatform == TargetPlatform.android) {
-      _alhPdfInternalController?.setOrienation(
+      _alhPdfInternalController?.setOrientation(
         orientation: orientation,
         creationParams: _creationParams.toMap(),
       );

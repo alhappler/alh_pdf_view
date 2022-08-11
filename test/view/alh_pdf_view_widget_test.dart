@@ -139,25 +139,27 @@ void main() {
 
       // then
       expect(
-          find.byWidgetPredicate((widget) =>
-              widget is AlhPdfView &&
-              widget.filePath == givenFilePath &&
-              widget.bytes == null &&
-              widget.fitPolicy == FitPolicy.both &&
-              widget.fitEachPage &&
-              widget.enableSwipe &&
-              widget.password.isEmpty &&
-              !widget.nightMode &&
-              widget.autoSpacing &&
-              widget.pageFling &&
-              widget.pageSnap &&
-              widget.defaultPage == 0 &&
-              widget.backgroundColor == Colors.transparent &&
-              widget.defaultZoomFactor == 1.0 &&
-              widget.enableDoubleTap &&
-              widget.minZoom == 0.5 &&
-              widget.maxZoom == 4.0 &&
-              !widget.enableDefaultScrollHandle),
+          find.byWidgetPredicate(
+            (widget) =>
+                widget is AlhPdfView &&
+                widget.filePath == givenFilePath &&
+                widget.bytes == null &&
+                widget.fitPolicy == FitPolicy.both &&
+                widget.fitEachPage &&
+                widget.enableSwipe &&
+                widget.password.isEmpty &&
+                !widget.nightMode &&
+                widget.autoSpacing &&
+                widget.pageFling &&
+                widget.pageSnap &&
+                widget.defaultPage == 0 &&
+                widget.backgroundColor == Colors.transparent &&
+                widget.defaultZoomFactor == 1.0 &&
+                widget.enableDoubleTap &&
+                widget.minZoom == 0.5 &&
+                widget.maxZoom == 4.0 &&
+                !widget.enableDefaultScrollHandle,
+          ),
           findsOneWidget);
       expect(
           find.byWidgetPredicate((widget) =>

@@ -1,3 +1,8 @@
+## 0.3.4
+🐛 **Bugfix**
+
+* fixed multiple calls on `onPageChanged` during page change on android (issue [#17](https://github.com/alhappler/alh_pdf_view/issues/17))
+
 ## 0.3.3
 
 ⚽️ **Features**
@@ -59,8 +64,8 @@
 
 * onZoomChanged removed for Android
 * Fixed rotation bug
-    * Android: resulting to a white screen
-    * iOS: resetting the pdf
+  * Android: resulting to a white screen
+  * iOS: resetting the pdf
 * FitPolicy can be updated on Android and iOS
 
 ## 0.0.1

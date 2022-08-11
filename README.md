@@ -11,7 +11,7 @@ With this widget, you can display a PDF with bytes or a path.
 - [AlhPdfViewController](#alh-pdf-view-controller)
 
 ## Introduction
-This package is forked from `flutter_pdfview` ([Link](https://pub.dev/packages/flutter_pdfview)) 
+This package is forked from `flutter_pdfview` ([Link](https://pub.dev/packages/flutter_pdfview))
 of [endigo](https://github.com/endigo) and rebuilt from scratch.
 
 The package `alh_pdf_view` also includes:
