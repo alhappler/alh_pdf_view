@@ -271,14 +271,15 @@ void main() {
       channel.setMockMethodCallHandler((call) async {
         if (call.method == 'setPage') {
           actualMethodCall = call;
-          return givenPage;
+          return true;
         }
       });
 
       // when
-      await controller.setPage(page: givenPage);
+      final actual = await controller.setPage(page: givenPage);
 
       // then
+      expect(actual, isTrue);
       const expectedMethodCall = MethodCall('setPage', {
         'page': givenPage,
         'withAnimation': true,
@@ -297,14 +298,15 @@ void main() {
       channel.setMockMethodCallHandler((call) async {
         if (call.method == 'setPage') {
           actualMethodCall = call;
-          return givenPage;
+          return false;
         }
       });
 
       // when
-      await controller.setPage(page: givenPage);
+      final actual = await controller.setPage(page: givenPage);
 
       // then
+      expect(actual, isFalse);
       const expectedMethodCall = MethodCall('setPage', {
         'page': givenPage,
         'withAnimation': true,
