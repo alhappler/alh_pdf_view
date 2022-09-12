@@ -21,6 +21,9 @@ class EmbeddedPdfView : UIView {
     // Ensure to update after layoutSubviews was called to get correct sizes, e. g. after rotating the screen
     private var updatedConfiguration: AlhPdfViewConfiguration?
     
+    private var pageChangeAnimationDuration: Double = 0.4
+    private var zoomAnimationDuration: Double = 0.4
+    
     init(configuration: AlhPdfViewConfiguration) {
         self.configuration = configuration
         self.pdfView = PDFView.init(frame: .zero)
@@ -157,17 +160,29 @@ class EmbeddedPdfView : UIView {
     
     func zoomPdfView(zoomFactor: CGFloat) {
         let updatedScaleFactor = self.initPdfViewScaleFactor * zoomFactor
-        self.pdfView.scaleFactor = updatedScaleFactor
+        UIView.animate(withDuration: zoomAnimationDuration) {
+            self.pdfView.scaleFactor = updatedScaleFactor
+        }
+        
     }
     
     func resetPdfZoom() {
         self.pdfView.scaleFactor = self.initPdfViewScaleFactor * configuration.defaultZoomFactor
     }
     
-    func goToPage(pageIndex: Int) {
+    func goToPage(pageIndex: Int, withAnimation: Bool) -> Bool {
         if let page = pdfView.document?.page(at: pageIndex) {
-            pdfView.go(to: page)
+            if(withAnimation) {
+                UIView.animate(withDuration: pageChangeAnimationDuration) {
+                    self.pdfView.go(to: page)
+                }
+            } else {
+                self.pdfView.go(to: page)
+            }
+            
+            return true
         }
+        return false
     }
     
     func getCurrentPageIndex() -> Int? {
@@ -177,16 +192,46 @@ class EmbeddedPdfView : UIView {
         return nil
     }
     
-    func goToCurrentPage() {
-        if let currentPageIndex = self.getCurrentPageIndex(){
-            self.goToPage(pageIndex: currentPageIndex)
-        }
-    }
-    
     func getPageCount() -> Int? {
         if let document = self.pdfView.document {
             return document.pageCount;
         }
         return nil
+    }
+    
+    func handleSwipe(gesture: UISwipeGestureRecognizer) {
+        if(gesture.direction == .left) {
+            _ = goToNextPage(withAnimation: true)
+        } else if (gesture.direction == .right){
+            _ = goToPreviousPage(withAnimation: true)
+        }
+    }
+    
+    func goToNextPage(withAnimation: Bool) -> Bool {
+        if(pdfView.canGoToNextPage) {
+            if(withAnimation) {
+                UIView.animate(withDuration: pageChangeAnimationDuration) {
+                    self.pdfView.goToNextPage(nil)
+                }
+            } else {
+                pdfView.goToNextPage(nil)
+            }
+            return true
+        }
+        return false
+    }
+    
+    func goToPreviousPage(withAnimation: Bool) -> Bool {
+        if(pdfView.canGoToPreviousPage) {
+            if(withAnimation) {
+                UIView.animate(withDuration: pageChangeAnimationDuration) {
+                    self.pdfView.goToPreviousPage(nil)
+                }
+            } else {
+                pdfView.goToPreviousPage(nil)
+            }
+            return true
+        }
+        return false
     }
 }

@@ -1,5 +1,3 @@
-import 'dart:typed_data';
-
 import 'package:alh_pdf_view/lib.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';

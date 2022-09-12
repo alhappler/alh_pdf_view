@@ -1,7 +1,5 @@
 import 'package:alh_pdf_view/lib.dart';
 import 'package:alh_pdf_view/view/alh_pdf_view.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 
 /// Calling native methods that can change the current settings of the PDF.
@@ -80,11 +78,37 @@ class AlhPdfViewController {
     return currentPage;
   }
 
-  /// Jumping to the [page] without any animation.
-  Future<void> setPage({required int page}) async {
-    await _channel.invokeMethod('setPage', <String, dynamic>{
+  /// Jumping to the given [page].
+  ///
+  /// By default, [withAnimation] is true and takes 400ms to animate the page change.
+  /// Returns true if page change was possible.
+  Future<bool> setPage({required int page, bool withAnimation = true}) async {
+    return await _channel.invokeMethod('setPage', <String, dynamic>{
       'page': page,
+      'withAnimation': withAnimation,
     });
+  }
+
+  /// Goes to the next page.
+  ///
+  /// By default, [withAnimation] is true and takes 400ms to animate the page change.
+  /// Returns true if page change was possible.
+  Future<bool> goToNextPage({bool withAnimation = true}) async {
+    return await _channel.invokeMethod(
+      'nextPage',
+      {'withAnimation': withAnimation},
+    );
+  }
+
+  /// Goes to the next page.
+  ///
+  /// By default, [withAnimation] is true and takes 400ms to animate the page change.
+  /// Returns true if page change was possible.
+  Future<bool> goToPreviousPage({bool withAnimation = true}) async {
+    return await _channel.invokeMethod(
+      'previousPage',
+      {'withAnimation': withAnimation},
+    );
   }
 
   /// Setting the scale factor to the default zoom factor.
@@ -93,6 +117,8 @@ class AlhPdfViewController {
   }
 
   /// Zooming to the given [zoom].
+  ///
+  /// By default, the zoom animation duration is 400 ms.
   Future<void> setZoom({required double zoom}) async {
     await _channel.invokeMethod('setZoom', <String, dynamic>{
       'newZoom': zoom,
@@ -103,20 +129,6 @@ class AlhPdfViewController {
   Future<double> getZoom() async {
     final double zoom = await _channel.invokeMethod('currentZoom');
     return zoom;
-  }
-
-  /// Jumping to [page] with an animation.
-  ///
-  /// Only working for Android.
-  /// For iOS, the method [setPage] will be used.
-  Future<void> setPageWithAnimation({required int page}) async {
-    if (defaultTargetPlatform == TargetPlatform.android) {
-      await _channel.invokeMethod('setPageWithAnimation', <String, dynamic>{
-        'page': page,
-      });
-    } else {
-      await setPage(page: page);
-    }
   }
 
   /// Returns the size of the given [page] index.

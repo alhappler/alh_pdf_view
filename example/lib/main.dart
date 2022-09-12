@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:io';
-import 'dart:typed_data';
 
 import 'package:alh_pdf_view_example/pdf_screen.dart';
 import 'package:flutter/material.dart';

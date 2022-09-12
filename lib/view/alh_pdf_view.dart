@@ -1,5 +1,3 @@
-import 'dart:typed_data';
-
 import 'package:alh_pdf_view/controller/alh_pdf_internal_controller.dart';
 import 'package:alh_pdf_view/controller/alh_pdf_view_controller.dart';
 import 'package:alh_pdf_view/model/alh_pdf_view_creation_params.dart';

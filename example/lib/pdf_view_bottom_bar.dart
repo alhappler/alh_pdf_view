@@ -42,7 +42,7 @@ class PdfViewBottomBar extends StatelessWidget {
             icon: const Icon(Icons.skip_next),
           ),
           IconButton(
-            onPressed: _handleTappZoomIn,
+            onPressed: _handleTapZoomIn,
             icon: const Icon(Icons.zoom_in),
           ),
         ],
@@ -52,26 +52,20 @@ class PdfViewBottomBar extends StatelessWidget {
 
   void _handleTapFirstPage() {
     if (pdfViewController != null) {
-      pdfViewController!.setPageWithAnimation(page: 0);
+      pdfViewController!.setPage(page: 0);
     }
   }
 
   void _handleTapPreviousPage() {
-    if (pdfViewController != null && currentPage != 0) {
-      pdfViewController!.setPageWithAnimation(page: currentPage - 1);
-    }
+    pdfViewController?.goToPreviousPage();
   }
 
   void _handleTapNextPage() {
-    if (pdfViewController != null && currentPage != totalPages) {
-      pdfViewController!.setPageWithAnimation(page: currentPage + 1);
-    }
+    pdfViewController?.goToNextPage(withAnimation: false);
   }
 
   void _handleTapLastPage() {
-    if (pdfViewController != null) {
-      pdfViewController!.setPageWithAnimation(page: totalPages - 2);
-    }
+    pdfViewController?.setPage(page: totalPages - 2);
   }
 
   Future<void> _handleTapZoomOut() async {
@@ -81,7 +75,7 @@ class PdfViewBottomBar extends StatelessWidget {
     }
   }
 
-  Future<void> _handleTappZoomIn() async {
+  Future<void> _handleTapZoomIn() async {
     if (pdfViewController != null) {
       final currentZoom = await pdfViewController!.getZoom();
       await pdfViewController!.setZoom(zoom: currentZoom + _zoomFactor);

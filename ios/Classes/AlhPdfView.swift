@@ -96,11 +96,14 @@ class AlhPdfView: NSObject, FlutterPlatformView {
             let currentPageIndex = _embeddedPdfView.getCurrentPageIndex() ?? -1
             result(currentPageIndex)
             break
+        case "previousPage":
+            goToPreviousPage(call: call, result: result)
+            break
+        case "nextPage":
+            goToNextPage(call: call, result: result)
+            break
         case "setPage":
-            let arguments = call.arguments as! Dictionary<String, Any>
-            let pageIndex = arguments["page"] as! Int
-            _embeddedPdfView.goToPage(pageIndex: pageIndex)
-            result(nil)
+            setPage(call: call, result: result)
             break
         case "pageSize":
             let pageSize = self._embeddedPdfView.getPdfPageSize()
@@ -131,6 +134,25 @@ class AlhPdfView: NSObject, FlutterPlatformView {
         }
     }
     
+    private func goToPreviousPage(call: FlutterMethodCall, result: @escaping FlutterResult) {
+        let arguments = call.arguments as! Dictionary<String, Any>
+        let withAnimation = arguments["withAnimation"] as! Bool
+        result(_embeddedPdfView.goToPreviousPage(withAnimation: withAnimation))
+    }
+    
+    private func goToNextPage(call: FlutterMethodCall, result: @escaping FlutterResult) {
+        let arguments = call.arguments as! Dictionary<String, Any>
+        let withAnimation = arguments["withAnimation"] as! Bool
+        result(_embeddedPdfView.goToNextPage(withAnimation: withAnimation))
+    }
+    
+    private func setPage(call: FlutterMethodCall, result: @escaping FlutterResult) {
+        let arguments = call.arguments as! Dictionary<String, Any>
+        let pageIndex = arguments["page"] as! Int
+        let withAnimation = arguments["withAnimation"] as! Bool
+        result(_embeddedPdfView.goToPage(pageIndex: pageIndex, withAnimation: withAnimation))
+    }
+    
     func initSwipeGestures() {
         let swipeLeft = UISwipeGestureRecognizer.init(target: self, action: #selector(didSwipe))
         swipeLeft.direction = .left
@@ -142,16 +164,7 @@ class AlhPdfView: NSObject, FlutterPlatformView {
     }
     
     @objc func didSwipe(gesture: UISwipeGestureRecognizer) {
-        let pdfView = _embeddedPdfView.pdfView
-        if(gesture.direction == .left) {
-            if(pdfView.canGoToNextPage) {
-                pdfView.goToNextPage(nil)
-            }
-        } else if (gesture.direction == .right){
-            if(pdfView.canGoToPreviousPage) {
-                pdfView.goToPreviousPage(nil)
-            }
-        }
+        _embeddedPdfView.handleSwipe(gesture: gesture)
     }
     
     func initObservers() {
