@@ -1,3 +1,17 @@
+## 1.0.0
+
+⚽️ **Features**
+* added two new functions for Android and iOS (Issue [#18](https://github.com/alhappler/alh_pdf_view/issues/18) from `carman247`)
+  * goToNextPage to navigate to the next page (optionally animated)
+  * goToPreviousPage to navigate to the previous page (optionally animated)
+* added `withAnimation` also for iOS when changing the page
+
+⚡️ **Breaking changes**
+* removed function `setPageWithAnimation`
+  * use instead `setPage` and use the parameter `withAnimation`
+* updated to flutter `3.3.0` and dart `2.18.0`
+  * minVersion for iOS is now `11.0`
+
 ## 0.3.4
 🐛 **Bugfix**
 

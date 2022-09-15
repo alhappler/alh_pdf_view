@@ -12,8 +12,8 @@ class PdfViewBottomBar extends StatelessWidget {
     required this.currentPage,
     required this.totalPages,
     this.pdfViewController,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +42,7 @@ class PdfViewBottomBar extends StatelessWidget {
             icon: const Icon(Icons.skip_next),
           ),
           IconButton(
-            onPressed: _handleTappZoomIn,
+            onPressed: _handleTapZoomIn,
             icon: const Icon(Icons.zoom_in),
           ),
         ],
@@ -50,28 +50,20 @@ class PdfViewBottomBar extends StatelessWidget {
     );
   }
 
-  void _handleTapFirstPage() {
-    if (pdfViewController != null) {
-      pdfViewController!.setPageWithAnimation(page: 0);
-    }
+  Future<void> _handleTapFirstPage() async {
+    await pdfViewController?.setPage(page: 0);
   }
 
-  void _handleTapPreviousPage() {
-    if (pdfViewController != null && currentPage != 0) {
-      pdfViewController!.setPageWithAnimation(page: currentPage - 1);
-    }
+  Future<void> _handleTapPreviousPage() async {
+    await pdfViewController?.goToPreviousPage();
   }
 
-  void _handleTapNextPage() {
-    if (pdfViewController != null && currentPage != totalPages) {
-      pdfViewController!.setPageWithAnimation(page: currentPage + 1);
-    }
+  Future<void> _handleTapNextPage() async {
+    await pdfViewController?.goToNextPage(withAnimation: false);
   }
 
-  void _handleTapLastPage() {
-    if (pdfViewController != null) {
-      pdfViewController!.setPageWithAnimation(page: totalPages - 2);
-    }
+  Future<void> _handleTapLastPage() async {
+    await pdfViewController?.setPage(page: totalPages - 2);
   }
 
   Future<void> _handleTapZoomOut() async {
@@ -81,7 +73,7 @@ class PdfViewBottomBar extends StatelessWidget {
     }
   }
 
-  Future<void> _handleTappZoomIn() async {
+  Future<void> _handleTapZoomIn() async {
     if (pdfViewController != null) {
       final currentZoom = await pdfViewController!.getZoom();
       await pdfViewController!.setZoom(zoom: currentZoom + _zoomFactor);

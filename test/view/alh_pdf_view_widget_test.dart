@@ -1,5 +1,3 @@
-import 'dart:typed_data';
-
 import 'package:alh_pdf_view/lib.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -353,6 +351,7 @@ void main() {
         PageErrorCallback? onPageError,
         ZoomChangedCallback? onZoomChanged,
       }) =>
+// ignore: discarded_futures,
           tester.pumpWidget(
             MaterialApp(
               home: Scaffold(
@@ -574,8 +573,7 @@ class _UpdateAlhPdfViewTest extends StatefulWidget {
     required this.filePath,
     required this.fitPolicy,
     required this.updatedFitPolicy,
-    Key? key,
-  }) : super(key: key);
+  });
 
   @override
   State<_UpdateAlhPdfViewTest> createState() => _UpdateAlhPdfViewTestState();

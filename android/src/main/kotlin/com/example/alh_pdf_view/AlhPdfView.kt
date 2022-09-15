@@ -70,14 +70,15 @@ internal class AlhPdfView(
         when (call.method) {
             "pageCount" -> getPageCount(result)
             "currentPage" -> getCurrentPage(result)
-            "setPage" -> setPage(call, result, false)
-            "setPageWithAnimation" -> setPage(call, result, true)
+            "setPage" -> setPage(call, result)
             "pageWidth" -> getPageWidth(result)
             "pageHeight" -> getPageHeight(result)
             "resetZoom" -> resetZoom(result)
             "setZoom" -> setZoom(call, result)
             "currentZoom" -> getZoom(result)
             "setOrientation" -> handleOrientationChange(call.arguments as Map<*, *>, result)
+            "nextPage" -> setNextPage(call, result)
+            "previousPage" -> setPreviousPage(call, result)
             else -> result.notImplemented()
         }
     }
@@ -170,12 +171,34 @@ internal class AlhPdfView(
         result.success(pdfView.currentPage)
     }
 
-    private fun setPage(call: MethodCall, result: MethodChannel.Result, withAnimation: Boolean) {
+    private fun setNextPage(call: MethodCall, result: MethodChannel.Result) {
+        val withAnimation = call.argument<Any>("withAnimation") as Boolean
+        val hasUpdated = updatePage(pdfView.currentPage + 1, withAnimation)
+        result.success(hasUpdated)
+    }
+
+    private fun setPreviousPage(call: MethodCall, result: MethodChannel.Result) {
+        val withAnimation = call.argument<Any>("withAnimation") as Boolean
+        val hasUpdated = updatePage(pdfView.currentPage - 1, withAnimation)
+        result.success(hasUpdated)
+    }
+
+    private fun setPage(call: MethodCall, result: MethodChannel.Result) {
         val page = call.argument<Any>("page") as Int
+        val withAnimation = call.argument<Any>("withAnimation") as Boolean
+        val hasUpdated = updatePage(page, withAnimation)
+        result.success(hasUpdated)
+    }
+
+    private fun updatePage(page: Int, withAnimation: Boolean): Boolean {
+        if (page < 0 || page >= pdfView.pageCount) return false
+
         destinationPage = page
         hasSetPageWithAnimation = withAnimation
         pdfView.jumpTo(page, withAnimation)
-        result.success(true)
+        pdfView.animation
+
+        return true
     }
 
     private fun resetZoom(result: MethodChannel.Result) {

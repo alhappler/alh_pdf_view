@@ -7,8 +7,8 @@ class PdfPageInfo extends StatelessWidget {
   const PdfPageInfo({
     required this.currentPage,
     required this.totalPages,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {

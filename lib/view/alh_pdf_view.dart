@@ -1,5 +1,3 @@
-import 'dart:typed_data';
-
 import 'package:alh_pdf_view/controller/alh_pdf_internal_controller.dart';
 import 'package:alh_pdf_view/controller/alh_pdf_view_controller.dart';
 import 'package:alh_pdf_view/model/alh_pdf_view_creation_params.dart';
@@ -179,12 +177,11 @@ class AlhPdfView extends StatefulWidget {
     this.minZoom = 0.5,
     this.maxZoom = 4.0,
     this.enableDefaultScrollHandle = false,
-    Key? key,
+    super.key,
   })  : assert(filePath != null || bytes != null),
         assert(defaultZoomFactor > 0.0),
         assert(minZoom > 0),
-        assert(maxZoom > 0),
-        super(key: key);
+        assert(maxZoom > 0);
 
   @override
   _AlhPdfViewState createState() => _AlhPdfViewState();
@@ -209,6 +206,7 @@ class _AlhPdfViewState extends State<AlhPdfView> with WidgetsBindingObserver {
   @override
   void didUpdateWidget(covariant AlhPdfView oldWidget) {
     if (widget != oldWidget) {
+// ignore: discarded_futures,
       _alhPdfInternalController?.updateCreationParams(
         creationParams: _creationParams.toMap(),
       );
@@ -288,6 +286,7 @@ class _AlhPdfViewState extends State<AlhPdfView> with WidgetsBindingObserver {
               )
                 ..addOnPlatformViewCreatedListener(params.onPlatformViewCreated)
                 ..addOnPlatformViewCreatedListener(_onPlatformViewCreated)
+// ignore: discarded_futures,
                 ..create();
             },
           ),
@@ -336,6 +335,7 @@ class _AlhPdfViewState extends State<AlhPdfView> with WidgetsBindingObserver {
   /// before the native part can calculate the FitPolicy for the PDF.
   void _handleRotationChanged({required Orientation orientation}) {
     if (defaultTargetPlatform == TargetPlatform.android) {
+// ignore: discarded_futures,
       _alhPdfInternalController?.setOrientation(
         orientation: orientation,
         creationParams: _creationParams.toMap(),

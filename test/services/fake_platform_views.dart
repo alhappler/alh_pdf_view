@@ -5,7 +5,6 @@
 // Source: https://github.com/flutter/flutter/blob/master/packages/flutter/test/services/fake_platform_views.dart
 
 import 'dart:async';
-import 'dart:typed_data';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
@@ -116,7 +115,7 @@ class FakeAndroidViewController implements AndroidViewController {
   }
 
   @override
-  Future<void> create() async {
+  Future<void> create({Size? size}) async {
     created = true;
   }
 
@@ -126,6 +125,9 @@ class FakeAndroidViewController implements AndroidViewController {
 
   @override
   Future<void> setOffset(Offset off) async {}
+
+  @override
+  bool get awaitingCreation => throw UnimplementedError();
 }
 
 class FakeAndroidPlatformViewsController {
@@ -161,6 +163,7 @@ class FakeAndroidPlatformViewsController {
     final MethodCodec codec = SystemChannels.platform_views.codec;
     final ByteData data =
         codec.encodeMethodCall(MethodCall('viewFocused', viewId));
+// ignore: discarded_futures,
     ServicesBinding.instance.defaultBinaryMessenger.handlePlatformMessage(
         SystemChannels.platform_views.name, data, (ByteData? data) {});
   }
@@ -550,8 +553,14 @@ class FakeAndroidPlatformView {
   }
 
   @override
-  int get hashCode => hashValues(
-      id, type, hashList(creationParams), size, layoutDirection, hybrid);
+  int get hashCode => Object.hash(
+        id,
+        type,
+        Object.hashAll(creationParams ?? []),
+        size,
+        layoutDirection,
+        hybrid,
+      );
 
   @override
   String toString() {
@@ -576,8 +585,11 @@ class FakeAndroidMotionEvent {
   }
 
   @override
-  int get hashCode =>
-      hashValues(action, hashList(pointers), hashList(pointerIds));
+  int get hashCode => Object.hash(
+        action,
+        Object.hashAll(pointers),
+        Object.hashAll(pointerIds),
+      );
 
   @override
   String toString() {
@@ -603,7 +615,7 @@ class FakeUiKitView {
   }
 
   @override
-  int get hashCode => hashValues(id, type);
+  int get hashCode => Object.hash(id, type);
 
   @override
   String toString() {
@@ -627,7 +639,7 @@ class FakeHtmlPlatformView {
   }
 
   @override
-  int get hashCode => hashValues(id, type);
+  int get hashCode => Object.hash(id, type);
 
   @override
   String toString() {

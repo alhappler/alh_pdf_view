@@ -12,8 +12,8 @@ class PDFScreen extends StatefulWidget {
   const PDFScreen({
     this.path,
     this.bytes,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   _PDFScreenState createState() => _PDFScreenState();

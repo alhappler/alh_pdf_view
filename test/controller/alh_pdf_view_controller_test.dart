@@ -1,6 +1,4 @@
 import 'package:alh_pdf_view/lib.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -266,78 +264,161 @@ void main() {
     test(
         'GIVEN page '
         'WHEN calling #setPage '
-        'THEN should should call "setPage" with given page', () async {
+        'THEN should should call "setPage" with expected arguments', () async {
       // given
       const givenPage = 100;
       late final MethodCall actualMethodCall;
       channel.setMockMethodCallHandler((call) async {
         if (call.method == 'setPage') {
           actualMethodCall = call;
-          return givenPage;
+          return true;
         }
       });
 
       // when
-      await controller.setPage(page: givenPage);
+      final actual = await controller.setPage(page: givenPage);
 
       // then
-      const expectedMethodCall = MethodCall('setPage', {'page': givenPage});
+      expect(actual, isTrue);
+      const expectedMethodCall = MethodCall('setPage', {
+        'page': givenPage,
+        'withAnimation': true,
+      });
+      expect(actualMethodCall.method, equals(expectedMethodCall.method));
+      expect(actualMethodCall.arguments, equals(expectedMethodCall.arguments));
+    });
+
+    test(
+        'GIVEN page and withAnimation = false '
+        'WHEN calling #setPage with given withAnimation '
+        'THEN should should call "setPage" with expected arguments', () async {
+      // given
+      const givenPage = 100;
+      late final MethodCall actualMethodCall;
+      channel.setMockMethodCallHandler((call) async {
+        if (call.method == 'setPage') {
+          actualMethodCall = call;
+          return false;
+        }
+      });
+
+      // when
+      final actual = await controller.setPage(page: givenPage);
+
+      // then
+      expect(actual, isFalse);
+      const expectedMethodCall = MethodCall('setPage', {
+        'page': givenPage,
+        'withAnimation': true,
+      });
       expect(actualMethodCall.method, equals(expectedMethodCall.method));
       expect(actualMethodCall.arguments, equals(expectedMethodCall.arguments));
     });
   });
 
-  group('#setPageWithAnimation', () {
+  group('#goToNextPage', () {
     test(
-        'GIVEN platform = Android and page '
-        'WHEN calling #setPageWithAnimation '
-        'THEN should should call "setPageWithAnimation" with given page',
-        () async {
+        'GIVEN page '
+        'WHEN calling #goToNextPage '
+        'THEN should should call "nextPage" with expected arguments', () async {
       // given
-      debugDefaultTargetPlatformOverride = TargetPlatform.android;
-      const givenPage = 100;
       late final MethodCall actualMethodCall;
       channel.setMockMethodCallHandler((call) async {
-        if (call.method == 'setPageWithAnimation') {
+        if (call.method == 'nextPage') {
           actualMethodCall = call;
-          return givenPage;
+          return true;
         }
       });
 
       // when
-      await controller.setPageWithAnimation(page: givenPage);
+      final actual = await controller.goToNextPage();
 
       // then
-      const expectedMethodCall =
-          MethodCall('setPageWithAnimation', {'page': givenPage});
+      expect(actual, isTrue);
+      const expectedMethodCall = MethodCall('nextPage', {
+        'withAnimation': true,
+      });
       expect(actualMethodCall.method, equals(expectedMethodCall.method));
       expect(actualMethodCall.arguments, equals(expectedMethodCall.arguments));
-      debugDefaultTargetPlatformOverride = null;
     });
 
     test(
-        'GIVEN platform = iOS and page '
-        'WHEN calling #setPageWithAnimation '
-        'THEN should should call "setPage" with given page', () async {
+        'GIVEN page and withAnimation = false '
+        'WHEN calling #goToNextPage with given withAnimation '
+        'THEN should should call "nextPage" with expected arguments', () async {
       // given
-      debugDefaultTargetPlatformOverride = TargetPlatform.iOS;
-      const givenPage = 100;
       late final MethodCall actualMethodCall;
       channel.setMockMethodCallHandler((call) async {
-        if (call.method == 'setPage') {
+        if (call.method == 'nextPage') {
           actualMethodCall = call;
-          return givenPage;
+          return false;
         }
       });
 
       // when
-      await controller.setPageWithAnimation(page: givenPage);
+      final actual = await controller.goToNextPage(withAnimation: false);
 
       // then
-      const expectedMethodCall = MethodCall('setPage', {'page': givenPage});
+      expect(actual, isFalse);
+      const expectedMethodCall = MethodCall('nextPage', {
+        'withAnimation': false,
+      });
       expect(actualMethodCall.method, equals(expectedMethodCall.method));
       expect(actualMethodCall.arguments, equals(expectedMethodCall.arguments));
-      debugDefaultTargetPlatformOverride = null;
+    });
+  });
+
+  group('#goToPreviousPage', () {
+    test(
+        'GIVEN page '
+        'WHEN calling #goToPreviousPage '
+        'THEN should should call "previousPage" with expected arguments',
+        () async {
+      // given
+      late final MethodCall actualMethodCall;
+      channel.setMockMethodCallHandler((call) async {
+        if (call.method == 'previousPage') {
+          actualMethodCall = call;
+          return true;
+        }
+      });
+
+      // when
+      final actual = await controller.goToPreviousPage();
+
+      // then
+      expect(actual, isTrue);
+      const expectedMethodCall = MethodCall('previousPage', {
+        'withAnimation': true,
+      });
+      expect(actualMethodCall.method, equals(expectedMethodCall.method));
+      expect(actualMethodCall.arguments, equals(expectedMethodCall.arguments));
+    });
+
+    test(
+        'GIVEN page and withAnimation = false '
+        'WHEN calling #goToPreviousPage with given withAnimation '
+        'THEN should should call "previousPage" with expected arguments',
+        () async {
+      // given
+      late final MethodCall actualMethodCall;
+      channel.setMockMethodCallHandler((call) async {
+        if (call.method == 'previousPage') {
+          actualMethodCall = call;
+          return false;
+        }
+      });
+
+      // when
+      final actual = await controller.goToPreviousPage(withAnimation: false);
+
+      // then
+      expect(actual, isFalse);
+      const expectedMethodCall = MethodCall('previousPage', {
+        'withAnimation': false,
+      });
+      expect(actualMethodCall.method, equals(expectedMethodCall.method));
+      expect(actualMethodCall.arguments, equals(expectedMethodCall.arguments));
     });
   });
 
