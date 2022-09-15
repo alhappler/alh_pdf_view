@@ -138,10 +138,10 @@ class FakeAndroidPlatformViewsController {
 
   Iterable<FakeAndroidPlatformView> get views => _views.values;
   final Map<int, FakeAndroidPlatformView> _views =
-  <int, FakeAndroidPlatformView>{};
+      <int, FakeAndroidPlatformView>{};
 
   final Map<int, List<FakeAndroidMotionEvent>> motionEvents =
-  <int, List<FakeAndroidMotionEvent>>{};
+      <int, List<FakeAndroidMotionEvent>>{};
 
   final Set<String> _registeredViewTypes = <String>{};
 
@@ -162,7 +162,7 @@ class FakeAndroidPlatformViewsController {
   void invokeViewFocused(int viewId) {
     final MethodCodec codec = SystemChannels.platform_views.codec;
     final ByteData data =
-    codec.encodeMethodCall(MethodCall('viewFocused', viewId));
+        codec.encodeMethodCall(MethodCall('viewFocused', viewId));
 // ignore: discarded_futures,
     ServicesBinding.instance.defaultBinaryMessenger.handlePlatformMessage(
         SystemChannels.platform_views.name, data, (ByteData? data) {});
@@ -202,7 +202,7 @@ class FakeAndroidPlatformViewsController {
       throw PlatformException(
         code: 'error',
         message:
-        'Trying to create an already created platform view, view id: $id',
+            'Trying to create an already created platform view, view id: $id',
       );
     }
 
@@ -210,7 +210,7 @@ class FakeAndroidPlatformViewsController {
       throw PlatformException(
         code: 'error',
         message:
-        'Trying to create a platform view of unregistered type: $viewType',
+            'Trying to create a platform view of unregistered type: $viewType',
       );
     }
 
@@ -233,7 +233,7 @@ class FakeAndroidPlatformViewsController {
   Future<dynamic> _dispose(MethodCall call) {
     assert(call.arguments is Map);
     final Map<Object?, Object?> arguments =
-    call.arguments as Map<Object?, Object?>;
+        call.arguments as Map<Object?, Object?>;
 
     final int id = arguments['id']! as int;
     final bool hybrid = arguments['hybrid']! as bool;
@@ -276,7 +276,7 @@ class FakeAndroidPlatformViewsController {
     _views[id] = _views[id]!.copyWith(size: Size(width, height));
 
     return Future<Map<dynamic, dynamic>>.sync(
-            () => <dynamic, dynamic>{'width': width, 'height': height});
+        () => <dynamic, dynamic>{'width': width, 'height': height});
   }
 
   Future<dynamic> _offset(MethodCall call) async {
@@ -293,9 +293,9 @@ class FakeAndroidPlatformViewsController {
     final int id = args[0] as int;
     final int action = args[3] as int;
     final List<List<dynamic>> pointerProperties =
-    (args[5] as List<dynamic>).cast<List<dynamic>>();
+        (args[5] as List<dynamic>).cast<List<dynamic>>();
     final List<List<dynamic>> pointerCoords =
-    (args[6] as List<dynamic>).cast<List<dynamic>>();
+        (args[6] as List<dynamic>).cast<List<dynamic>>();
     final List<Offset> pointerOffsets = <Offset>[];
     final List<int> pointerIds = <int>[];
     for (int i = 0; i < pointerCoords.length; i++) {
@@ -338,7 +338,7 @@ class FakeAndroidPlatformViewsController {
       throw PlatformException(
         code: 'error',
         message:
-        'Trying to clear the focus on a platform view with unknown id: $id',
+            'Trying to clear the focus on a platform view with unknown id: $id',
       );
     }
 
@@ -397,7 +397,7 @@ class FakeIosPlatformViewsController {
       throw PlatformException(
         code: 'error',
         message:
-        'Trying to create an already created platform view, view id: $id',
+            'Trying to create an already created platform view, view id: $id',
       );
     }
 
@@ -405,7 +405,7 @@ class FakeIosPlatformViewsController {
       throw PlatformException(
         code: 'error',
         message:
-        'Trying to create a platform view of unregistered type: $viewType',
+            'Trying to create a platform view of unregistered type: $viewType',
       );
     }
 
@@ -482,7 +482,7 @@ class FakeHtmlPlatformViewsController {
       throw PlatformException(
         code: 'error',
         message:
-        'Trying to create an already created platform view, view id: $id',
+            'Trying to create an already created platform view, view id: $id',
       );
     }
 
@@ -490,7 +490,7 @@ class FakeHtmlPlatformViewsController {
       throw PlatformException(
         code: 'error',
         message:
-        'Trying to create a platform view of unregistered type: $viewType',
+            'Trying to create a platform view of unregistered type: $viewType',
       );
     }
 
@@ -554,13 +554,13 @@ class FakeAndroidPlatformView {
 
   @override
   int get hashCode => Object.hash(
-    id,
-    type,
-    Object.hashAll(creationParams ?? []),
-    size,
-    layoutDirection,
-    hybrid,
-  );
+        id,
+        type,
+        Object.hashAll(creationParams ?? []),
+        size,
+        layoutDirection,
+        hybrid,
+      );
 
   @override
   String toString() {
@@ -586,10 +586,10 @@ class FakeAndroidMotionEvent {
 
   @override
   int get hashCode => Object.hash(
-    action,
-    Object.hashAll(pointers),
-    Object.hashAll(pointerIds),
-  );
+        action,
+        Object.hashAll(pointers),
+        Object.hashAll(pointerIds),
+      );
 
   @override
   String toString() {
