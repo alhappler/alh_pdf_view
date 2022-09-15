@@ -9,7 +9,7 @@
 ⚡️ **Breaking changes**
 * removed function `setPageWithAnimation`
   * use instead `setPage` and use the parameter `withAnimation`
-* updated to flutter `3.3` and dart `2.18`
+* updated to flutter `3.3.0` and dart `2.18.0`
   * minVersion for iOS is now `11.0`
 
 ## 0.3.4
