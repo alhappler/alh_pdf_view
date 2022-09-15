@@ -351,6 +351,7 @@ void main() {
         PageErrorCallback? onPageError,
         ZoomChangedCallback? onZoomChanged,
       }) =>
+// ignore: discarded_futures,
           tester.pumpWidget(
             MaterialApp(
               home: Scaffold(
@@ -572,8 +573,7 @@ class _UpdateAlhPdfViewTest extends StatefulWidget {
     required this.filePath,
     required this.fitPolicy,
     required this.updatedFitPolicy,
-    Key? key,
-  }) : super(key: key);
+  });
 
   @override
   State<_UpdateAlhPdfViewTest> createState() => _UpdateAlhPdfViewTestState();

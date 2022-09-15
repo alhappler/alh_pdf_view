@@ -14,7 +14,7 @@ void main() => runApp(
     );
 
 class MyApp extends StatefulWidget {
-  const MyApp({Key? key}) : super(key: key);
+  const MyApp({super.key});
 
   @override
   _MyAppState createState() => _MyAppState();
@@ -30,6 +30,7 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
+// ignore: discarded_futures,
     fromAsset('assets/sample.pdf', 'sample.pdf').then((f) {
       setState(() {
         pathSmallPDF = f.path;
@@ -67,6 +68,7 @@ class _MyAppState extends State<MyApp> {
               children: <Widget>[
                 ElevatedButton(
                   onPressed: () {
+// ignore: discarded_futures,
                     Navigator.push(
                       context,
                       MaterialPageRoute(
@@ -78,6 +80,7 @@ class _MyAppState extends State<MyApp> {
                 ),
                 ElevatedButton(
                   onPressed: () {
+// ignore: discarded_futures,
                     Navigator.push(
                       context,
                       MaterialPageRoute(

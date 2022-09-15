@@ -100,7 +100,7 @@ class AlhPdfViewController {
     );
   }
 
-  /// Goes to the next page.
+  /// Goes to the previous page.
   ///
   /// By default, [withAnimation] is true and takes 400ms to animate the page change.
   /// Returns true if page change was possible.

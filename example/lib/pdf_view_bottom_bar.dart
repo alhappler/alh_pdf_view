@@ -12,8 +12,8 @@ class PdfViewBottomBar extends StatelessWidget {
     required this.currentPage,
     required this.totalPages,
     this.pdfViewController,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -50,22 +50,20 @@ class PdfViewBottomBar extends StatelessWidget {
     );
   }
 
-  void _handleTapFirstPage() {
-    if (pdfViewController != null) {
-      pdfViewController!.setPage(page: 0);
-    }
+  Future<void> _handleTapFirstPage() async {
+    await pdfViewController?.setPage(page: 0);
   }
 
-  void _handleTapPreviousPage() {
-    pdfViewController?.goToPreviousPage();
+  Future<void> _handleTapPreviousPage() async {
+    await pdfViewController?.goToPreviousPage();
   }
 
-  void _handleTapNextPage() {
-    pdfViewController?.goToNextPage(withAnimation: false);
+  Future<void> _handleTapNextPage() async {
+    await pdfViewController?.goToNextPage(withAnimation: false);
   }
 
-  void _handleTapLastPage() {
-    pdfViewController?.setPage(page: totalPages - 2);
+  Future<void> _handleTapLastPage() async {
+    await pdfViewController?.setPage(page: totalPages - 2);
   }
 
   Future<void> _handleTapZoomOut() async {
