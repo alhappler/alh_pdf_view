@@ -26,6 +26,7 @@ class AlhPdfViewCreationParams {
   final bool enableDoubleTap; // only: Android
   final bool enableDefaultScrollHandle; // only: Android
 
+  /// Flag to know if onLinkHandle is provided
   final bool hasOnLinkHandle;
 
   const AlhPdfViewCreationParams({
