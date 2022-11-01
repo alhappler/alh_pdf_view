@@ -24,10 +24,13 @@ class EmbeddedPdfView : UIView {
     private var pageChangeAnimationDuration: Double = 0.4
     private var zoomAnimationDuration: Double = 0.4
     
-    init(configuration: AlhPdfViewConfiguration) {
+    private var pdfChannel: FlutterMethodChannel
+    
+    init(configuration: AlhPdfViewConfiguration, pdfChannel: FlutterMethodChannel) {
         self.configuration = configuration
         self.pdfView = PDFView.init(frame: .zero)
         self.initPdfViewScaleFactor = 0.0 // just a default value
+        self.pdfChannel = pdfChannel
         
         super.init(frame: .zero)
         
@@ -69,6 +72,7 @@ class EmbeddedPdfView : UIView {
             self.pdfView.backgroundColor = configuration.backgroundColor
             self.pdfView.document = document
             self.pdfView.displayMode = .singlePageContinuous
+            self.pdfView.delegate = self
             
             if(document.isEncrypted){
                 document.unlock(withPassword: configuration.password)
@@ -233,5 +237,18 @@ class EmbeddedPdfView : UIView {
             return true
         }
         return false
+    }
+}
+
+extension EmbeddedPdfView : PDFViewDelegate {
+  
+    func pdfViewWillClick(onLink sender: PDFView, with url: URL) {
+        
+        // If onLinkHandle is provided, call the method, otherwise open the URL in the browser
+        if(self.configuration.hasOnLinkHandle) {
+            self.pdfChannel.invokeMethod("onLinkHandle", arguments: ["url": url.absoluteString])
+        } else {
+            UIApplication.shared.open(url)
+        }
     }
 }

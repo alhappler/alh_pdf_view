@@ -22,27 +22,27 @@ class PdfViewBottomBar extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           IconButton(
-            onPressed: _handleTapZoomOut,
+            onPressed: this._handleTapZoomOut,
             icon: const Icon(Icons.zoom_out),
           ),
           IconButton(
-            onPressed: _handleTapFirstPage,
+            onPressed: this._handleTapFirstPage,
             icon: const Icon(Icons.skip_previous),
           ),
           IconButton(
-            onPressed: _handleTapPreviousPage,
+            onPressed: this._handleTapPreviousPage,
             icon: const Icon(Icons.navigate_before),
           ),
           IconButton(
-            onPressed: _handleTapNextPage,
+            onPressed: this._handleTapNextPage,
             icon: const Icon(Icons.navigate_next),
           ),
           IconButton(
-            onPressed: _handleTapLastPage,
+            onPressed: this._handleTapLastPage,
             icon: const Icon(Icons.skip_next),
           ),
           IconButton(
-            onPressed: _handleTapZoomIn,
+            onPressed: this._handleTapZoomIn,
             icon: const Icon(Icons.zoom_in),
           ),
         ],
@@ -51,32 +51,32 @@ class PdfViewBottomBar extends StatelessWidget {
   }
 
   Future<void> _handleTapFirstPage() async {
-    await pdfViewController?.setPage(page: 0);
+    await this.pdfViewController?.setPage(page: 0);
   }
 
   Future<void> _handleTapPreviousPage() async {
-    await pdfViewController?.goToPreviousPage();
+    await this.pdfViewController?.goToPreviousPage();
   }
 
   Future<void> _handleTapNextPage() async {
-    await pdfViewController?.goToNextPage(withAnimation: false);
+    await this.pdfViewController?.goToNextPage(withAnimation: false);
   }
 
   Future<void> _handleTapLastPage() async {
-    await pdfViewController?.setPage(page: totalPages - 2);
+    await this.pdfViewController?.setPage(page: this.totalPages - 2);
   }
 
   Future<void> _handleTapZoomOut() async {
-    if (pdfViewController != null) {
-      final currentZoom = await pdfViewController!.getZoom();
-      await pdfViewController!.setZoom(zoom: currentZoom - _zoomFactor);
+    if (this.pdfViewController != null) {
+      final currentZoom = await this.pdfViewController!.getZoom();
+      await this.pdfViewController!.setZoom(zoom: currentZoom - _zoomFactor);
     }
   }
 
   Future<void> _handleTapZoomIn() async {
-    if (pdfViewController != null) {
-      final currentZoom = await pdfViewController!.getZoom();
-      await pdfViewController!.setZoom(zoom: currentZoom + _zoomFactor);
+    if (this.pdfViewController != null) {
+      final currentZoom = await this.pdfViewController!.getZoom();
+      await this.pdfViewController!.setZoom(zoom: currentZoom + _zoomFactor);
     }
   }
 }

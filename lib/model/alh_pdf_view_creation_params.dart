@@ -26,6 +26,8 @@ class AlhPdfViewCreationParams {
   final bool enableDoubleTap; // only: Android
   final bool enableDefaultScrollHandle; // only: Android
 
+  final bool hasOnLinkHandle;
+
   const AlhPdfViewCreationParams({
     required this.filePath,
     required this.bytes,
@@ -45,6 +47,7 @@ class AlhPdfViewCreationParams {
     required this.minZoom,
     required this.maxZoom,
     required this.enableDefaultScrollHandle,
+    required this.hasOnLinkHandle,
   });
 
   Map<String, dynamic> toMap() => {
@@ -66,5 +69,6 @@ class AlhPdfViewCreationParams {
         'minZoom': this.minZoom,
         'maxZoom': this.maxZoom,
         'enableDefaultScrollHandle': this.enableDefaultScrollHandle,
+        'hasOnLinkHandle': this.hasOnLinkHandle,
       };
 }

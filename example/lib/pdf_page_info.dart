@@ -19,7 +19,7 @@ class PdfPageInfo extends StatelessWidget {
         margin: const EdgeInsets.only(top: 20),
         padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
         child: Text(
-          'Page ${currentPage + 1}/${totalPages - 1}',
+          'Page ${this.currentPage + 1}/${this.totalPages - 1}',
           textAlign: TextAlign.center,
           style: const TextStyle(
             color: Colors.white,

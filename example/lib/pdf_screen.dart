@@ -56,56 +56,56 @@ class _PDFScreenState extends State<PDFScreen> {
                       swipeHorizontal: false,
                       autoSpacing: true,
                       pageFling: false,
-                      defaultZoomFactor: defaultScale,
+                      defaultZoomFactor: this.defaultScale,
                       pageSnap: true,
                       onRender: (pages) {
                         setState(() {
                           this.pages = pages + 1;
-                          isReady = true;
+                          this.isReady = true;
                         });
                       },
                       onError: (error) {
                         setState(() {
-                          errorMessage = error.toString();
+                          this.errorMessage = error.toString();
                         });
                         print(error.toString());
                       },
                       onPageError: (page, error) {
                         setState(() {
-                          errorMessage = '$page: ${error.toString()}';
+                          this.errorMessage = '$page: ${error.toString()}';
                         });
                         print('$page: ${error.toString()}');
                       },
                       onViewCreated: (controller) {
-                        pdfViewController = controller;
+                        this.pdfViewController = controller;
                       },
                       onPageChanged: (int page, int total) {
                         setState(() {
-                          currentPage = page;
+                          this.currentPage = page;
                         });
                       },
                     ),
                   ),
                   if (orientation == Orientation.portrait)
                     PdfViewBottomBar(
-                      pdfViewController: pdfViewController,
-                      currentPage: currentPage,
-                      totalPages: pages,
+                      pdfViewController: this.pdfViewController,
+                      currentPage: this.currentPage,
+                      totalPages: this.pages,
                     ),
                 ],
               ),
-              if (errorMessage.isEmpty)
-                if (!isReady)
+              if (this.errorMessage.isEmpty)
+                if (!this.isReady)
                   const Center(
                     child: CircularProgressIndicator(),
                   )
                 else
                   PdfPageInfo(
-                    currentPage: currentPage,
-                    totalPages: pages,
+                    currentPage: this.currentPage,
+                    totalPages: this.pages,
                   )
               else
-                Center(child: Text(errorMessage))
+                Center(child: Text(this.errorMessage))
             ],
           ),
         );

@@ -25,7 +25,7 @@ class AlhPdfInternalController {
     required Orientation orientation,
     required Map<String, dynamic> creationParams,
   }) async {
-    await _channel.invokeMethod('setOrientation', {
+    await this._channel.invokeMethod('setOrientation', {
       'orientation': orientation.toString(),
       ...creationParams,
     });
@@ -38,7 +38,15 @@ class AlhPdfInternalController {
     required Map<String, dynamic> creationParams,
   }) async {
     if (defaultTargetPlatform == TargetPlatform.iOS) {
-      await _channel.invokeMethod('updateCreationParams', creationParams);
+      await this._channel.invokeMethod('updateCreationParams', creationParams);
     }
+  }
+
+  Future<void> onLinkHandle({
+    required String url,
+  }) async {
+    await this._channel.invokeListMethod('onLinkHandle', {
+      'url': url,
+    });
   }
 }

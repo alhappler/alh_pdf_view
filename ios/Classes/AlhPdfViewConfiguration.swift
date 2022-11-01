@@ -25,6 +25,7 @@ class AlhPdfViewConfiguration {
     var backgroundColor: UIColor
     var minZoom: CGFloat
     var maxZoom: CGFloat
+    var hasOnLinkHandle: Bool
     
     init(arguments: Dictionary<String, Any>) {
         self.filePath = arguments["filePath"] as? String
@@ -48,6 +49,7 @@ class AlhPdfViewConfiguration {
         self.backgroundColor = (arguments["backgroundColor"] as! UInt).toUIColor()
         self.minZoom = arguments["minZoom"] as! CGFloat
         self.maxZoom = arguments["maxZoom"] as! CGFloat
+        self.hasOnLinkHandle = arguments["hasOnLinkHandle"] as! Bool
     }
 }
 

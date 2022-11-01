@@ -584,7 +584,7 @@ class _UpdateAlhPdfViewTestState extends State<_UpdateAlhPdfViewTest> {
 
   @override
   void initState() {
-    fitPolicy = widget.fitPolicy;
+    this.fitPolicy = widget.fitPolicy;
     super.initState();
   }
 
@@ -595,13 +595,13 @@ class _UpdateAlhPdfViewTestState extends State<_UpdateAlhPdfViewTest> {
         Expanded(
           child: AlhPdfView(
             filePath: widget.filePath,
-            fitPolicy: fitPolicy,
+            fitPolicy: this.fitPolicy,
           ),
         ),
         TextButton(
           onPressed: () {
             setState(() {
-              fitPolicy = widget.updatedFitPolicy;
+              this.fitPolicy = widget.updatedFitPolicy;
             });
           },
           child: const Text('update'),
