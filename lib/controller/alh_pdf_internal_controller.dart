@@ -41,12 +41,4 @@ class AlhPdfInternalController {
       await this._channel.invokeMethod('updateCreationParams', creationParams);
     }
   }
-
-  Future<void> onLinkHandle({
-    required String url,
-  }) async {
-    await this._channel.invokeListMethod('onLinkHandle', {
-      'url': url,
-    });
-  }
 }

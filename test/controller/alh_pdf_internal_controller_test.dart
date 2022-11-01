@@ -112,32 +112,4 @@ void main() {
       debugDefaultTargetPlatformOverride = null;
     });
   });
-
-  group('#onLinkHandle', () {
-    const givenChannelMethodName = 'onLinkHandle';
-    const givenUrl = 'some url';
-
-    test(
-        'GIVEN url '
-        'WHEN calling givenChannelMethodName '
-        'THEN should call channel with expected url', () async {
-      // given
-      late final MethodCall actualMethodCall;
-      channel.setMockMethodCallHandler((call) async {
-        if (call.method == givenChannelMethodName) {
-          actualMethodCall = call;
-        }
-      });
-
-      // when
-      await controller.onLinkHandle(url: givenUrl);
-
-      // then
-      const expectedMethodCall = MethodCall(givenChannelMethodName, {
-        'url': givenUrl,
-      });
-      expect(actualMethodCall.method, equals(expectedMethodCall.method));
-      expect(actualMethodCall.arguments, equals(expectedMethodCall.arguments));
-    });
-  });
 }
