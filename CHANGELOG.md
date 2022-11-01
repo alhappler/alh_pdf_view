@@ -1,3 +1,8 @@
+## 1.1.0
+
+⚽️ **Features**
+* added `onLinkHandle` as callback for iOS when tapping on a link inside the PDF (Issue [#22](https://github.com/alhappler/alh_pdf_view/issues/22) from `shubhamsinha2009`)
+
 ## 1.0.0
 
 ⚽️ **Features**
