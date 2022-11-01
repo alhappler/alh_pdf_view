@@ -265,6 +265,7 @@ void main() {
               autoSpacing: false,
               minZoom: givenMinZoom,
               maxZoom: givenMaxZoom,
+              onLinkHandle: (_) {},
             ),
           ),
         ),
@@ -272,27 +273,31 @@ void main() {
 
       // then
       expect(
-          find.byWidgetPredicate((widget) =>
-              widget is UiKitView &&
-              widget.creationParams['filePath'] == givenFilePath &&
-              widget.creationParams['bytes'] == givenBytes &&
-              widget.creationParams['fitPolicy'] == givenFitPolicy.toString() &&
-              !widget.creationParams['fitEachPage'] &&
-              !widget.creationParams['enableSwipe'] &&
-              widget.creationParams['swipeHorizontal'] &&
-              widget.creationParams['nightMode'] &&
-              !widget.creationParams['autoSpacing'] &&
-              !widget.creationParams['pageFling'] &&
-              !widget.creationParams['pageSnap'] &&
-              widget.creationParams['defaultPage'] == givenDefaultPage &&
-              widget.creationParams['defaultZoomFactor'] ==
-                  givenDefaultZoomFactor &&
-              widget.creationParams['backgroundColor'] ==
-                  givenBackgroundColor.value &&
-              widget.creationParams['password'] == givenPassword &&
-              !widget.creationParams['enableDoubleTap'] &&
-              widget.creationParams['minZoom'] == givenMinZoom &&
-              widget.creationParams['maxZoom'] == givenMaxZoom),
+          find.byWidgetPredicate(
+            (widget) =>
+                widget is UiKitView &&
+                widget.creationParams['filePath'] == givenFilePath &&
+                widget.creationParams['bytes'] == givenBytes &&
+                widget.creationParams['fitPolicy'] ==
+                    givenFitPolicy.toString() &&
+                !widget.creationParams['fitEachPage'] &&
+                !widget.creationParams['enableSwipe'] &&
+                widget.creationParams['swipeHorizontal'] &&
+                widget.creationParams['nightMode'] &&
+                !widget.creationParams['autoSpacing'] &&
+                !widget.creationParams['pageFling'] &&
+                !widget.creationParams['pageSnap'] &&
+                widget.creationParams['defaultPage'] == givenDefaultPage &&
+                widget.creationParams['defaultZoomFactor'] ==
+                    givenDefaultZoomFactor &&
+                widget.creationParams['backgroundColor'] ==
+                    givenBackgroundColor.value &&
+                widget.creationParams['password'] == givenPassword &&
+                !widget.creationParams['enableDoubleTap'] &&
+                widget.creationParams['minZoom'] == givenMinZoom &&
+                widget.creationParams['maxZoom'] == givenMaxZoom &&
+                widget.creationParams['hasOnLinkHandle'] == true,
+          ),
           findsOneWidget);
 
       debugDefaultTargetPlatformOverride = null;
@@ -584,7 +589,7 @@ class _UpdateAlhPdfViewTestState extends State<_UpdateAlhPdfViewTest> {
 
   @override
   void initState() {
-    fitPolicy = widget.fitPolicy;
+    this.fitPolicy = widget.fitPolicy;
     super.initState();
   }
 
@@ -595,13 +600,13 @@ class _UpdateAlhPdfViewTestState extends State<_UpdateAlhPdfViewTest> {
         Expanded(
           child: AlhPdfView(
             filePath: widget.filePath,
-            fitPolicy: fitPolicy,
+            fitPolicy: this.fitPolicy,
           ),
         ),
         TextButton(
           onPressed: () {
             setState(() {
-              fitPolicy = widget.updatedFitPolicy;
+              this.fitPolicy = widget.updatedFitPolicy;
             });
           },
           child: const Text('update'),

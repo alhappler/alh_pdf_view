@@ -19,6 +19,7 @@ void main() {
     ErrorCallback? onError,
     PageErrorCallback? onPageError,
     ZoomChangedCallback? onZoomChanged,
+    Function(String url)? onLinkHandle,
   }) {
     controller = AlhPdfViewController(
       id: id,
@@ -27,6 +28,7 @@ void main() {
       onPageError: onPageError,
       onPageChanged: onPageChanged,
       onError: onError,
+      onLinkHandle: onLinkHandle,
     );
   }
 
@@ -176,6 +178,31 @@ void main() {
 
       // then
       expect(actualZoom, equals(givenZoom));
+    });
+
+    test(
+        'GIVEN url '
+        'WHEN invoking method "onLinkHandle" '
+        'THEN should call #onLinkHandle with given url', () async {
+      // given
+      const givenUrl = 'some url';
+
+      String? actualUrl;
+      setUpController(
+        id: givenId,
+        onLinkHandle: (url) {
+          actualUrl = url;
+        },
+      );
+
+      // when
+      await invokeMethodCall(
+        const MethodCall('onLinkHandle', {'url': givenUrl}),
+        channelName: channel.name,
+      );
+
+      // then
+      expect(actualUrl, equals(givenUrl));
     });
   });
 

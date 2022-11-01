@@ -43,7 +43,7 @@ class AlhPdfView: NSObject, FlutterPlatformView {
     
     // This channel is only called inside the package and should not be used by the user, e. g. it handles updated configuration values
     private var _pdfChannel: FlutterMethodChannel
-    
+        
     private var configuration: AlhPdfViewConfiguration
     
     init(
@@ -57,7 +57,7 @@ class AlhPdfView: NSObject, FlutterPlatformView {
         
         let arguments = args as! Dictionary<String, Any>
         configuration = AlhPdfViewConfiguration.init(arguments: arguments)
-        _embeddedPdfView = EmbeddedPdfView.init(configuration: configuration)
+        _embeddedPdfView = EmbeddedPdfView.init(configuration: configuration, pdfChannel: _pdfViewChannel)
         
         super.init()
         

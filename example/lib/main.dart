@@ -30,11 +30,16 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
-// ignore: discarded_futures,
-    fromAsset('assets/sample.pdf', 'sample.pdf').then((f) {
-      setState(() {
-        pathSmallPDF = f.path;
-        bytesSmallPDF = f.readAsBytesSync();
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      await this
+          .fromAsset('assets/sampleWithLink.pdf', 'sampleWithLink.pdf')
+          .then((f) {
+        setState(
+          () {
+            this.pathSmallPDF = f.path;
+            this.bytesSmallPDF = f.readAsBytesSync();
+          },
+        );
       });
     });
   }
@@ -68,11 +73,13 @@ class _MyAppState extends State<MyApp> {
               children: <Widget>[
                 ElevatedButton(
                   onPressed: () {
-// ignore: discarded_futures,
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => PDFScreen(path: pathSmallPDF),
+                    unawaited(
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) =>
+                              PDFScreen(path: this.pathSmallPDF),
+                        ),
                       ),
                     );
                   },
@@ -80,11 +87,13 @@ class _MyAppState extends State<MyApp> {
                 ),
                 ElevatedButton(
                   onPressed: () {
-// ignore: discarded_futures,
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => PDFScreen(bytes: bytesSmallPDF),
+                    unawaited(
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) =>
+                              PDFScreen(bytes: this.bytesSmallPDF),
+                        ),
                       ),
                     );
                   },
