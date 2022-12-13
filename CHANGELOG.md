@@ -1,7 +1,7 @@
 ## 1.2.0
 
 ⚽️ **Features**
-* added `showScrollbar` (Issue [#22](https://github.com/alhappler/alh_pdf_view/issues/33) from `mirkancal`)
+* added `showScrollbar` (Issue [#33](https://github.com/alhappler/alh_pdf_view/issues/33) from `mirkancal`)
   * default value is true
   * if false you can hide the Scrollbar
   * this solution only works for iOS
