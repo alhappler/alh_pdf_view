@@ -18,6 +18,7 @@ class AlhPdfViewConfiguration {
     var nightMode: Bool
     var autoSpacing: Bool
     var pageFling: Bool
+    var showScrollbar: Bool
     var pageSnap: Bool
     var enableDoubleTap: Bool
     var defaultPage: Int
@@ -42,6 +43,7 @@ class AlhPdfViewConfiguration {
         self.nightMode = arguments["nightMode"] as! Bool
         self.autoSpacing = arguments["autoSpacing"] as! Bool
         self.pageFling = arguments["pageFling"] as! Bool
+        self.showScrollbar = arguments["showScrollbar"] as! Bool
         self.pageSnap = arguments["pageSnap"] as! Bool
         self.enableDoubleTap = arguments["enableDoubleTap"] as! Bool
         self.defaultPage = arguments["defaultPage"] as! Int

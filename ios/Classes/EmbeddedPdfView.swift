@@ -58,6 +58,7 @@ class EmbeddedPdfView : UIView {
         if(!hasInitializedView) {
             initPdfDefaultScaleFactor()
             goToDefaultPage()
+            initializeScrollbar()
         } else if let updatedConfiguration = self.updatedConfiguration {
             handleUpdatedConfiguration(updatedConfiguration: updatedConfiguration)
         }
@@ -78,6 +79,33 @@ class EmbeddedPdfView : UIView {
                 document.unlock(withPassword: configuration.password)
             }
         }
+    }
+    
+    private func initializeScrollbar() {
+        for view in pdfView.subviews {
+            if let scrollView = findUIScrollView(of: view) {
+                scrollView.showsHorizontalScrollIndicator = configuration.showScrollbar
+                scrollView.showsVerticalScrollIndicator = configuration.showScrollbar
+            }
+        }
+    }
+    
+    private func findUIScrollView(of uiView: UIView) -> UIScrollView? {
+        if let scrollView = uiView as? UIScrollView {
+            return scrollView
+        }
+            
+        for view in uiView.subviews {
+           if let scrollView = view as? UIScrollView {
+               return scrollView
+            }
+                
+            if !view.subviews.isEmpty {
+                return findUIScrollView(of: view)
+            }
+        }
+        
+        return nil
     }
     
     /**
@@ -140,6 +168,9 @@ class EmbeddedPdfView : UIView {
         if(updatedConfiguration.fitPolicy != configuration.fitPolicy) {
             self.configuration = updatedConfiguration
             initPdfDefaultScaleFactor()
+        }
+        if(updatedConfiguration.showScrollbar != configuration.showScrollbar) {
+            initializeScrollbar()
         }
         self.updatedConfiguration = nil
     }

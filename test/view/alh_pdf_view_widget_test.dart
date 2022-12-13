@@ -156,7 +156,8 @@ void main() {
                 widget.enableDoubleTap &&
                 widget.minZoom == 0.5 &&
                 widget.maxZoom == 4.0 &&
-                !widget.enableDefaultScrollHandle,
+                !widget.enableDefaultScrollHandle &&
+                widget.showScrollbar,
           ),
           findsOneWidget);
       expect(
@@ -263,6 +264,7 @@ void main() {
               defaultPage: givenDefaultPage,
               backgroundColor: givenBackgroundColor,
               autoSpacing: false,
+              showScrollbar: false,
               minZoom: givenMinZoom,
               maxZoom: givenMaxZoom,
               onLinkHandle: (_) {},
@@ -296,7 +298,8 @@ void main() {
                 !widget.creationParams['enableDoubleTap'] &&
                 widget.creationParams['minZoom'] == givenMinZoom &&
                 widget.creationParams['maxZoom'] == givenMaxZoom &&
-                widget.creationParams['hasOnLinkHandle'] == true,
+                widget.creationParams['hasOnLinkHandle'] == true &&
+                !widget.creationParams['showScrollbar'],
           ),
           findsOneWidget);
 

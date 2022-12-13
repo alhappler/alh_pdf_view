@@ -102,6 +102,12 @@ class AlhPdfView extends StatefulWidget {
   /// Default value: true
   final bool autoSpacing;
 
+  /// Responsible to show the scrolling indicator (ScrollBar) inside the pdf view.
+  ///
+  /// Working only for iOS (use [enableDefaultScrollHandle] for Android)
+  /// Default value: true
+  final bool showScrollbar;
+
   /// Snap pages to screen boundaries when changing the current page.
   ///
   /// Working only for Android.
@@ -119,7 +125,7 @@ class AlhPdfView extends StatefulWidget {
   /// The button is similar to a scroll bar.
   /// On iOS, there is always a scrollbar that can be used to scroll faster.
   ///
-  /// Only working on Android.
+  /// Working only for Android (use [showScrollbar] for iOS)
   /// Default value: false
   final bool enableDefaultScrollHandle;
 
@@ -179,6 +185,7 @@ class AlhPdfView extends StatefulWidget {
     this.nightMode = false,
     this.autoSpacing = true,
     this.pageFling = true,
+    this.showScrollbar = true,
     this.pageSnap = true,
     this.defaultPage = 0,
     this.backgroundColor = Colors.transparent,
@@ -368,6 +375,7 @@ class _AlhPdfViewState extends State<AlhPdfView> with WidgetsBindingObserver {
         fitPolicy: widget.fitPolicy,
         nightMode: widget.nightMode,
         pageFling: widget.pageFling,
+        showScrollbar: widget.showScrollbar,
         pageSnap: widget.pageSnap,
         password: widget.password,
         swipeHorizontal: widget.swipeHorizontal,

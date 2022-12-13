@@ -50,6 +50,7 @@ class _PDFScreenState extends State<PDFScreen> {
                       nightMode: false,
                       password: 'password',
                       fitEachPage: false,
+                      showScrollbar: true,
                       fitPolicy: orientation == Orientation.portrait
                           ? FitPolicy.both
                           : FitPolicy.width,
