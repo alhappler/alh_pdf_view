@@ -31,6 +31,8 @@ void main() {
       const givenMaxZoom = 5.0;
       const givenEnableDefaultScrollHandle = true;
       const givenHasOnLinkHandle = false;
+      const givenShowScrollbar = false;
+
       final givenAlhPdfViewCreationParams = AlhPdfViewCreationParams(
         filePath: givenFilePath,
         bytes: givenBytes,
@@ -51,6 +53,7 @@ void main() {
         maxZoom: givenMaxZoom,
         enableDefaultScrollHandle: givenEnableDefaultScrollHandle,
         hasOnLinkHandle: givenHasOnLinkHandle,
+        showScrollbar: givenShowScrollbar,
       );
 
       // when
@@ -77,6 +80,7 @@ void main() {
         'maxZoom': givenMaxZoom,
         'enableDefaultScrollHandle': givenEnableDefaultScrollHandle,
         'hasOnLinkHandle': givenHasOnLinkHandle,
+        'showScrollbar': givenShowScrollbar,
       };
       expect(actual, equals(expectedMap));
     });

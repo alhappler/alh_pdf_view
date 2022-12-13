@@ -19,6 +19,8 @@ class AlhPdfViewCreationParams {
   final double minZoom;
   final double maxZoom;
 
+  final bool showScrollbar;
+
   final bool pageSnap; // only: Android
   final bool fitEachPage; // only: Android
   final bool nightMode; // only: Android
@@ -39,6 +41,7 @@ class AlhPdfViewCreationParams {
     required this.nightMode,
     required this.autoSpacing,
     required this.pageFling,
+    required this.showScrollbar,
     required this.pageSnap,
     required this.defaultPage,
     required this.defaultZoomFactor,
@@ -61,6 +64,7 @@ class AlhPdfViewCreationParams {
         'nightMode': this.nightMode,
         'autoSpacing': this.autoSpacing,
         'pageFling': this.pageFling,
+        'showScrollbar': this.showScrollbar,
         'pageSnap': this.pageSnap,
         'defaultPage': this.defaultPage,
         'defaultZoomFactor': this.defaultZoomFactor,

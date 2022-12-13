@@ -31,9 +31,7 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      await this
-          .fromAsset('assets/sampleWithLink.pdf', 'sampleWithLink.pdf')
-          .then((f) {
+      await this.fromAsset('assets/sample.pdf', 'sample.pdf').then((f) {
         setState(
           () {
             this.pathSmallPDF = f.path;
