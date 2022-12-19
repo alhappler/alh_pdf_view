@@ -52,26 +52,27 @@ class AlhPdfViewExample extends StatelessWidget {
 ### Parameters
 This is a list of all parameters that can be used for this widget. Consider that some paremters only work for one platform.
 
-| **Parameter**       | **Description**                                                                          |    **Default Value**     |
-|:--------------------|:-----------------------------------------------------------------------------------------|:------------------------:|
-| `filePath`          | Optional path to load PDF file.                                                          |          **-**           |
-| `bytes`             | Optional bytes to load PDF file.                                                         |          **-**           |
-| `fitPolicy`         | Defines how the PDF should fit inside the widget.                                        |   **`FitPolicy.both`**   |
-| `fitEachPage`       | Each page of the PDF will fit inside the given space.                                    |        **`true`**        |
-| `enableSwipe`       | The current page will be changed when swiping.                                           |        **`true`**        |
-| `swipeHorizontal`   | If true, all pages are displayed in horizontal direction.                                |       **`false`**        |
-| `nightMode`         | Inverting colors of pages to have the look of a dark mode. (only Android)                |       **`false`**        |
-| `autoSpacing`       | If true, spacing will be added to fit each page on its own on the screen. (only Android) |        **`true`**        |
-| `pageFling`         | Making a fling change.                                                                   |        **`true`**        |
-| `pageSnap`          | Snap pages to screen boundaries when changing the current page. (only Android)           |        **`true`**        |
-| `defaultPage`       | Describes which page should be shown at first.                                           |         **`0`**          |
-| `defaultZoomFactor` | Defines how much the displayed PDF page should zoomed when rendered.                     |        **`1.0`**         |
-| `backgroundColor`   | Setting backgroundColor of remaining space around the pdf view.                          | **`Colors.transparent`** |
-| `password`          | Unlocks PDF page with this password.                                                     |         **`""`**         |
-| `enableDoubleTap`   | When double tapping, the zoom of the page changes. (only Android)                        |        **`1.0`**         |
-| `minZoom`           | Min zoom value that the user can reach while zooming.                                    |        **`0.5`**         |
-| `maxZoom`           | Max zoom value that the user can reach while zooming.                                    |        **`4.0`**         |
-| `enableDefaultScrollHandle`           | Adds a button to scroll faster through the document. (only Android)                      |        **false**         |
+| **Parameter**               | **Description**                                                                          |    **Default Value**     |
+|:----------------------------|:-----------------------------------------------------------------------------------------|:------------------------:|
+| `filePath`                  | Optional path to load PDF file.                                                          |          **-**           |
+| `bytes`                     | Optional bytes to load PDF file.                                                         |          **-**           |
+| `fitPolicy`                 | Defines how the PDF should fit inside the widget.                                        |   **`FitPolicy.both`**   |
+| `fitEachPage`               | Each page of the PDF will fit inside the given space.                                    |        **`true`**        |
+| `enableSwipe`               | The current page will be changed when swiping.                                           |        **`true`**        |
+| `swipeHorizontal`           | If true, all pages are displayed in horizontal direction.                                |       **`false`**        |
+| `nightMode`                 | Inverting colors of pages to have the look of a dark mode. (only Android)                |       **`false`**        |
+| `autoSpacing`               | If true, spacing will be added to fit each page on its own on the screen. (only Android) |        **`true`**        |
+| `pageFling`                 | Making a fling change.                                                                   |        **`true`**        |
+| `pageSnap`                  | Snap pages to screen boundaries when changing the current page. (only Android)           |        **`true`**        |
+| `defaultPage`               | Describes which page should be shown at first.                                           |         **`0`**          |
+| `defaultZoomFactor`         | Defines how much the displayed PDF page should zoomed when rendered.                     |        **`1.0`**         |
+| `backgroundColor`           | Setting backgroundColor of remaining space around the pdf view.                          | **`Colors.transparent`** |
+| `password`                  | Unlocks PDF page with this password.                                                     |         **`""`**         |
+| `enableDoubleTap`           | When double tapping, the zoom of the page changes. (only Android)                        |        **`1.0`**         |
+| `minZoom`                   | Min zoom value that the user can reach while zooming.                                    |        **`0.5`**         |
+| `maxZoom`                   | Max zoom value that the user can reach while zooming.                                    |        **`4.0`**         |
+| `enableDefaultScrollHandle` | Adds a button to scroll faster through the document. (only Android)                      |        **false**         |
+| `showScrollbar`             | If true, a Scrollbar is visible for the Pdf View (only iOS).                             |         **true**         |
 
 This is a list of functional parameters.
 
