@@ -20,6 +20,7 @@ void main() {
     PageErrorCallback? onPageError,
     ZoomChangedCallback? onZoomChanged,
     Function(String url)? onLinkHandle,
+    OnTapCallback? onTap,
   }) {
     controller = AlhPdfViewController(
       id: id,
@@ -29,6 +30,7 @@ void main() {
       onPageChanged: onPageChanged,
       onError: onError,
       onLinkHandle: onLinkHandle,
+      onTap: onTap,
     );
   }
 
