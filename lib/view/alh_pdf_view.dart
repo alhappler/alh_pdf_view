@@ -167,6 +167,9 @@ class AlhPdfView extends StatefulWidget {
   /// This works only for iOS.
   final LinkHandleCallback? onLinkHandle;
 
+  /// Called when tapped in PDF.
+  ///
+  /// This works only for Android.
   final OnTapCallback? onTap;
 
   const AlhPdfView({
