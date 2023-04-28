@@ -144,14 +144,14 @@ class EmbeddedPdfView : UIView {
         switch(configuration.fitPolicy) {
         case FitPolicy.both:
             if(parentSize.height > parentSize.width) {
-                return parentSize.width / pageSize.width
+                return self.pdfView.scaleFactorForSizeToFit // works only for width
             } else {
                 return parentSize.height / pageSize.height
             }
         case FitPolicy.height:
             return parentSize.height / pageSize.height
         case FitPolicy.width:
-            return parentSize.width / pageSize.width
+            return self.pdfView.scaleFactorForSizeToFit // works only for width
         }
         
     }
@@ -182,8 +182,8 @@ class EmbeddedPdfView : UIView {
         let pdfPage = document.page(at: defaultPage)!
         
         let initialPageRect = pdfPage.bounds(for: self.pdfView.displayBox)
-        
-        return CGSize(width: initialPageRect.size.width, height:  initialPageRect.size.height)
+        let kaka = pdfPage.bounds(for: .mediaBox)
+        return CGSize(width: initialPageRect.width, height:  initialPageRect.height)
     }
     
     /**
