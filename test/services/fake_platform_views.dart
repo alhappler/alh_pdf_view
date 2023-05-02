@@ -115,11 +115,6 @@ class FakeAndroidViewController implements AndroidViewController {
   }
 
   @override
-  Future<void> create({Size? size}) async {
-    this.created = true;
-  }
-
-  @override
   List<PlatformViewCreatedCallback> get createdCallbacks =>
       <PlatformViewCreatedCallback>[];
 
@@ -128,6 +123,14 @@ class FakeAndroidViewController implements AndroidViewController {
 
   @override
   bool get awaitingCreation => throw UnimplementedError();
+
+  @override
+  Future<void> create({Size? size, Offset? position}) async {
+    this.created = true;
+  }
+
+  @override
+  bool get requiresViewComposition => throw UnimplementedError();
 }
 
 class FakeAndroidPlatformViewsController {
