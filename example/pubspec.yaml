@@ -18,7 +18,7 @@ dependencies:
   cupertino_icons: ^1.0.2
 
 dev_dependencies:
-  path_provider: ^2.0.2
+  path_provider: ^2.0.14
   alh_pdf_view:
     path: ../
   flutter_test:

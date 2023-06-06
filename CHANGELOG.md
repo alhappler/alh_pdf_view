@@ -1,3 +1,8 @@
+## 1.2.1
+
+🐛 **Bugfix**
+* double tap on first zoom didn't work properly on iOS (Issue [#39](https://github.com/alhappler/alh_pdf_view/issues/39) from `https://github.com/mirkancal`)
+
 ## 1.2.0
 
 ⚽️ **Features**
