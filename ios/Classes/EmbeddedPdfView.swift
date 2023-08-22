@@ -54,7 +54,9 @@ class EmbeddedPdfView : UIView {
     override func layoutSubviews() {
         super.layoutSubviews()
         
-        if(self.hasError) return;
+        if(self.hasError){
+            return;
+        }
         
         self.pdfView.usePageViewController(configuration.pageFling, withViewOptions: nil)
         
@@ -85,7 +87,7 @@ class EmbeddedPdfView : UIView {
         }
         else {
             self.pdfChannel.invokeMethod("onError", arguments: [
-                "error": "failure initialising pdf document. "
+                "error": "Failure initialising pdf document!"
             ])
             
             self.hasError = true;
@@ -190,7 +192,6 @@ class EmbeddedPdfView : UIView {
         let pageCount = document.pageCount
         let defaultPage = configuration.defaultPage > pageCount ? configuration.defaultPage : pageCount - 1
         let pdfPage = document.page(at: defaultPage)!
-        
         let initialPageRect = pdfPage.bounds(for: self.pdfView.displayBox)
         
         return CGSize(width: initialPageRect.size.width, height:  initialPageRect.size.height)
