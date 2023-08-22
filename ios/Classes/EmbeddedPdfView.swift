@@ -79,6 +79,7 @@ class EmbeddedPdfView : UIView {
             self.pdfView.document = document
             self.pdfView.displayMode = .singlePageContinuous
             self.pdfView.delegate = self
+            self.pdfView.pageBreakMargins = UIEdgeInsets(top: 0, left: 0, bottom: CGFloat(configuration.spacing), right: 0)
             
             if(document.isEncrypted){
                 document.unlock(withPassword: configuration.password)

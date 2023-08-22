@@ -129,6 +129,14 @@ class AlhPdfView extends StatefulWidget {
   /// Default value: false
   final bool enableDefaultScrollHandle;
 
+  /// Spacing between pdf pages.
+  ///
+  /// Android: Spacing is only between pages.
+  /// iOS: Spacing is also on the last page to the bottom.
+  ///
+  /// Default value: 0
+  final int spacing;
+
   /// Which gestures should be consumed by the pdf view.
   ///
   /// It is possible for other gesture recognizers to be competing with the pdf view on pointer
@@ -194,6 +202,7 @@ class AlhPdfView extends StatefulWidget {
     this.minZoom = 0.5,
     this.maxZoom = 4.0,
     this.enableDefaultScrollHandle = false,
+    this.spacing = 0,
     super.key,
   })  : assert(filePath != null || bytes != null),
         assert(defaultZoomFactor > 0.0),
@@ -383,6 +392,7 @@ class _AlhPdfViewState extends State<AlhPdfView> with WidgetsBindingObserver {
         minZoom: widget.minZoom,
         maxZoom: widget.maxZoom,
         enableDefaultScrollHandle: widget.enableDefaultScrollHandle,
+        spacing: widget.spacing,
         hasOnLinkHandle: widget.onLinkHandle != null,
       );
 }

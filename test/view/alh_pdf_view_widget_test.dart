@@ -159,7 +159,8 @@ void main() {
                 widget.minZoom == 0.5 &&
                 widget.maxZoom == 4.0 &&
                 !widget.enableDefaultScrollHandle &&
-                widget.showScrollbar,
+                widget.showScrollbar &&
+                widget.spacing == 0,
           ),
           findsOneWidget);
       expect(
@@ -247,6 +248,7 @@ void main() {
       const givenBackgroundColor = Colors.blue;
       const givenMinZoom = 0.04;
       const givenMaxZoom = 100.0;
+      const givenSpacing = 12345;
 
       // when
       await tester.pumpWidget(
@@ -271,6 +273,7 @@ void main() {
               showScrollbar: false,
               minZoom: givenMinZoom,
               maxZoom: givenMaxZoom,
+              spacing: givenSpacing,
               onLinkHandle: (_) {},
             ),
           ),
@@ -303,7 +306,8 @@ void main() {
                 widget.creationParams['minZoom'] == givenMinZoom &&
                 widget.creationParams['maxZoom'] == givenMaxZoom &&
                 widget.creationParams['hasOnLinkHandle'] == true &&
-                !widget.creationParams['showScrollbar'],
+                !widget.creationParams['showScrollbar'] &&
+                widget.creationParams['spacing'] == givenSpacing,
           ),
           findsOneWidget);
 
