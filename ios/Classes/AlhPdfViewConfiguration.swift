@@ -27,6 +27,7 @@ class AlhPdfViewConfiguration {
     var minZoom: CGFloat
     var maxZoom: CGFloat
     var hasOnLinkHandle: Bool
+    var spacing: Int
     
     init(arguments: Dictionary<String, Any>) {
         self.filePath = arguments["filePath"] as? String
@@ -52,6 +53,7 @@ class AlhPdfViewConfiguration {
         self.minZoom = arguments["minZoom"] as! CGFloat
         self.maxZoom = arguments["maxZoom"] as! CGFloat
         self.hasOnLinkHandle = arguments["hasOnLinkHandle"] as! Bool
+        self.spacing = arguments["spacing"] as! Int
     }
 }
 

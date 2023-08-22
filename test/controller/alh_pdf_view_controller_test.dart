@@ -37,7 +37,8 @@ void main() {
   });
 
   tearDown(() {
-    channel.setMockMethodCallHandler(null);
+    TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+        .setMockMethodCallHandler(channel, null);
   });
 
   group('#invoking methods', () {
@@ -215,11 +216,13 @@ void main() {
       const givenPage = 5;
       const givenSize = Size(100.0, 200.0);
       late final MethodCall actualMethodCall;
-      channel.setMockMethodCallHandler((call) async {
+      TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+          .setMockMethodCallHandler(channel, (call) async {
         if (call.method == 'pageSize') {
           actualMethodCall = call;
           return {'height': givenSize.height, 'width': givenSize.width};
         }
+        return null;
       });
 
       // when
@@ -242,11 +245,13 @@ void main() {
       // given
       const givenPageCount = 5;
       late final MethodCall actualMethodCall;
-      channel.setMockMethodCallHandler((call) async {
+      TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+          .setMockMethodCallHandler(channel, (call) async {
         if (call.method == 'pageCount') {
           actualMethodCall = call;
           return givenPageCount;
         }
+        return null;
       });
 
       // when
@@ -269,11 +274,13 @@ void main() {
       // given
       const givenPage = 5;
       late final MethodCall actualMethodCall;
-      channel.setMockMethodCallHandler((call) async {
+      TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+          .setMockMethodCallHandler(channel, (call) async {
         if (call.method == 'currentPage') {
           actualMethodCall = call;
           return givenPage;
         }
+        return null;
       });
 
       // when
@@ -295,11 +302,13 @@ void main() {
       // given
       const givenPage = 100;
       late final MethodCall actualMethodCall;
-      channel.setMockMethodCallHandler((call) async {
+      TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+          .setMockMethodCallHandler(channel, (call) async {
         if (call.method == 'setPage') {
           actualMethodCall = call;
           return true;
         }
+        return null;
       });
 
       // when
@@ -322,11 +331,13 @@ void main() {
       // given
       const givenPage = 100;
       late final MethodCall actualMethodCall;
-      channel.setMockMethodCallHandler((call) async {
+      TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+          .setMockMethodCallHandler(channel, (call) async {
         if (call.method == 'setPage') {
           actualMethodCall = call;
           return false;
         }
+        return null;
       });
 
       // when
@@ -350,11 +361,13 @@ void main() {
         'THEN should should call "nextPage" with expected arguments', () async {
       // given
       late final MethodCall actualMethodCall;
-      channel.setMockMethodCallHandler((call) async {
+      TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+          .setMockMethodCallHandler(channel, (call) async {
         if (call.method == 'nextPage') {
           actualMethodCall = call;
           return true;
         }
+        return null;
       });
 
       // when
@@ -375,11 +388,13 @@ void main() {
         'THEN should should call "nextPage" with expected arguments', () async {
       // given
       late final MethodCall actualMethodCall;
-      channel.setMockMethodCallHandler((call) async {
+      TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+          .setMockMethodCallHandler(channel, (call) async {
         if (call.method == 'nextPage') {
           actualMethodCall = call;
           return false;
         }
+        return null;
       });
 
       // when
@@ -403,11 +418,13 @@ void main() {
         () async {
       // given
       late final MethodCall actualMethodCall;
-      channel.setMockMethodCallHandler((call) async {
+      TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+          .setMockMethodCallHandler(channel, (call) async {
         if (call.method == 'previousPage') {
           actualMethodCall = call;
           return true;
         }
+        return null;
       });
 
       // when
@@ -429,11 +446,13 @@ void main() {
         () async {
       // given
       late final MethodCall actualMethodCall;
-      channel.setMockMethodCallHandler((call) async {
+      TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+          .setMockMethodCallHandler(channel, (call) async {
         if (call.method == 'previousPage') {
           actualMethodCall = call;
           return false;
         }
+        return null;
       });
 
       // when
@@ -456,10 +475,12 @@ void main() {
         'THEN should should call "resetZoom"', () async {
       // given
       late final MethodCall actualMethodCall;
-      channel.setMockMethodCallHandler((call) async {
+      TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+          .setMockMethodCallHandler(channel, (call) async {
         if (call.method == 'resetZoom') {
           actualMethodCall = call;
         }
+        return null;
       });
 
       // when
@@ -480,10 +501,12 @@ void main() {
       // given
       const givenZoom = 100.1;
       late final MethodCall actualMethodCall;
-      channel.setMockMethodCallHandler((call) async {
+      TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+          .setMockMethodCallHandler(channel, (call) async {
         if (call.method == 'setZoom') {
           actualMethodCall = call;
         }
+        return null;
       });
 
       // when
@@ -504,11 +527,13 @@ void main() {
       // given
       const givenZoom = 33.333;
       late final MethodCall actualMethodCall;
-      channel.setMockMethodCallHandler((call) async {
+      TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+          .setMockMethodCallHandler(channel, (call) async {
         if (call.method == 'currentZoom') {
           actualMethodCall = call;
           return givenZoom;
         }
+        return null;
       });
 
       // when

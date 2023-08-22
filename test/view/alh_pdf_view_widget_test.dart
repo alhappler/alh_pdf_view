@@ -117,10 +117,12 @@ void main() {
 
       const channel = MethodChannel('alh_pdf_0');
       MethodCall? methodCall;
-      channel.setMockMethodCallHandler((call) async {
+      TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+          .setMockMethodCallHandler(channel, (call) async {
         if (call.method == 'setOrientation') {
           methodCall = call;
         }
+        return null;
       });
 
       // when
@@ -157,7 +159,8 @@ void main() {
                 widget.minZoom == 0.5 &&
                 widget.maxZoom == 4.0 &&
                 !widget.enableDefaultScrollHandle &&
-                widget.showScrollbar,
+                widget.showScrollbar &&
+                widget.spacing == 0,
           ),
           findsOneWidget);
       expect(
@@ -195,10 +198,12 @@ void main() {
       final viewId = viewsController.views.first.id;
       final channel = MethodChannel('alh_pdf_$viewId');
       MethodCall? methodCall;
-      channel.setMockMethodCallHandler((call) async {
+      TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+          .setMockMethodCallHandler(channel, (call) async {
         if (call.method == 'setOrientation') {
           methodCall = call;
         }
+        return null;
       });
 
       await tester.pumpAndSettle();
@@ -243,6 +248,7 @@ void main() {
       const givenBackgroundColor = Colors.blue;
       const givenMinZoom = 0.04;
       const givenMaxZoom = 100.0;
+      const givenSpacing = 12345;
 
       // when
       await tester.pumpWidget(
@@ -267,6 +273,7 @@ void main() {
               showScrollbar: false,
               minZoom: givenMinZoom,
               maxZoom: givenMaxZoom,
+              spacing: givenSpacing,
               onLinkHandle: (_) {},
             ),
           ),
@@ -299,7 +306,8 @@ void main() {
                 widget.creationParams['minZoom'] == givenMinZoom &&
                 widget.creationParams['maxZoom'] == givenMaxZoom &&
                 widget.creationParams['hasOnLinkHandle'] == true &&
-                !widget.creationParams['showScrollbar'],
+                !widget.creationParams['showScrollbar'] &&
+                widget.creationParams['spacing'] == givenSpacing,
           ),
           findsOneWidget);
 
@@ -332,10 +340,12 @@ void main() {
       final viewId = viewsController.views.first.id;
       final channel = MethodChannel('alh_pdf_$viewId');
       MethodCall? methodCall;
-      channel.setMockMethodCallHandler((call) async {
+      TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+          .setMockMethodCallHandler(channel, (call) async {
         if (call.method == 'updateCreationParams') {
           methodCall = call;
         }
+        return null;
       });
 
       // when

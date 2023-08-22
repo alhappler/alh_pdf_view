@@ -20,7 +20,8 @@ class AlhPdfViewConfiguration(
     val enableDoubleTap: Boolean,
     val minZoom: Float,
     val maxZoom: Float,
-    val enableDefaultScrollHandle: Boolean
+    val enableDefaultScrollHandle: Boolean,
+    val spacing: Int
 ) {
     companion object {
         fun fromArguments(map: Map<*, *>): AlhPdfViewConfiguration {
@@ -43,6 +44,7 @@ class AlhPdfViewConfiguration(
             val minZoom = map["minZoom"] as Double
             val maxZoom = map["maxZoom"] as Double
             val enableDefaultScrollHandle = map["enableDefaultScrollHandle"] as Boolean
+            val spacing = map["spacing"] as Int
 
             return AlhPdfViewConfiguration(
                 filePath,
@@ -62,7 +64,8 @@ class AlhPdfViewConfiguration(
                 enableDoubleTap,
                 minZoom.toFloat(),
                 maxZoom.toFloat(),
-                enableDefaultScrollHandle
+                enableDefaultScrollHandle,
+                spacing
             )
         }
 

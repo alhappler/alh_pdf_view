@@ -73,6 +73,7 @@ This is a list of all parameters that can be used for this widget. Consider that
 | `maxZoom`                   | Max zoom value that the user can reach while zooming.                                    |        **`4.0`**         |
 | `enableDefaultScrollHandle` | Adds a button to scroll faster through the document. (only Android)                      |        **false**         |
 | `showScrollbar`             | If true, a Scrollbar is visible for the Pdf View (only iOS).                             |         **true**         |
+| `spacing`                   | Spacing between pdf pages.                                                               |          **0**           |
 
 This is a list of functional parameters.
 
