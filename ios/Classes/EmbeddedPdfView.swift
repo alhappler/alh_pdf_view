@@ -54,9 +54,7 @@ class EmbeddedPdfView : UIView {
     override func layoutSubviews() {
         super.layoutSubviews()
         
-        if(self.hasError){
-            return;
-        }
+        if(self.hasError) return;
         
         self.pdfView.usePageViewController(configuration.pageFling, withViewOptions: nil)
         
