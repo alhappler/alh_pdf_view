@@ -16,7 +16,8 @@ void main() {
   });
 
   tearDown(() {
-    channel.setMockMethodCallHandler(null);
+    TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+        .setMockMethodCallHandler(channel, null);
   });
 
   group('#setOrientation', () {
@@ -29,10 +30,12 @@ void main() {
       const givenOrientation = Orientation.landscape;
 
       late final MethodCall actualMethodCall;
-      channel.setMockMethodCallHandler((call) async {
+      TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+          .setMockMethodCallHandler(channel, (call) async {
         if (call.method == 'setOrientation') {
           actualMethodCall = call;
         }
+        return null;
       });
 
       // when
@@ -63,10 +66,12 @@ void main() {
       final givenCreationParams = <String, dynamic>{'creation': 'params'};
 
       late final MethodCall actualMethodCall;
-      channel.setMockMethodCallHandler((call) async {
+      TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+          .setMockMethodCallHandler(channel, (call) async {
         if (call.method == givenChannelMethodName) {
           actualMethodCall = call;
         }
+        return null;
       });
 
       // when
@@ -95,10 +100,12 @@ void main() {
       final givenCreationParams = <String, dynamic>{'creation': 'params'};
 
       MethodCall? actualMethodCall;
-      channel.setMockMethodCallHandler((call) async {
+      TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+          .setMockMethodCallHandler(channel, (call) async {
         if (call.method == givenChannelMethodName) {
           actualMethodCall = call;
         }
+        return null;
       });
 
       // when

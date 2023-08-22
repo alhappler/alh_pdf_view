@@ -1,3 +1,6 @@
+## 1.3.0
+* better error handling on iOS
+
 ## 1.2.1
 
 🐛 **Bugfix**

@@ -5,7 +5,8 @@ Future<void> invokeMethodCall(
   MethodCall methodCall, {
   required String channelName,
 }) =>
-    ServicesBinding.instance.defaultBinaryMessenger.handlePlatformMessage(
+    TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+        .handlePlatformMessage(
       channelName,
       const StandardMethodCodec().encodeMethodCall(methodCall),
       (data) {},
@@ -23,12 +24,12 @@ void changeOrientation(
   } else {
     testSize = landscape ? const Size(1600, 400) : const Size(400, 1600);
   }
-  tester.binding.window.physicalSizeTestValue = testSize;
-  tester.binding.window.devicePixelRatioTestValue = 1;
+  tester.view.physicalSize = testSize;
+  tester.view.devicePixelRatio = 1;
 }
 
 /// Resets all changed sizes or pixel Usually called at the end of test and after using [changeOrientation].
 void clearTestValues(WidgetTester tester) {
-  tester.binding.window.clearPhysicalSizeTestValue();
-  tester.binding.window.clearDevicePixelRatioTestValue();
+  tester.view.resetPhysicalSize();
+  tester.view.resetDevicePixelRatio();
 }

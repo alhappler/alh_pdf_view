@@ -15,6 +15,7 @@ class EmbeddedPdfView : UIView {
     private var initPdfViewScaleFactor: CGFloat
     
     private var hasInitializedView = false
+    private var hasError = false
     
     private var configuration: AlhPdfViewConfiguration
     
@@ -53,8 +54,12 @@ class EmbeddedPdfView : UIView {
     override func layoutSubviews() {
         super.layoutSubviews()
         
+        if(self.hasError){
+            return;
+        }
+        
         self.pdfView.usePageViewController(configuration.pageFling, withViewOptions: nil)
-
+        
         if(!hasInitializedView) {
             initPdfDefaultScaleFactor()
             goToDefaultPage()
@@ -79,6 +84,13 @@ class EmbeddedPdfView : UIView {
                 document.unlock(withPassword: configuration.password)
             }
         }
+        else {
+            self.pdfChannel.invokeMethod("onError", arguments: [
+                "error": "failure initialising pdf document. "
+            ])
+            
+            self.hasError = true;
+        }
     }
     
     private func initializeScrollbar() {
@@ -94,12 +106,12 @@ class EmbeddedPdfView : UIView {
         if let scrollView = uiView as? UIScrollView {
             return scrollView
         }
-            
+        
         for view in uiView.subviews {
-           if let scrollView = view as? UIScrollView {
-               return scrollView
+            if let scrollView = view as? UIScrollView {
+                return scrollView
             }
-                
+            
             if !view.subviews.isEmpty {
                 return findUIScrollView(of: view)
             }
@@ -126,7 +138,7 @@ class EmbeddedPdfView : UIView {
         updatedConfiguration = newConfiguration
     }
     
-   private func initPdfDefaultScaleFactor() {
+    private func initPdfDefaultScaleFactor() {
         let initScaleFactor = getPdfScaleFactor()
         initPdfViewScaleFactor = initScaleFactor
         self.pdfView.scaleFactor = configuration.defaultZoomFactor * initScaleFactor
@@ -153,7 +165,6 @@ class EmbeddedPdfView : UIView {
         case FitPolicy.width:
             return self.pdfView.scaleFactorForSizeToFit // works only for width
         }
-        
     }
     
     private func goToDefaultPage() {
@@ -176,14 +187,14 @@ class EmbeddedPdfView : UIView {
     }
     
     func getPdfPageSize() -> CGSize {
-        let document = pdfView.document!
+        let document = self.pdfView.document!
         let pageCount = document.pageCount
         let defaultPage = configuration.defaultPage > pageCount ? configuration.defaultPage : pageCount - 1
         let pdfPage = document.page(at: defaultPage)!
         
         let initialPageRect = pdfPage.bounds(for: self.pdfView.displayBox)
-        let kaka = pdfPage.bounds(for: .mediaBox)
-        return CGSize(width: initialPageRect.width, height:  initialPageRect.height)
+        
+        return CGSize(width: initialPageRect.size.width, height:  initialPageRect.size.height)
     }
     
     /**
@@ -272,7 +283,7 @@ class EmbeddedPdfView : UIView {
 }
 
 extension EmbeddedPdfView : PDFViewDelegate {
-  
+    
     func pdfViewWillClick(onLink sender: PDFView, with url: URL) {
         
         // If onLinkHandle is provided, call the method, otherwise open the URL in the browser

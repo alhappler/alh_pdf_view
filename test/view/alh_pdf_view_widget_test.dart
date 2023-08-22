@@ -117,10 +117,12 @@ void main() {
 
       const channel = MethodChannel('alh_pdf_0');
       MethodCall? methodCall;
-      channel.setMockMethodCallHandler((call) async {
+      TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+          .setMockMethodCallHandler(channel, (call) async {
         if (call.method == 'setOrientation') {
           methodCall = call;
         }
+        return null;
       });
 
       // when
@@ -195,10 +197,12 @@ void main() {
       final viewId = viewsController.views.first.id;
       final channel = MethodChannel('alh_pdf_$viewId');
       MethodCall? methodCall;
-      channel.setMockMethodCallHandler((call) async {
+      TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+          .setMockMethodCallHandler(channel, (call) async {
         if (call.method == 'setOrientation') {
           methodCall = call;
         }
+        return null;
       });
 
       await tester.pumpAndSettle();
@@ -332,10 +336,12 @@ void main() {
       final viewId = viewsController.views.first.id;
       final channel = MethodChannel('alh_pdf_$viewId');
       MethodCall? methodCall;
-      channel.setMockMethodCallHandler((call) async {
+      TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+          .setMockMethodCallHandler(channel, (call) async {
         if (call.method == 'updateCreationParams') {
           methodCall = call;
         }
+        return null;
       });
 
       // when
