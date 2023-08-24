@@ -27,6 +27,7 @@ class AlhPdfViewCreationParams {
   final bool autoSpacing; // only: Android
   final bool enableDoubleTap; // only: Android
   final bool enableDefaultScrollHandle; // only: Android
+  final int spacing;
 
   /// Flag to know if onLinkHandle is provided
   final bool hasOnLinkHandle;
@@ -51,6 +52,7 @@ class AlhPdfViewCreationParams {
     required this.minZoom,
     required this.maxZoom,
     required this.enableDefaultScrollHandle,
+    required this.spacing,
     required this.hasOnLinkHandle,
   });
 
@@ -74,6 +76,7 @@ class AlhPdfViewCreationParams {
         'minZoom': this.minZoom,
         'maxZoom': this.maxZoom,
         'enableDefaultScrollHandle': this.enableDefaultScrollHandle,
+        'spacing': this.spacing,
         'hasOnLinkHandle': this.hasOnLinkHandle,
       };
 }

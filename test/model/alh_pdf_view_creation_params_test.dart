@@ -32,6 +32,7 @@ void main() {
       const givenEnableDefaultScrollHandle = true;
       const givenHasOnLinkHandle = false;
       const givenShowScrollbar = false;
+      const givenSpacing = 999;
 
       final givenAlhPdfViewCreationParams = AlhPdfViewCreationParams(
         filePath: givenFilePath,
@@ -54,6 +55,7 @@ void main() {
         enableDefaultScrollHandle: givenEnableDefaultScrollHandle,
         hasOnLinkHandle: givenHasOnLinkHandle,
         showScrollbar: givenShowScrollbar,
+        spacing: givenSpacing,
       );
 
       // when
@@ -79,6 +81,7 @@ void main() {
         'minZoom': givenMinZoom,
         'maxZoom': givenMaxZoom,
         'enableDefaultScrollHandle': givenEnableDefaultScrollHandle,
+        'spacing': givenSpacing,
         'hasOnLinkHandle': givenHasOnLinkHandle,
         'showScrollbar': givenShowScrollbar,
       };

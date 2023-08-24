@@ -43,6 +43,8 @@ class _PDFScreenState extends State<PDFScreen> {
                 children: [
                   Expanded(
                     child: AlhPdfView(
+                      spacing: 100,
+                      backgroundColor: Colors.white,
                       enableDefaultScrollHandle: true,
                       filePath: widget.path,
                       bytes: widget.bytes,

@@ -104,6 +104,7 @@ internal class AlhPdfView(
             .password(alhPdfViewConfiguration.password)
             .nightMode(alhPdfViewConfiguration.nightMode)
             .autoSpacing(alhPdfViewConfiguration.autoSpacing)
+            .spacing(alhPdfViewConfiguration.spacing)
             .pageFling(alhPdfViewConfiguration.pageFling)
             .pageSnap(alhPdfViewConfiguration.pageSnap)
             .enableDoubletap(alhPdfViewConfiguration.enableDoubleTap)

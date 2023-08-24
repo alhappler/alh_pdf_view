@@ -135,7 +135,7 @@ class FakeAndroidViewController implements AndroidViewController {
 
 class FakeAndroidPlatformViewsController {
   FakeAndroidPlatformViewsController() {
-    TestDefaultBinaryMessengerBinding.instance!.defaultBinaryMessenger
+    TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
         .setMockMethodCallHandler(SystemChannels.platform_views, _onMethodCall);
   }
 
@@ -162,13 +162,13 @@ class FakeAndroidPlatformViewsController {
     this._registeredViewTypes.add(viewType);
   }
 
-  void invokeViewFocused(int viewId) {
+  Future<void> invokeViewFocused(int viewId) async {
     final MethodCodec codec = SystemChannels.platform_views.codec;
     final ByteData data =
         codec.encodeMethodCall(MethodCall('viewFocused', viewId));
-// ignore: discarded_futures,
-    ServicesBinding.instance.defaultBinaryMessenger.handlePlatformMessage(
-        SystemChannels.platform_views.name, data, (ByteData? data) {});
+    await TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+        .handlePlatformMessage(
+            SystemChannels.platform_views.name, data, (ByteData? data) {});
   }
 
   Future<dynamic> _onMethodCall(MethodCall call) {
@@ -354,7 +354,7 @@ class FakeAndroidPlatformViewsController {
 
 class FakeIosPlatformViewsController {
   FakeIosPlatformViewsController() {
-    TestDefaultBinaryMessengerBinding.instance!.defaultBinaryMessenger
+    TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
         .setMockMethodCallHandler(SystemChannels.platform_views, _onMethodCall);
   }
 
@@ -451,7 +451,7 @@ class FakeIosPlatformViewsController {
 
 class FakeHtmlPlatformViewsController {
   FakeHtmlPlatformViewsController() {
-    TestDefaultBinaryMessengerBinding.instance!.defaultBinaryMessenger
+    TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
         .setMockMethodCallHandler(SystemChannels.platform_views, _onMethodCall);
   }
 

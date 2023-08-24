@@ -1,3 +1,9 @@
+## 1.3.0
+⚽️ **Features**
+* better error handling on iOS
+* added new parameter `spacing` (Issue [#35](https://github.com/alhappler/alh_pdf_view/issues/35) from `SpirikleOfficial`)
+  * adds space between pdf pages
+
 ## 1.2.1
 
 🐛 **Bugfix**
