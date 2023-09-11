@@ -1,3 +1,8 @@
+## 1.4.0
+🐛 **Bugfix**
+* fixed issue building for Android with the newest Flutter version (`3.13.2`) (Issue [#43] from `Ayushpanditmoto`)
+  * upgrade also some other versions (especially for the example app)
+
 ## 1.3.0
 ⚽️ **Features**
 * better error handling on iOS
