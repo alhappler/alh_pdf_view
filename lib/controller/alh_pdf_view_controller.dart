@@ -13,6 +13,7 @@ class AlhPdfViewController {
   final LinkHandleCallback? onLinkHandle;
 
   late final MethodChannel _channel;
+  final OnTapCallback? onTap;
 
   AlhPdfViewController({
     required int id,
@@ -22,6 +23,7 @@ class AlhPdfViewController {
     required this.onPageError,
     required this.onZoomChanged,
     required this.onLinkHandle,
+    required this.onTap,
   }) {
     _channel = MethodChannel('alh_pdf_view_$id');
     _channel.setMethodCallHandler(_onMethodCall);
@@ -53,6 +55,11 @@ class AlhPdfViewController {
             call.arguments['page'],
             call.arguments['error'],
           );
+        }
+        break;
+      case 'onTap':
+        if (this.onTap != null) {
+          this.onTap!();
         }
         break;
       case 'onZoomChanged':

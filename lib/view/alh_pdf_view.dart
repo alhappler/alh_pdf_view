@@ -12,6 +12,7 @@ import 'package:flutter/services.dart';
 
 typedef PDFViewCreatedCallback = void Function(AlhPdfViewController controller);
 typedef RenderCallback = void Function(int pages);
+typedef OnTapCallback = void Function();
 typedef PageChangedCallback = void Function(int page, int total);
 typedef ZoomChangedCallback = void Function(double zoom);
 typedef ErrorCallback = void Function(dynamic error);
@@ -174,6 +175,11 @@ class AlhPdfView extends StatefulWidget {
   /// This works only for iOS.
   final LinkHandleCallback? onLinkHandle;
 
+  /// Called when tapped in PDF.
+  ///
+  /// This works only for Android.
+  final OnTapCallback? onTap;
+
   const AlhPdfView({
     this.filePath,
     this.bytes,
@@ -185,6 +191,7 @@ class AlhPdfView extends StatefulWidget {
     this.onZoomChanged,
     this.gestureRecognizers,
     this.onLinkHandle,
+    this.onTap,
     this.fitPolicy = FitPolicy.both,
     this.fitEachPage = true,
     this.enableSwipe = true,
@@ -345,6 +352,7 @@ class _AlhPdfViewState extends State<AlhPdfView> with WidgetsBindingObserver {
       onRender: widget.onRender,
       onZoomChanged: widget.onZoomChanged,
       onLinkHandle: widget.onLinkHandle,
+      onTap: widget.onTap,
     );
     this._alhPdfInternalController = AlhPdfInternalController(id: id);
     this._alhPdfViewController = alhPdfViewController;
