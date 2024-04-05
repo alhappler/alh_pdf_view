@@ -1,5 +1,15 @@
 ## 2.0.0
-* TODO: Add changelog
+* rebuilt package to a federated plugin which has now the following implementations:
+  * https://pub.dev/packages/alh_pdf_view
+    * main package which should be used for the project
+  * https://pub.dev/packages/alh_pdf_view_android
+    * handles the android implementation
+  * https://pub.dev/packages/alh_pdf_view_ios
+    * handles the ios implementation
+  * https://pub.dev/packages/alh_pdf_view_platform_interface
+    * contains the platform interface and is used for every implementation
+* there are no breaking changes but some updates for android and iOS
+
 
 ## 1.3.0
 ⚽️ **Features**
