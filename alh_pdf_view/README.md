@@ -1,5 +1,4 @@
 ![Pub Version](https://img.shields.io/pub/v/alh_pdf_view?color=%23397ab6&style=flat-square)
-[![codecov](https://codecov.io/gh/alhappler/alh_pdf_view/branch/master/graph/badge.svg?token=D63TLGD5SP)](https://codecov.io/gh/alhappler/alh_pdf_view)
 ![GitHub branch checks state](https://img.shields.io/github/checks-status/alhappler/alh_pdf_view/master?style=flat-square)
 
 With this widget, you can display a PDF with bytes or a path.
