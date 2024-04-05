@@ -7,31 +7,31 @@ packages:
       path: ".."
       relative: true
     source: path
-    version: "2.0.0-dev.1"
+    version: "2.0.0"
   alh_pdf_view_android:
     dependency: transitive
     description:
       name: alh_pdf_view_android
-      sha256: "0e6470de7274d93c3683b507f82eee61a6a8684849da8326a2a80efcb6358fdf"
+      sha256: "56b4e0200a522ba4f7703e367bc05d9965ce1cf9c0478cffe6c86df34c1a9e94"
       url: "https://pub.dev"
     source: hosted
-    version: "2.0.0-dev.1"
+    version: "2.0.0"
   alh_pdf_view_ios:
     dependency: transitive
     description:
       name: alh_pdf_view_ios
-      sha256: f2c3d86e26af214dcbcd89291f0793f184b1a2a01b6a60ebceb27a9ac200bc7a
+      sha256: b7f3bc94188536c350d9a7d3ecaf8d568d77dc6338dd647753bd1b69908fc63f
       url: "https://pub.dev"
     source: hosted
-    version: "2.0.0-dev.1"
+    version: "2.0.0"
   alh_pdf_view_platform_interface:
     dependency: transitive
     description:
       name: alh_pdf_view_platform_interface
-      sha256: f0436a51c2c54bc90a1cd80bd02d4d7f7998cb921a395d554667c5ce44ad8211
+      sha256: "44defb6a34e1243449f0ab7b1e3447d652bd25809bc6560a3289a03b56a1dde1"
       url: "https://pub.dev"
     source: hosted
-    version: "2.0.0-dev.1"
+    version: "2.0.0"
   async:
     dependency: transitive
     description:
