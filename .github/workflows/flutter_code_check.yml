@@ -29,11 +29,9 @@ jobs:
       - name: Get Flutter version
         run: flutter --version
 
-      - name: Go to alh_pdf_view
-        run: cd alh_pdf_view
-
       - name: Check alh_pdf_view
         run: |
+          cd alh_pdf_view
           flutter pub get &&
           dart format --output=none --set-exit-if-changed . &&
           flutter analyze &&
