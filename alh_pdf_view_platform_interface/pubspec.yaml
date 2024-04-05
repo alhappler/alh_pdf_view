@@ -1,0 +1,24 @@
+name: alh_pdf_view_platform_interface
+description: Platform interface of the alh_pdf_view plugin.
+repository: https://github.com/alhappler/alh_pdf_view/alh_pdf_view_platform_interface
+version: 2.0.0-dev.1
+
+environment:
+  sdk: '>=3.3.1 <4.0.0'
+  flutter: '>=3.3.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  plugin_platform_interface: ^2.0.2
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  mocktail: ^1.0.3
+
+topics:
+  - pdf
+  - pdf-flutter
