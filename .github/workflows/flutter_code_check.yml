@@ -15,6 +15,18 @@ on:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
+  check_project: &check_project
+    - run: flutter pub get
+
+    - name: Verify formatting
+      run: dart format --output=none --set-exit-if-changed .
+
+    - name: Analyze project source
+      run: flutter analyze
+
+    - name: Run flutter tests
+      run: flutter test
+
   # This workflow contains a single job called "build"
   build:
     # The type of runner that the job will run on
@@ -26,16 +38,28 @@ jobs:
         with:
           channel: 'stable' # or: 'beta' or 'master'
       - run: flutter --version
-      
-      - run: flutter pub get
-        
-      # Uncomment this step to verify the use of 'flutter format' on each commit.
-      - name: Verify formatting
-        run: dart format --output=none --set-exit-if-changed .
 
-      # Consider passing '--fatal-infos' for slightly stricter analysis.
-      - name: Analyze project source
-        run: flutter analyze
-        
-      - name: Run flutter tests
-        run: flutter test
+      - name: Go to alh_pdf_view
+        run: cd alh_pdf_view
+
+      - name: Check alh_pdf_view
+        run: *check_project
+
+      - name: Go to alh_pdf_view_ios
+        run: |
+          cd ..
+          cd alh_pdf_view_ios
+          *check_project
+
+      - name: Go to alh_pdf_view_android
+        run: |
+          cd ..
+          cd alh_pdf_view_android
+          *check_project
+
+      - name: Go to alh_pdf_view_platform_interface
+        run: |
+          cd ..
+          cd alh_pdf_view_platform_interface
+          *check_project
+
