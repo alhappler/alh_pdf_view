@@ -13,3 +13,10 @@ azure-pipelines.yml
 set_flutter_cache_environment_variables.py
 
 coverage/html/
+alh_pdf_view/azure-pipelines.yaml
+
+alh_pdf_view_android/azure-pipelines.yaml
+
+alh_pdf_view_ios/azure-pipelines.yaml
+
+alh_pdf_view_platform_interface/azure-pipelines.yaml
