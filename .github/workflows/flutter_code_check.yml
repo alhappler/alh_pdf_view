@@ -17,17 +17,6 @@ jobs:
   check_project:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      - name: Setup Flutter
-        uses: subosito/flutter-action@v2
-        with:
-          channel: 'stable' # or: 'beta' or 'master'
-
-      - name: Get Flutter version
-        run: flutter --version
-
       - name: Go to alh_pdf_view
         run: cd alh_pdf_view
 
