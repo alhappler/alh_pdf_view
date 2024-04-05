@@ -1,0 +1,32 @@
+name: alh_pdf_view_example
+description: "Demonstrates how to use the alh_pdf_view plugin."
+publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+
+environment:
+  sdk: '>=3.3.1 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  path_provider: ^2.1.2
+
+  alh_pdf_view:
+    path: ../
+
+  cupertino_icons: ^1.0.6
+
+dev_dependencies:
+  integration_test:
+    sdk: flutter
+  flutter_test:
+    sdk: flutter
+
+  flutter_lints: ^3.0.0
+  stream_transform: ^2.1.0
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/sampleWithLink.pdf
+    - assets/sample.pdf

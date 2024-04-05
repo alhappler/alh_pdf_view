@@ -1,0 +1,32 @@
+name: alh_pdf_view_ios
+description: IOS implementation of the alh_pdf_view plugin. You should use the package alh_pdf_view to get working with this package.
+repository: https://github.com/alhappler/alh_pdf_view/alh_pdf_view_ios
+version: 2.0.0-dev.1
+
+environment:
+  sdk: '>=3.3.1 <4.0.0'
+  flutter: '>=3.3.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  alh_pdf_view_platform_interface: ^2.0.0-dev.1
+  stream_transform: ^2.1.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^3.0.0
+  plugin_platform_interface: ^2.1.7
+
+flutter:
+  plugin:
+    platforms:
+      ios:
+        pluginClass: AlhPdfViewIosPlugin
+        dartPluginClass: AlhPdfViewIOS
+
+topics:
+  - pdf
+  - pdf-flutter
+  - pdf-ios

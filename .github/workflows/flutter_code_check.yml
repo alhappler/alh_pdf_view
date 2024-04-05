@@ -29,47 +29,33 @@ jobs:
       - name: Get Flutter version
         run: flutter --version
 
-      - name: Go to alh_pdf_view
-        run: cd alh_pdf_view
-
       - name: Check alh_pdf_view
         run: |
+          cd alh_pdf_view
           flutter pub get &&
           dart format --output=none --set-exit-if-changed . &&
           flutter analyze &&
           flutter test
-
-      - name: Go to alh_pdf_view_ios
-        run: |
-          cd ..
-          cd alh_pdf_view_ios
 
       - name: Check alh_pdf_view_ios
         run: |
+          cd alh_pdf_view_ios
           flutter pub get &&
           dart format --output=none --set-exit-if-changed . &&
           flutter analyze &&
           flutter test
-
-      - name: Go to alh_pdf_view_android
-        run: |
-          cd ..
-          cd alh_pdf_view_android
 
       - name: Check alh_pdf_view_android
         run: |
+          cd alh_pdf_view_android
           flutter pub get &&
           dart format --output=none --set-exit-if-changed . &&
           flutter analyze &&
           flutter test
 
-      - name: Go to alh_pdf_view_platform_interface
-        run: |
-          cd ..
-          cd alh_pdf_view_platform_interface
-
       - name: Check alh_pdf_view_platform_interface
         run: |
+          cd alh_pdf_view_platform_interface
           flutter pub get &&
           dart format --output=none --set-exit-if-changed . &&
           flutter analyze &&
