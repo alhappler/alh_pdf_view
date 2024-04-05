@@ -1,5 +1,4 @@
 # This is a basic workflow to help you get started with Actions
-
 name: Flutter Test, Format, Analyze
 
 # Controls when the workflow will run
@@ -15,35 +14,50 @@ on:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  check_project: &check_project
-    - run: flutter pub get
-
-    - name: Verify formatting
-      run: dart format --output=none --set-exit-if-changed .
-
-    - name: Analyze project source
-      run: flutter analyze
-
-    - name: Run flutter tests
-      run: flutter test
-
-  # This workflow contains a single job called "build"
-  build:
-    # The type of runner that the job will run on
+  check_project:
     runs-on: ubuntu-latest
-
     steps:
-      - uses: actions/checkout@v2
-      - uses: subosito/flutter-action@v2
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
         with:
           channel: 'stable' # or: 'beta' or 'master'
-      - run: flutter --version
+
+      - name: Get Flutter version
+        run: flutter --version
 
       - name: Go to alh_pdf_view
         run: cd alh_pdf_view
 
       - name: Check alh_pdf_view
-        run: *check_project
+        run: |
+          flutter pub get &&
+          dart format --output=none --set-exit-if-changed . &&
+          flutter analyze &&
+          flutter test
+
+  # This workflow contains a single job called "build"
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable' # or: 'beta' or 'master'
+
+      - name: Get Flutter version
+        run: flutter --version
+
+      - name: Go to alh_pdf_view
+        run: cd alh_pdf_view
+
+      - name: Check alh_pdf_view
+        uses: .check_project
 
       - name: Go to alh_pdf_view_ios
         run: |
@@ -62,4 +76,3 @@ jobs:
           cd ..
           cd alh_pdf_view_platform_interface
           *check_project
-
