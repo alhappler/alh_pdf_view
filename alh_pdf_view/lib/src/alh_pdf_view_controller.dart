@@ -43,9 +43,9 @@ class AlhPdfViewController {
     required ZoomChangedCallback? onZoomChanged,
     required LinkHandleCallback? onLinkHandle,
   }) async {
-    await AlhPdfViewPlatform.instance!.init(viewId);
-
-    return AlhPdfViewController._(
+    // Before initializing AlhPdfViewPlatform, create this controller first
+    // to ensure that all streams can listen to every upcoming event.
+    final controller = AlhPdfViewController._(
       viewId: viewId,
       onRender: onRender,
       onPageChanged: onPageChanged,
@@ -54,6 +54,9 @@ class AlhPdfViewController {
       onZoomChanged: onZoomChanged,
       onLinkHandle: onLinkHandle,
     );
+    await AlhPdfViewPlatform.instance!.init(viewId);
+
+    return controller;
   }
 
   AlhPdfViewPlatform get _instance => AlhPdfViewPlatform.instance!;
