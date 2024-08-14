@@ -4,25 +4,33 @@
 With this widget, you can display a PDF with bytes or a path.
 
 ## Index
+
 - [Introduction](#introduction)
 - [Example](#example)
 - [Parameters](#parameters)
 - [AlhPdfViewController](#alh-pdf-view-controller)
 
 ## Introduction
+
 The package `alh_pdf_view` includes:
+
 - Displays PDF with bytes or path
 
 See more about the functionalities in the parameter section.
 
 ### Android
-- implemented in Kotlin with the dependency [AndroidPdfViewer](https://github.com/barteksc/AndroidPdfViewer) of **barteksc**
+
+- implemented in Kotlin with the dependency [AndroidPdfViewer](https://github.com/barteksc/AndroidPdfViewer) of *
+  *barteksc**
 
 ### iOS
+
 - implemented in Swift with the dependency [PDFKit](https://developer.apple.com/documentation/pdfkit)
 
 ## Example
+
 ___
+
 ```dart
 import 'package:alh_pdf_view/lib.dart';
 import 'package:flutter/material.dart';
@@ -43,7 +51,9 @@ class AlhPdfViewExample extends StatelessWidget {
 ```
 
 ### Parameters
-This is a list of all parameters that can be used for this widget. Consider that some paremters only work for one platform.
+
+This is a list of all parameters that can be used for this widget. Consider that some paremters only work for one
+platform.
 
 | **Parameter**               | **Description**                                                                          |    **Default Value**     |
 |:----------------------------|:-----------------------------------------------------------------------------------------|:------------------------:|
@@ -70,17 +80,16 @@ This is a list of all parameters that can be used for this widget. Consider that
 
 This is a list of functional parameters.
 
-| **Parameter**        | **Description**                                                       |    **Default Value**     |
-|:---------------------|:----------------------------------------------------------------------|:------------------------:|
-| `gestureRecognizers` | Which gestures should be consumed by the pdf view.                    | **-** |
-| `onViewCreated`      | If not null invoked once the native view is created.                  | **-** |
-| `onRender`           | Callback once the PDF page was loaded.                                | **-** |
-| `onPageChanged`      | When changing the page, this method will be called with the new page. | **-** |
-| `onZoomChanged`      | Called when changing the zoom.                                        | **-** |
-| `onError`            | When there are errors happening, this methods returns a message.      | **-** |
-| `onPageError`        | Called when there are specific errors on a page. (only Android)       | **-** |
-| `onLinkHandle`       | Called when tapping a link in PDF. (only iOS)                         | **-** |
-
+| **Parameter**        | **Description**                                                       | **Default Value** |
+|:---------------------|:----------------------------------------------------------------------|:-----------------:|
+| `gestureRecognizers` | Which gestures should be consumed by the pdf view.                    |       **-**       |
+| `onViewCreated`      | If not null invoked once the native view is created.                  |       **-**       |
+| `onRender`           | Callback once the PDF page was loaded.                                |       **-**       |
+| `onPageChanged`      | When changing the page, this method will be called with the new page. |       **-**       |
+| `onZoomChanged`      | Called when changing the zoom.                                        |       **-**       |
+| `onError`            | When there are errors happening, this methods returns a message.      |       **-**       |
+| `onPageError`        | Called when there are specific errors on a page. (only Android)       |       **-**       |
+| `onLinkHandle`       | Called when tapping a link in PDF. (only iOS)                         |       **-**       |
 
 ### AlhPdfViewController
 
