@@ -1,3 +1,9 @@
+## 2.0.1
+🐛 **Bugfix**
+* on iOS
+  * opening a broken pdf didn't call `onError`
+  * in general any callbacks before initializing weren't called on iOS
+
 ## 2.0.0
 * rebuilt package to a federated plugin which has now the following implementations:
   * https://pub.dev/packages/alh_pdf_view

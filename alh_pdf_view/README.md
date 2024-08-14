@@ -24,7 +24,7 @@ See more about the functionalities in the parameter section.
 ## Example
 ___
 ```dart
-import 'package:alh_pdf_view/lib.dart';
+import 'package:alh_pdf_view/alh_pdf_view.dart';
 import 'package:flutter/material.dart';
 
 class AlhPdfViewExample extends StatelessWidget {
@@ -98,5 +98,4 @@ This controller contains some functionalities to update your view. Here is a lis
 | `resetZoom`        | Setting the scale factor to the default zoom factor.   |
 | `setZoom`          | Zooming to the given zoom.                             |
 | `getZoom`          | Returns the current zoom value.                        |
-
 
