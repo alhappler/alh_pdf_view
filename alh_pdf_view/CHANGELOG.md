@@ -1,3 +1,10 @@
+## 2.0.2
+🐛 **Bugfix**
+* Android
+  * blank screen after opening PDF
+  * since flutter version `3.24.0`, there was a blank screen when opening the pdf
+  * this issue should be fixed now
+
 ## 2.0.1
 🐛 **Bugfix**
 * on iOS
