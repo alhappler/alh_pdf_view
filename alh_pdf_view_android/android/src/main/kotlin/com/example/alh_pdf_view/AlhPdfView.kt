@@ -140,12 +140,13 @@ internal class AlhPdfView(
                 args["pages"] = pages
                 val defaultZoomFactor = alhPdfViewConfiguration.defaultZoomFactor
 
-                if (defaultZoomFactor > 0.0 && defaultZoomFactor != 1.0) {
-                    pdfView.zoomTo(defaultZoomFactor.toFloat())
-                    alhPdfViewChannel.invokeMethod("onRender", args)
-                } else {
-                    alhPdfViewChannel.invokeMethod("onRender", args)
+                if (defaultZoomFactor > 0.0) {
+                    // Avoid using zoomTo as it may not function correctly and
+                    // could result in the display turning white (blank screen).
+                    pdfView.zoomWithAnimation(defaultZoomFactor.toFloat())
                 }
+
+                alhPdfViewChannel.invokeMethod("onRender", args)
             }
 
         if (context != null && alhPdfViewConfiguration.enableDefaultScrollHandle) {

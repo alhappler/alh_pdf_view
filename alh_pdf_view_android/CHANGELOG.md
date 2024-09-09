@@ -1,3 +1,7 @@
+## 2.0.1
+* Since flutter version 3.24.0, the pdf which was opened can have a blank screen.
+  * fixed by calling `zoomWithAnimation` with the default zoom factor
+
 ## 2.0.0
 
 * Added Android implementation, see more on changelogs in [alh_pdf_view](https://pub.dev/packages/alh_pdf_view/changelog)
