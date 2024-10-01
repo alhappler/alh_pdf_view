@@ -9,28 +9,25 @@ packages:
     source: path
     version: "2.0.2"
   alh_pdf_view_android:
-    dependency: transitive
+    dependency: "direct overridden"
     description:
-      name: alh_pdf_view_android
-      sha256: "63d4027e2e90f0943a313063b8274b134a92491b74a9f497c05c88e9845ddb86"
-      url: "https://pub.dev"
-    source: hosted
+      path: "../../alh_pdf_view_android"
+      relative: true
+    source: path
     version: "2.1.1"
   alh_pdf_view_ios:
-    dependency: transitive
+    dependency: "direct overridden"
     description:
-      name: alh_pdf_view_ios
-      sha256: "02fc31480b159d88281d6907da466836c2d80b131df65afcb283e9dbcb2455dd"
-      url: "https://pub.dev"
-    source: hosted
+      path: "../../alh_pdf_view_ios"
+      relative: true
+    source: path
     version: "2.1.1"
   alh_pdf_view_platform_interface:
-    dependency: transitive
+    dependency: "direct overridden"
     description:
-      name: alh_pdf_view_platform_interface
-      sha256: d3ff87b5b265eb290f03a4463b357e26e46e52729b0b300674da2575221b469d
-      url: "https://pub.dev"
-    source: hosted
+      path: "../../alh_pdf_view_platform_interface"
+      relative: true
+    source: path
     version: "2.1.0"
   async:
     dependency: transitive

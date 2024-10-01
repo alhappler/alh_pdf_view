@@ -25,6 +25,13 @@ dev_dependencies:
   flutter_lints: ^3.0.0
   stream_transform: ^2.1.0
 
+dependency_overrides:
+  alh_pdf_view_android:
+    path: ../../alh_pdf_view_android
+  alh_pdf_view_ios:
+    path: ../../alh_pdf_view_ios
+  alh_pdf_view_platform_interface:
+    path: ../../alh_pdf_view_platform_interface
 
 flutter:
   uses-material-design: true
