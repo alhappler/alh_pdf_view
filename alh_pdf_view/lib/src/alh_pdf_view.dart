@@ -159,6 +159,9 @@ class AlhPdfView extends StatefulWidget {
   /// This works only for iOS.
   final LinkHandleCallback? onLinkHandle;
 
+  /// Called when tapped in PDF.
+  final VoidCallback? onTap;
+
   const AlhPdfView({
     this.filePath,
     this.bytes,
@@ -170,6 +173,7 @@ class AlhPdfView extends StatefulWidget {
     this.onZoomChanged,
     this.gestureRecognizers,
     this.onLinkHandle,
+    this.onTap,
     this.fitPolicy = FitPolicy.both,
     this.fitEachPage = true,
     this.enableSwipe = true,
@@ -289,6 +293,7 @@ class _AlhPdfViewState extends State<AlhPdfView> with WidgetsBindingObserver {
       onPageError: this.widget.onPageError,
       onZoomChanged: this.widget.onZoomChanged,
       onLinkHandle: this.widget.onLinkHandle,
+      onTap: this.widget.onTap,
     );
     this._alhPdfViewController = alhPdfViewController;
     unawaited(this._handleRotationChanged(orientation: orientation));

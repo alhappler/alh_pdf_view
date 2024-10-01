@@ -90,6 +90,9 @@ class _PDFScreenState extends State<PDFScreen> {
                       onZoomChanged: (zoom) {
                         print('On zoom changed: $zoom');
                       },
+                      onTap: () {
+                        print("onTap called");
+                      },
                     ),
                   ),
                   if (orientation == Orientation.portrait)

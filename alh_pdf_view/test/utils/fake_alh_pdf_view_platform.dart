@@ -178,6 +178,21 @@ class FakeAlhPdfViewPlatform extends AlhPdfViewPlatform {
   }
 
   ///
+  /// onTap
+  ///
+
+  @override
+  Stream<OnTapEvent> onTap({required int viewId}) {
+    return this._events(viewId).whereType<OnTapEvent>();
+  }
+
+  void addOnTapEvent({
+    required int viewId,
+  }) {
+    this.mapEventStreamController.add(OnTapEvent(viewId));
+  }
+
+  ///
   /// getPageCount
   ///
 

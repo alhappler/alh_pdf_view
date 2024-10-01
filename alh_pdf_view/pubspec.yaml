@@ -18,9 +18,9 @@ flutter:
 dependencies:
   flutter:
     sdk: flutter
-  alh_pdf_view_android: ^2.0.1
-  alh_pdf_view_ios: ^2.0.0
-  alh_pdf_view_platform_interface: ^2.0.0
+  alh_pdf_view_android: ^2.1.0
+  alh_pdf_view_ios: ^2.1.0
+  alh_pdf_view_platform_interface: ^2.1.0
 
 dev_dependencies:
   flutter_test:

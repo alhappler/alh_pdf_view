@@ -66,26 +66,26 @@ class AlhPdfView: NSObject, FlutterPlatformView {
         
         UIDevice.current.beginGeneratingDeviceOrientationNotifications()
         
-        initSwipeGestures()
-        
+        initGestures()
+
         DispatchQueue.main.async {
             self.handleRenderCompleted()
         }
-        
+
         if _embeddedPdfView.pdfView.document != nil {
             initObservers()
-            
+
         } else{
             let arguments = ["error" : "cannot create document: File not in PDF format or corrupted."]
             _pdfViewChannel.invokeMethod("onError", arguments: arguments)
         }
-        
+
     }
-    
+
     func view() -> UIView {
         return _embeddedPdfView
     }
-    
+
     func handle(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
         switch(call.method) {
         case "dispose":
@@ -136,44 +136,51 @@ class AlhPdfView: NSObject, FlutterPlatformView {
             result(FlutterMethodNotImplemented)
         }
     }
-    
+
     private func goToPreviousPage(call: FlutterMethodCall, result: @escaping FlutterResult) {
         let arguments = call.arguments as! Dictionary<String, Any>
         let withAnimation = arguments["withAnimation"] as! Bool
         result(_embeddedPdfView.goToPreviousPage(withAnimation: withAnimation))
     }
-    
+
     private func goToNextPage(call: FlutterMethodCall, result: @escaping FlutterResult) {
         let arguments = call.arguments as! Dictionary<String, Any>
         let withAnimation = arguments["withAnimation"] as! Bool
         result(_embeddedPdfView.goToNextPage(withAnimation: withAnimation))
     }
-    
+
     private func setPage(call: FlutterMethodCall, result: @escaping FlutterResult) {
         let arguments = call.arguments as! Dictionary<String, Any>
         let pageIndex = arguments["page"] as! Int
         let withAnimation = arguments["withAnimation"] as! Bool
         result(_embeddedPdfView.goToPage(pageIndex: pageIndex, withAnimation: withAnimation))
     }
-    
-    func initSwipeGestures() {
+
+    func initGestures() {
         let swipeLeft = UISwipeGestureRecognizer.init(target: self, action: #selector(didSwipe))
         swipeLeft.direction = .left
         self.view().addGestureRecognizer(swipeLeft)
-        
+
         let swipeRight = UISwipeGestureRecognizer.init(target: self, action: #selector(didSwipe))
         swipeRight.direction = .right
         self.view().addGestureRecognizer(swipeRight)
+
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap(_:)))
+        self.view().addGestureRecognizer(tapGesture)
     }
-    
+
     @objc func didSwipe(gesture: UISwipeGestureRecognizer) {
         _embeddedPdfView.handleSwipe(gesture: gesture)
     }
-    
+
+    @objc func handleTap(_ gesture: UITapGestureRecognizer) {
+        _pdfViewChannel.invokeMethod("onTap", arguments: nil)
+    }
+
     func initObservers() {
         NotificationCenter.default.addObserver(self, selector: #selector(self.handlePageChanged(notification:)), name: Notification.Name.PDFViewPageChanged, object: self._embeddedPdfView.pdfView)
         NotificationCenter.default.addObserver(self, selector: #selector(self.handleZoomChanged(notification:)), name: Notification.Name.PDFViewScaleChanged, object: nil)
-    }
+     }
     
     func removeObservers() {
         NotificationCenter.default.removeObserver(self)

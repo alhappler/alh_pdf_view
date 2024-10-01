@@ -21,6 +21,7 @@ void main() {
     PageErrorCallback? onPageError,
     ZoomChangedCallback? onZoomChanged,
     LinkHandleCallback? onLinkHandle,
+    VoidCallback? onTap,
   }) async {
     controller = await AlhPdfViewController.init(
       viewId: givenViewId,
@@ -30,6 +31,7 @@ void main() {
       onPageError: onPageError,
       onZoomChanged: onZoomChanged,
       onLinkHandle: onLinkHandle,
+      onTap: onTap,
     );
   }
 
@@ -160,9 +162,9 @@ void main() {
     });
 
     test(
-        'GIVEN onPageError '
-        'WHEN adding OnPageErrorEvent with page and error '
-        'THEN should call onPageError', () async {
+        'GIVEN onZoomChanged '
+        'WHEN adding OnZoomChangedEvent with page and error '
+        'THEN should call onZoomChanged', () async {
       // given
       final completer = Completer();
       const givenZoom = 234.123;
@@ -187,9 +189,9 @@ void main() {
     });
 
     test(
-        'GIVEN onPageError '
-        'WHEN adding OnPageErrorEvent with page and error '
-        'THEN should call onPageError', () async {
+        'GIVEN onLinkHandle '
+        'WHEN adding OnLinkHandleEvent with page and error '
+        'THEN should call onLinkHandle', () async {
       // given
       final completer = Completer();
       const givenLink = 'link';
@@ -211,6 +213,31 @@ void main() {
       // then
       await completer.future;
       expect(actualLink, equals(givenLink));
+    });
+
+    test(
+        'GIVEN onTap '
+        'WHEN adding OnTapEvent with page and error '
+        'THEN should call onTap', () async {
+      // given
+      final completer = Completer();
+
+      int callbackCounter = 0;
+      await setUpController(
+        onTap: () {
+          callbackCounter++;
+          completer.complete();
+        },
+      );
+
+      // when
+      fakeAlhPdfViewPlatform.addOnTapEvent(
+        viewId: givenViewId,
+      );
+
+      // then
+      await completer.future;
+      expect(callbackCounter, equals(1));
     });
   });
 

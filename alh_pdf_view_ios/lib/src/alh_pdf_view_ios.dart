@@ -199,6 +199,11 @@ class AlhPdfViewIOS extends AlhPdfViewPlatform {
     return this._events(viewId).whereType<OnLinkHandleEvent>();
   }
 
+  @override
+  Stream<OnTapEvent> onTap({required int viewId}) {
+    return this._events(viewId).whereType<OnTapEvent>();
+  }
+
   ///
   /// Private methods section
   ///
@@ -268,6 +273,10 @@ class AlhPdfViewIOS extends AlhPdfViewPlatform {
           viewId,
           call.arguments['url'],
         );
+        this._mapEventStreamController.add(event);
+        break;
+      case 'onTap':
+        final event = OnTapEvent(viewId);
         this._mapEventStreamController.add(event);
         break;
       default:

@@ -33,3 +33,7 @@ class OnZoomChangedEvent extends MapEvent<double> {
 class OnLinkHandleEvent extends MapEvent<String> {
   OnLinkHandleEvent(super.viewId, super.url);
 }
+
+class OnTapEvent extends MapEvent<void> {
+  OnTapEvent(int viewId) : super(viewId, null);
+}
