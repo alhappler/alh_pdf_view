@@ -1,3 +1,7 @@
+## 2.1.0
+⚽️ **Features**
+* added `onTap` as callback for Android and iOS when tapping pdf suggested by https://github.com/alhappler/alh_pdf_view/pull/36.
+
 ## 2.0.2
 🐛 **Bugfix**
 * Android

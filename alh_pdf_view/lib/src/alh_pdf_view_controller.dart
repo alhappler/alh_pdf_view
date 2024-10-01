@@ -8,6 +8,7 @@ class AlhPdfViewController {
   final PageErrorCallback? _onPageError;
   final ZoomChangedCallback? _onZoomChanged;
   final LinkHandleCallback? _onLinkHandle;
+  final VoidCallback? _onTap;
 
   StreamSubscription<OnRenderEvent>? _onRenderSubscription;
   StreamSubscription<OnPageChangedEvent>? _onPageChangedSubscription;
@@ -15,6 +16,7 @@ class AlhPdfViewController {
   StreamSubscription<OnPageErrorEvent>? _onPageErrorSubscription;
   StreamSubscription<OnZoomChangedEvent>? _onZoomChangedSubscription;
   StreamSubscription<OnLinkHandleEvent>? _onLinkHandleSubscription;
+  StreamSubscription<OnTapEvent>? _onTapSubscription;
 
   AlhPdfViewController._({
     required this.viewId,
@@ -24,12 +26,14 @@ class AlhPdfViewController {
     required PageErrorCallback? onPageError,
     required ZoomChangedCallback? onZoomChanged,
     required LinkHandleCallback? onLinkHandle,
+    required VoidCallback? onTap,
   })  : _onRender = onRender,
         _onPageChanged = onPageChanged,
         _onError = onError,
         _onPageError = onPageError,
         _onZoomChanged = onZoomChanged,
-        _onLinkHandle = onLinkHandle {
+        _onLinkHandle = onLinkHandle,
+        _onTap = onTap {
     this._connectStreams();
   }
 
@@ -42,6 +46,7 @@ class AlhPdfViewController {
     required PageErrorCallback? onPageError,
     required ZoomChangedCallback? onZoomChanged,
     required LinkHandleCallback? onLinkHandle,
+    required VoidCallback? onTap,
   }) async {
     // Before initializing AlhPdfViewPlatform, create this controller first
     // to ensure that all streams can listen to every upcoming event.
@@ -53,6 +58,7 @@ class AlhPdfViewController {
       onPageError: onPageError,
       onZoomChanged: onZoomChanged,
       onLinkHandle: onLinkHandle,
+      onTap: onTap,
     );
     await AlhPdfViewPlatform.instance!.init(viewId);
 
@@ -96,6 +102,12 @@ class AlhPdfViewController {
       this._onLinkHandleSubscription =
           this._instance.onLinkHandle(viewId: viewId).listen((event) {
         this._onLinkHandle(event.value);
+      });
+    }
+    if (this._onTap != null) {
+      this._onTapSubscription =
+          this._instance.onTap(viewId: viewId).listen((event) {
+        this._onTap();
       });
     }
   }
@@ -219,6 +231,7 @@ class AlhPdfViewController {
     unawaited(this._onPageErrorSubscription?.cancel());
     unawaited(this._onZoomChangedSubscription?.cancel());
     unawaited(this._onLinkHandleSubscription?.cancel());
+    unawaited(this._onTapSubscription?.cancel());
 
     unawaited(this._instance.dispose(viewId: this.viewId));
   }

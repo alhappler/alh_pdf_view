@@ -167,4 +167,8 @@ abstract class AlhPdfViewPlatform extends PlatformInterface {
   Stream<OnLinkHandleEvent> onLinkHandle({required int viewId}) {
     throw UnimplementedError('onLinkHandle() has not been implemented.');
   }
+
+  Stream<OnTapEvent> onTap({required int viewId}) {
+    throw UnimplementedError('onTap() has not been implemented.');
+  }
 }

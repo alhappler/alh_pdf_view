@@ -1,3 +1,6 @@
+## 2.1.0
+* Added `onTap` as callback for Android when tapping pdf suggested by https://github.com/alhappler/alh_pdf_view/pull/36.
+
 ## 2.0.1
 * Since flutter version 3.24.0, the pdf which was opened can have a blank screen.
   * fixed by calling `zoomWithAnimation` with the default zoom factor

@@ -109,6 +109,10 @@ internal class AlhPdfView(
             .pageSnap(alhPdfViewConfiguration.pageSnap)
             .enableDoubletap(alhPdfViewConfiguration.enableDoubleTap)
             .defaultPage(defaultPage)
+            .onTap {
+                alhPdfViewChannel.invokeMethod("onTap", null)
+                true
+            }
             .onPageChange { page, total ->
                 if (hasSetPageWithAnimation) {
                     hasSetPageWithAnimation = false
