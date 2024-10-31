@@ -492,41 +492,115 @@ void main() {
 
     group('#updateCreationParams', () {
       test(
-          'GIVEN platform = .android '
+          'GIVEN platform = .android and updatedBytes '
           'WHEN calling updateCreationParams '
-          'THEN should do nothing', () async {
+          'THEN should call updateBytes of instance', () async {
         // given
         debugDefaultTargetPlatformOverride = TargetPlatform.android;
 
-        const givenCreationParams = {'hallo': 123};
+        const givenCreationParams = {'bytes': 123};
+        const givenUpdatedCreationParams = {'bytes': 456};
 
         // when
         await controller.updateCreationParams(
-          creationParams: givenCreationParams,
+          updatedParams: givenCreationParams,
+          creationParams: givenUpdatedCreationParams,
         );
 
         // then
-        fakeAlhPdfViewPlatform.verifyUpdateCreationParams(called: 0);
+        fakeAlhPdfViewPlatform.verifyUpdateBytes(
+          creationParams: givenCreationParams,
+        );
 
         debugDefaultTargetPlatformOverride = null;
       });
 
       test(
-          'GIVEN platform = .iOS '
+          'GIVEN platform = .android and updated fitPolicy '
           'WHEN calling updateCreationParams '
-          'THEN should call updateCreationParams of instance', () async {
+          'THEN should do nothing', () async {
         // given
-        debugDefaultTargetPlatformOverride = TargetPlatform.iOS;
+        debugDefaultTargetPlatformOverride = TargetPlatform.android;
 
-        const givenCreationParams = {'hallo': 123};
+        const givenCreationParams = {'fitPolicy': 123};
+        const givenUpdatedCreationParams = {'fitPolicy': 456};
 
         // when
         await controller.updateCreationParams(
-          creationParams: givenCreationParams,
+          updatedParams: givenCreationParams,
+          creationParams: givenUpdatedCreationParams,
         );
 
         // then
-        fakeAlhPdfViewPlatform.verifyUpdateCreationParams(
+        fakeAlhPdfViewPlatform.verifyUpdateFitPolicy(called: 0);
+
+        debugDefaultTargetPlatformOverride = null;
+      });
+
+      test(
+          'GIVEN platform = .iOS and updated fitPolicy '
+          'WHEN calling updateCreationParams '
+          'THEN should call updateFitPolicy of instance', () async {
+        // given
+        debugDefaultTargetPlatformOverride = TargetPlatform.iOS;
+
+        const givenCreationParams = {'fitPolicy': 123};
+        const givenUpdatedCreationParams = {'fitPolicy': 456};
+
+        // when
+        await controller.updateCreationParams(
+          updatedParams: givenCreationParams,
+          creationParams: givenUpdatedCreationParams,
+        );
+
+        // then
+        fakeAlhPdfViewPlatform.verifyUpdateFitPolicy(
+          creationParams: givenCreationParams,
+        );
+
+        debugDefaultTargetPlatformOverride = null;
+      });
+
+      test(
+          'GIVEN platform = .android and updated showScrollbar '
+          'WHEN calling updateCreationParams '
+          'THEN should do nothing', () async {
+        // given
+        debugDefaultTargetPlatformOverride = TargetPlatform.android;
+
+        const givenCreationParams = {'showScrollbar': 123};
+        const givenUpdatedCreationParams = {'showScrollbar': 456};
+
+        // when
+        await controller.updateCreationParams(
+          updatedParams: givenCreationParams,
+          creationParams: givenUpdatedCreationParams,
+        );
+
+        // then
+        fakeAlhPdfViewPlatform.verifyUpdateScrollbar(called: 0);
+
+        debugDefaultTargetPlatformOverride = null;
+      });
+
+      test(
+          'GIVEN platform = .iOS and updated showScrollbar '
+          'WHEN calling updateCreationParams '
+          'THEN should call updateScrollbar of instance', () async {
+        // given
+        debugDefaultTargetPlatformOverride = TargetPlatform.iOS;
+
+        const givenCreationParams = {'showScrollbar': 123};
+        const givenUpdatedCreationParams = {'showScrollbar': 456};
+
+        // when
+        await controller.updateCreationParams(
+          updatedParams: givenCreationParams,
+          creationParams: givenUpdatedCreationParams,
+        );
+
+        // then
+        fakeAlhPdfViewPlatform.verifyUpdateScrollbar(
           creationParams: givenCreationParams,
         );
 

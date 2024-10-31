@@ -376,7 +376,7 @@ void main() {
         widgetConfiguration: expectedDefaultWidgetConfiguration,
         called: 2,
       );
-      fakeAlhPdfViewPlatform.verifyUpdateCreationParams(
+      fakeAlhPdfViewPlatform.verifyUpdateFitPolicy(
         creationParams: expectedCreationParams.toMap(),
         called: 1,
       );

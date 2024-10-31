@@ -121,13 +121,33 @@ abstract class AlhPdfViewPlatform extends PlatformInterface {
     throw UnimplementedError('setOrientation() has not been implemented.');
   }
 
-  /// Updating values for the native PDF View.
-  Future<void> updateCreationParams({
+  /// Updating bytes for the native PDF View.
+  Future<void> updateBytes({
     required Map<String, dynamic> creationParams,
     required int viewId,
   }) {
     throw UnimplementedError(
-      'updateCreationParams() has not been implemented.',
+      'updateBytes() has not been implemented.',
+    );
+  }
+
+  /// Updating fitPolicy for the native PDF View.
+  Future<void> updateFitPolicy({
+    required Map<String, dynamic> creationParams,
+    required int viewId,
+  }) {
+    throw UnimplementedError(
+      'updateFitPolicy() has not been implemented.',
+    );
+  }
+
+  /// Updating scrollbar for the native PDF View.
+  Future<void> updateScrollbar({
+    required Map<String, dynamic> creationParams,
+    required int viewId,
+  }) {
+    throw UnimplementedError(
+      'updateScrollbar() has not been implemented.',
     );
   }
 

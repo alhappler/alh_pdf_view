@@ -204,25 +204,31 @@ class AlhPdfView extends StatefulWidget {
 
 class _AlhPdfViewState extends State<AlhPdfView> with WidgetsBindingObserver {
   AlhPdfViewController? _alhPdfViewController;
+  late AlhPdfViewCreationParams _currentCreationParams;
+
   late double _zoom;
 
   @override
   void initState() {
     super.initState();
 
+    this._currentCreationParams = this._creationParams;
     this._zoom = widget.defaultZoomFactor;
     WidgetsBinding.instance.addObserver(this);
   }
 
   @override
   void didUpdateWidget(covariant AlhPdfView oldWidget) {
-    if (widget != oldWidget) {
+    if (this._currentCreationParams != this._creationParams) {
       unawaited(
         this._alhPdfViewController?.updateCreationParams(
-              creationParams: this._creationParams.toMap(),
+              creationParams: this._currentCreationParams.toMap(),
+              updatedParams: this._creationParams.toMap(),
             ),
       );
+      this._currentCreationParams = this._creationParams;
     }
+
     super.didUpdateWidget(oldWidget);
   }
 

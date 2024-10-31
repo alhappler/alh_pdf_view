@@ -16,10 +16,10 @@ import java.io.File
 
 /** AlhPdfViewerPlugin */
 internal class AlhPdfView(
-    private val context: Context?,
-    id: Int,
-    messenger: BinaryMessenger,
-    creationParams: Map<*, *>?
+        private val context: Context?,
+        id: Int,
+        messenger: BinaryMessenger,
+        creationParams: Map<*, *>?
 ) : MethodChannel.MethodCallHandler, PlatformView {
     private var pdfView: PDFView = PDFView(context, null)
 
@@ -77,6 +77,7 @@ internal class AlhPdfView(
             "setZoom" -> setZoom(call, result)
             "currentZoom" -> getZoom(result)
             "setOrientation" -> handleOrientationChange(call.arguments as Map<*, *>, result)
+            "updateBytes" -> handleUpdateBytes(call.arguments as Map<*, *>, result)
             "nextPage" -> setNextPage(call, result)
             "previousPage" -> setPreviousPage(call, result)
             else -> result.notImplemented()
@@ -96,62 +97,62 @@ internal class AlhPdfView(
         pdfView.maxZoom = alhPdfViewConfiguration.maxZoom
 
         pdfViewConfigurator
-            .enableAnnotationRendering(true)
-            .enableSwipe(alhPdfViewConfiguration.enableSwipe)
-            .pageFitPolicy(alhPdfViewConfiguration.fitPolicy)
-            .fitEachPage(alhPdfViewConfiguration.fitEachPage)
-            .swipeHorizontal(alhPdfViewConfiguration.swipeHorizontal)
-            .password(alhPdfViewConfiguration.password)
-            .nightMode(alhPdfViewConfiguration.nightMode)
-            .autoSpacing(alhPdfViewConfiguration.autoSpacing)
-            .spacing(alhPdfViewConfiguration.spacing)
-            .pageFling(alhPdfViewConfiguration.pageFling)
-            .pageSnap(alhPdfViewConfiguration.pageSnap)
-            .enableDoubletap(alhPdfViewConfiguration.enableDoubleTap)
-            .defaultPage(defaultPage)
-            .onTap {
-                alhPdfViewChannel.invokeMethod("onTap", null)
-                true
-            }
-            .onPageChange { page, total ->
-                if (hasSetPageWithAnimation) {
-                    hasSetPageWithAnimation = false
-                } else {
-                    val args: MutableMap<String, Any> = HashMap()
-                    args["page"] = page
-                    args["total"] = total
+                .enableAnnotationRendering(true)
+                .enableSwipe(alhPdfViewConfiguration.enableSwipe)
+                .pageFitPolicy(alhPdfViewConfiguration.fitPolicy)
+                .fitEachPage(alhPdfViewConfiguration.fitEachPage)
+                .swipeHorizontal(alhPdfViewConfiguration.swipeHorizontal)
+                .password(alhPdfViewConfiguration.password)
+                .nightMode(alhPdfViewConfiguration.nightMode)
+                .autoSpacing(alhPdfViewConfiguration.autoSpacing)
+                .spacing(alhPdfViewConfiguration.spacing)
+                .pageFling(alhPdfViewConfiguration.pageFling)
+                .pageSnap(alhPdfViewConfiguration.pageSnap)
+                .enableDoubletap(alhPdfViewConfiguration.enableDoubleTap)
+                .defaultPage(defaultPage)
+                .onTap {
+                    alhPdfViewChannel.invokeMethod("onTap", null)
+                    true
+                }
+                .onPageChange { page, total ->
+                    if (hasSetPageWithAnimation) {
+                        hasSetPageWithAnimation = false
+                    } else {
+                        val args: MutableMap<String, Any> = HashMap()
+                        args["page"] = page
+                        args["total"] = total
 
-                    if ((destinationPage == null || page == destinationPage) && currentPage != page) {
-                        currentPage = page
-                        destinationPage = null
-                        alhPdfViewChannel.invokeMethod("onPageChanged", args)
+                        if ((destinationPage == null || page == destinationPage) && currentPage != page) {
+                            currentPage = page
+                            destinationPage = null
+                            alhPdfViewChannel.invokeMethod("onPageChanged", args)
+                        }
                     }
                 }
-            }
-            .onError { throwable ->
-                val args: MutableMap<String, Any> = HashMap()
-                args["error"] = throwable.toString()
-                alhPdfViewChannel.invokeMethod("onError", args)
-            }
-            .onPageError { page, throwable ->
-                val args: MutableMap<String, Any> = HashMap()
-                args["page"] = page
-                args["error"] = throwable.toString()
-                alhPdfViewChannel.invokeMethod("onPageError", args)
-            }
-            .onRender { pages ->
-                val args: MutableMap<String, Any> = HashMap()
-                args["pages"] = pages
-                val defaultZoomFactor = alhPdfViewConfiguration.defaultZoomFactor
-
-                if (defaultZoomFactor > 0.0) {
-                    // Avoid using zoomTo as it may not function correctly and
-                    // could result in the display turning white (blank screen).
-                    pdfView.zoomWithAnimation(defaultZoomFactor.toFloat())
+                .onError { throwable ->
+                    val args: MutableMap<String, Any> = HashMap()
+                    args["error"] = throwable.toString()
+                    alhPdfViewChannel.invokeMethod("onError", args)
                 }
+                .onPageError { page, throwable ->
+                    val args: MutableMap<String, Any> = HashMap()
+                    args["page"] = page
+                    args["error"] = throwable.toString()
+                    alhPdfViewChannel.invokeMethod("onPageError", args)
+                }
+                .onRender { pages ->
+                    val args: MutableMap<String, Any> = HashMap()
+                    args["pages"] = pages
+                    val defaultZoomFactor = alhPdfViewConfiguration.defaultZoomFactor
 
-                alhPdfViewChannel.invokeMethod("onRender", args)
-            }
+                    if (defaultZoomFactor > 0.0) {
+                        // Avoid using zoomTo as it may not function correctly and
+                        // could result in the display turning white (blank screen).
+                        pdfView.zoomWithAnimation(defaultZoomFactor.toFloat())
+                    }
+
+                    alhPdfViewChannel.invokeMethod("onRender", args)
+                }
 
         if (context != null && alhPdfViewConfiguration.enableDefaultScrollHandle) {
             pdfViewConfigurator.scrollHandle(DefaultScrollHandle(context))
@@ -222,6 +223,13 @@ internal class AlhPdfView(
     private fun getZoom(result: MethodChannel.Result) {
         val zoom = pdfView.zoom.toDouble()
         result.success(zoom)
+    }
+
+    private fun handleUpdateBytes(arguments: Map<*, *>, result: MethodChannel.Result) {
+        alhPdfViewConfiguration = AlhPdfViewConfiguration.fromArguments(arguments)
+        loadPdfView(alhPdfViewConfiguration.defaultPage)
+
+        result.success(null)
     }
 
     /**

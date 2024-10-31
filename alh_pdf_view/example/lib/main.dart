@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:alh_pdf_view_example/pdf_screen.dart';
+import 'package:alh_pdf_view_example/refresh_example.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:path_provider/path_provider.dart';
@@ -23,6 +24,7 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   String pathSmallPDF = '';
   Uint8List bytesSmallPDF = Uint8List(0);
+  Uint8List bytesSmallPDFNew = Uint8List(0);
 
   String pathPDFWithoutEndingPDF = '';
   String pathInvalidPDF = '';
@@ -36,6 +38,17 @@ class _MyAppState extends State<MyApp> {
           () {
             this.pathSmallPDF = f.path;
             this.bytesSmallPDF = f.readAsBytesSync();
+          },
+        );
+      });
+
+      await this
+          .fromAsset('assets/sampleWithLink.pdf', 'sampleWithLink.pdf')
+          .then((f) {
+        setState(
+          () {
+            this.pathSmallPDF = f.path;
+            this.bytesSmallPDFNew = f.readAsBytesSync();
           },
         );
       });
@@ -89,13 +102,30 @@ class _MyAppState extends State<MyApp> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) =>
-                              PDFScreen(bytes: this.bytesSmallPDF),
+                          builder: (context) => PDFScreen(
+                            bytes: this.bytesSmallPDF,
+                          ),
                         ),
                       ),
                     );
                   },
                   child: const Text("Open small PDF with bytes"),
+                ),
+                ElevatedButton(
+                  onPressed: () {
+                    unawaited(
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => RefreshExample(
+                            bytes: this.bytesSmallPDF,
+                            updatedBytes: this.bytesSmallPDFNew,
+                          ),
+                        ),
+                      ),
+                    );
+                  },
+                  child: const Text("Refresh Example"),
                 ),
               ],
             );

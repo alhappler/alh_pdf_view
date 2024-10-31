@@ -5,11 +5,12 @@ import 'package:alh_pdf_view_example/pdf_page_info.dart';
 import 'package:alh_pdf_view_example/pdf_view_bottom_bar.dart';
 import 'package:flutter/material.dart';
 
+// ignore: must_be_immutable
 class PDFScreen extends StatefulWidget {
   final String? path;
-  final Uint8List? bytes;
+  Uint8List? bytes;
 
-  const PDFScreen({
+  PDFScreen({
     this.path,
     this.bytes,
     super.key,
@@ -36,7 +37,9 @@ class _PDFScreenState extends State<PDFScreen> {
     return OrientationBuilder(
       builder: (context, orientation) {
         return Scaffold(
-          appBar: AppBar(title: const Text("Document Portrait")),
+          appBar: AppBar(
+            title: const Text("Document Portrait"),
+          ),
           body: Stack(
             children: <Widget>[
               Column(

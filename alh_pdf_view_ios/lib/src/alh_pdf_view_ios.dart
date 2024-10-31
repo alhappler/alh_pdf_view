@@ -138,14 +138,38 @@ class AlhPdfViewIOS extends AlhPdfViewPlatform {
     return Size(sizeMap["width"], sizeMap["height"]);
   }
 
-  /// Updating values for the native PDF View.
+  /// Updating bytes for the native PDF View.
   @override
-  Future<void> updateCreationParams({
+  Future<void> updateBytes({
     required int viewId,
     required Map<String, dynamic> creationParams,
   }) async {
     await this._channel(viewId).invokeMethod(
-          'updateCreationParams',
+          'updateBytes',
+          creationParams,
+        );
+  }
+
+  /// Updating fitPolicy for the native PDF View.
+  @override
+  Future<void> updateFitPolicy({
+    required int viewId,
+    required Map<String, dynamic> creationParams,
+  }) async {
+    await this._channel(viewId).invokeMethod(
+          'updateFitPolicy',
+          creationParams,
+        );
+  }
+
+  /// Shows or remove the scrollbar for the native Pdf view.
+  @override
+  Future<void> updateScrollbar({
+    required int viewId,
+    required Map<String, dynamic> creationParams,
+  }) async {
+    await this._channel(viewId).invokeMethod(
+          'updateScrollbar',
           creationParams,
         );
   }

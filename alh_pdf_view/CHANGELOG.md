@@ -1,3 +1,14 @@
+## 2.2.0
+🐛 **Bugfix**
+* Fixed issue where updating `bytes` did not trigger a refresh
+* **Android**
+  * PdfView now refreshes the PDF when `bytes` are updated
+* **iOS**
+  * PdfView refreshes the PDF when `bytes` are updated
+  * PdfView correctly updates FitPolicy when `fitPolicy` changes
+  * PdfView now shows or hides the scrollbar based on updates to `showScrollbar`
+
+
 ## 2.1.0
 ⚽️ **Features**
 * added `onTap` as callback for Android and iOS when tapping pdf suggested by https://github.com/alhappler/alh_pdf_view/pull/36.

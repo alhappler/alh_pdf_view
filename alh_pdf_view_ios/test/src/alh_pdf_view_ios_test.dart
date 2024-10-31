@@ -374,15 +374,15 @@ void main() {
 
     test(
         'GIVEN creationParams '
-        'WHEN calling #updateCreationParams '
-        'THEN should call "updateCreationParams"', () async {
+        'WHEN calling #updateBytes '
+        'THEN should call "updateBytes"', () async {
       // given
       const givenCreationParams = {'bella': 'italia'};
       late final MethodCall actualCall;
 
       setUpMethodCall(
         (call) async {
-          if (call.method == 'updateCreationParams') {
+          if (call.method == 'updateBytes') {
             actualCall = call;
             return true;
           }
@@ -391,18 +391,79 @@ void main() {
       );
 
       // when
-      await platform.updateCreationParams(
+      await platform.updateBytes(
         viewId: givenViewId,
         creationParams: givenCreationParams,
       );
 
       // then
       const expectedCall = MethodCall(
-        'updateCreationParams',
+        'updateBytes',
         givenCreationParams,
       );
       expect(actualCall.method, equals(expectedCall.method));
       expect(actualCall.arguments, equals(expectedCall.arguments));
+    });
+
+    test(
+        'GIVEN creationParams '
+        'WHEN calling #updateFitPolicy '
+        'THEN should call "updateFitPolicy"', () async {
+      // given
+      const givenCreationParams = {'bella': 'italia'};
+      late final MethodCall actualCall;
+
+      setUpMethodCall(
+        (call) async {
+          if (call.method == 'updateFitPolicy') {
+            actualCall = call;
+            return true;
+          }
+          return null;
+        },
+      );
+
+      // when
+      await platform.updateFitPolicy(
+        viewId: givenViewId,
+        creationParams: givenCreationParams,
+      );
+
+      // then
+      const expectedCall = MethodCall(
+        'updateFitPolicy',
+        givenCreationParams,
+      );
+      expect(actualCall.method, equals(expectedCall.method));
+      expect(actualCall.arguments, equals(expectedCall.arguments));
+    });
+
+    test(
+        'GIVEN creationParams '
+        'WHEN calling #updateScrollbar '
+        'THEN should call "updateScrollbar"', () async {
+      // given
+      const givenCreationParams = {'bella': 'italia'};
+      late final MethodCall actualCall;
+
+      setUpMethodCall(
+        (call) async {
+          if (call.method == 'updateScrollbar') {
+            actualCall = call;
+            return true;
+          }
+          return null;
+        },
+      );
+
+      // when
+      await platform.updateScrollbar(
+        viewId: givenViewId,
+        creationParams: givenCreationParams,
+      );
+
+      // then
+      expect(actualCall.method, equals('updateScrollbar'));
     });
   });
 

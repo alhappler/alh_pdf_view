@@ -19,10 +19,7 @@ class EmbeddedPdfView : UIView {
     private var hasError = false
     
     private var configuration: AlhPdfViewConfiguration
-    
-    // Ensure to update after layoutSubviews was called to get correct sizes, e. g. after rotating the screen
-    private var updatedConfiguration: AlhPdfViewConfiguration?
-    
+
     private var pageChangeAnimationDuration: Double = 0.4
     private var zoomAnimationDuration: Double = 0.4
     
@@ -65,9 +62,8 @@ class EmbeddedPdfView : UIView {
             initPdfDefaultScaleFactor()
             goToDefaultPage()
             initializeScrollbar()
-        } else if let updatedConfiguration = self.updatedConfiguration {
-            handleUpdatedConfiguration(updatedConfiguration: updatedConfiguration)
         }
+
         hasInitializedView = true
     }
     
@@ -136,10 +132,22 @@ class EmbeddedPdfView : UIView {
         }
     }
     
-    func updateConfiguration(newConfiguration: AlhPdfViewConfiguration) {
-        updatedConfiguration = newConfiguration
+    func updateBytes(newConfiguration: AlhPdfViewConfiguration) {
+        self.configuration = newConfiguration
+        initPdfView()
+        initPdfDefaultScaleFactor()
     }
-    
+
+    func updateFitPolicy(newConfiguration: AlhPdfViewConfiguration) {
+         self.configuration = newConfiguration
+         initPdfDefaultScaleFactor()
+    }
+
+    func updateScrollbar(newConfiguration: AlhPdfViewConfiguration) {
+         self.configuration = newConfiguration
+         initializeScrollbar()
+    }
+
     private func initPdfDefaultScaleFactor() {
         let initScaleFactor = getPdfScaleFactor()
         initPdfViewScaleFactor = initScaleFactor
@@ -176,18 +184,7 @@ class EmbeddedPdfView : UIView {
             self.pdfView.go(to: document.page(at: defaultPage)!)
         }
     }
-    
-    private func handleUpdatedConfiguration(updatedConfiguration: AlhPdfViewConfiguration) {
-        if(updatedConfiguration.fitPolicy != configuration.fitPolicy) {
-            self.configuration = updatedConfiguration
-            initPdfDefaultScaleFactor()
-        }
-        if(updatedConfiguration.showScrollbar != configuration.showScrollbar) {
-            initializeScrollbar()
-        }
-        self.updatedConfiguration = nil
-    }
-    
+
     func getPdfPageSize() -> CGSize {
         let document = self.pdfView.document!
         let pageCount = document.pageCount

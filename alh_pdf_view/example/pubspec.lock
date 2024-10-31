@@ -7,28 +7,28 @@ packages:
       path: ".."
       relative: true
     source: path
-    version: "2.0.2"
+    version: "2.2.0"
   alh_pdf_view_android:
     dependency: "direct overridden"
     description:
       path: "../../alh_pdf_view_android"
       relative: true
     source: path
-    version: "2.1.1"
+    version: "2.2.0"
   alh_pdf_view_ios:
     dependency: "direct overridden"
     description:
       path: "../../alh_pdf_view_ios"
       relative: true
     source: path
-    version: "2.1.1"
+    version: "2.2.0"
   alh_pdf_view_platform_interface:
     dependency: "direct overridden"
     description:
       path: "../../alh_pdf_view_platform_interface"
       relative: true
     source: path
-    version: "2.1.0"
+    version: "2.2.0"
   async:
     dependency: transitive
     description:
@@ -210,10 +210,10 @@ packages:
     dependency: transitive
     description:
       name: path_provider_android
-      sha256: "6f01f8e37ec30b07bc424b4deabac37cacb1bc7e2e515ad74486039918a37eb7"
+      sha256: c464428172cb986b758c6d1724c603097febb8fb855aa265aeecc9280c294d4a
       url: "https://pub.dev"
     source: hosted
-    version: "2.2.10"
+    version: "2.2.12"
   path_provider_foundation:
     dependency: transitive
     description:
@@ -367,10 +367,10 @@ packages:
     dependency: transitive
     description:
       name: xdg_directories
-      sha256: faea9dee56b520b55a566385b84f2e8de55e7496104adada9962e0bd11bcff1d
+      sha256: "7a3f37b05d989967cdddcbb571f1ea834867ae2faa29725fd085180e0883aa15"
       url: "https://pub.dev"
     source: hosted
-    version: "1.0.4"
+    version: "1.1.0"
 sdks:
-  dart: ">=3.4.0 <4.0.0"
-  flutter: ">=3.22.0"
+  dart: ">=3.5.0 <4.0.0"
+  flutter: ">=3.24.0"
