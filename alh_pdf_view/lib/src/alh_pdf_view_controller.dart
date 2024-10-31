@@ -207,16 +207,30 @@ class AlhPdfViewController {
   }
 
   /// Updating values for the native PDF View.
-  ///
-  /// Currently only for iOS when updating [FitPolicy].
   Future<void> updateCreationParams({
     required Map<String, dynamic> creationParams,
+    required Map<String, dynamic> updatedParams,
   }) async {
-    if (defaultTargetPlatform == TargetPlatform.iOS) {
-      await this._instance.updateCreationParams(
-            creationParams: creationParams,
+    if (creationParams["bytes"] != updatedParams["bytes"]) {
+      await this._instance.updateBytes(
+            creationParams: updatedParams,
             viewId: viewId,
           );
+    }
+    // fitPolicy and showScrollbar only necessary to update on iOS.
+    if (defaultTargetPlatform == TargetPlatform.iOS) {
+      if (creationParams["fitPolicy"] != updatedParams["fitPolicy"]) {
+        await this._instance.updateFitPolicy(
+              creationParams: updatedParams,
+              viewId: viewId,
+            );
+      }
+      if (creationParams["showScrollbar"] != updatedParams["showScrollbar"]) {
+        await this._instance.updateScrollbar(
+              creationParams: updatedParams,
+              viewId: viewId,
+            );
+      }
     }
   }
 

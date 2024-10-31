@@ -367,6 +367,40 @@ void main() {
       expect(actualCall.method, equals(expectedCall.method));
       expect(actualCall.arguments, equals(expectedCall.arguments));
     });
+
+    test(
+        'GIVEN creationParams '
+        'WHEN calling #updateBytes '
+        'THEN should call "setOrientation"', () async {
+      // given
+      const givenCreationParams = {'hallo': 'hello'};
+
+      late final MethodCall actualCall;
+
+      setUpMethodCall(
+        (call) async {
+          if (call.method == 'updateBytes') {
+            actualCall = call;
+            return true;
+          }
+          return null;
+        },
+      );
+
+      // when
+      await platform.updateBytes(
+        viewId: givenViewId,
+        creationParams: givenCreationParams,
+      );
+
+      // then
+      const expectedCall = MethodCall(
+        'updateBytes',
+        givenCreationParams,
+      );
+      expect(actualCall.method, equals(expectedCall.method));
+      expect(actualCall.arguments, equals(expectedCall.arguments));
+    });
   });
 
   group('#buildView', () {

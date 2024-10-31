@@ -1,3 +1,7 @@
+## 2.2.0
+* Added `updateBytes`
+* Removed `updateCreationParams`
+
 ## 2.1.0
 * Added `onTap` as callback for Android when tapping pdf suggested by https://github.com/alhappler/alh_pdf_view/pull/36.
 

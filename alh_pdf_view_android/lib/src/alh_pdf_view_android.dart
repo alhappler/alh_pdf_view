@@ -144,6 +144,18 @@ class AlhPdfViewAndroid extends AlhPdfViewPlatform {
     });
   }
 
+  /// Updating values for the native PDF View.
+  @override
+  Future<void> updateBytes({
+    required int viewId,
+    required Map<String, dynamic> creationParams,
+  }) async {
+    await this._channel(viewId).invokeMethod(
+          'updateBytes',
+          creationParams,
+        );
+  }
+
   @override
   Widget buildView({
     required AlhPdfViewCreationParams creationParams,

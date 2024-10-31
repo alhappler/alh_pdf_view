@@ -518,22 +518,22 @@ class FakeAlhPdfViewPlatform extends AlhPdfViewPlatform {
   }
 
   ///
-  /// updateCreationParams
+  /// updateBytes
   ///
 
-  int _updateCreationParamsCalls = 0;
-  Map<String, dynamic>? _updateCreationParamsActualCreationParams;
+  int _updateBytesCalls = 0;
+  Map<String, dynamic>? _updateBytesActualCreationParams;
 
   @override
-  Future<void> updateCreationParams({
+  Future<void> updateBytes({
     required int viewId,
     required Map<String, dynamic> creationParams,
   }) async {
-    this._updateCreationParamsActualCreationParams = creationParams;
-    this._updateCreationParamsCalls++;
+    this._updateBytesActualCreationParams = creationParams;
+    this._updateBytesCalls++;
   }
 
-  void verifyUpdateCreationParams({
+  void verifyUpdateBytes({
     int called = 1,
     Map<String, dynamic>? creationParams,
   }) {
@@ -542,13 +542,81 @@ class FakeAlhPdfViewPlatform extends AlhPdfViewPlatform {
       return;
     }
 
-    if (this._updateCreationParamsActualCreationParams == null) {
+    if (this._updateBytesActualCreationParams == null) {
       throw UnimplementedError(
-        'Call updateCreationParams before calling this method!',
+        'Call updateBytes before calling this method!',
       );
     }
-    expect(this._updateCreationParamsCalls--, 1);
-    expect(creationParams, this._updateCreationParamsActualCreationParams);
+    expect(this._updateBytesCalls--, 1);
+    expect(creationParams, this._updateBytesActualCreationParams);
+  }
+
+  ///
+  /// updateFitPolicy
+  ///
+
+  int _updateFitPolicyCalls = 0;
+  Map<String, dynamic>? _updateFitPolicyCallsActualCreationParams;
+
+  @override
+  Future<void> updateFitPolicy({
+    required int viewId,
+    required Map<String, dynamic> creationParams,
+  }) async {
+    this._updateFitPolicyCallsActualCreationParams = creationParams;
+    this._updateFitPolicyCalls++;
+  }
+
+  void verifyUpdateFitPolicy({
+    int called = 1,
+    Map<String, dynamic>? creationParams,
+  }) {
+    if (called == 0) {
+      expect(this._setOrientationCalls, 0);
+      return;
+    }
+
+    if (this._updateFitPolicyCallsActualCreationParams == null) {
+      throw UnimplementedError(
+        'Call updateFitPolicy before calling this method!',
+      );
+    }
+    expect(this._updateFitPolicyCalls--, 1);
+    expect(creationParams, this._updateFitPolicyCallsActualCreationParams);
+  }
+
+  ///
+  /// updateScrollbar
+  ///
+
+  int _updateScrollbarCalls = 0;
+  Map<String, dynamic>? _updateScrollbarCallsActualCreationParams;
+
+  @override
+  Future<void> updateScrollbar({
+    required int viewId,
+    required Map<String, dynamic> creationParams,
+  }) async {
+    this._updateScrollbarCallsActualCreationParams = creationParams;
+    this._updateScrollbarCalls++;
+  }
+
+  void verifyUpdateScrollbar({
+    int called = 1,
+    Map<String, dynamic>? creationParams,
+  }) {
+    if (called == 0) {
+      expect(this._setOrientationCalls, 0);
+      return;
+    }
+
+    if (this._updateScrollbarCallsActualCreationParams == null) {
+      throw UnimplementedError(
+        'Call updateScrollbar before calling this method!',
+      );
+    }
+    expect(this._updateScrollbarCalls--, 1);
+    expect(creationParams, this._updateScrollbarCallsActualCreationParams);
   }
 
   ///
@@ -583,6 +651,6 @@ class FakeAlhPdfViewPlatform extends AlhPdfViewPlatform {
     expect(this._getPageSizeCalls, 0);
     expect(this._resetZoomCalls, 0);
     expect(this._getZoomCalls, 0);
-    expect(this._updateCreationParamsCalls, 0);
+    expect(this._updateBytesCalls, 0);
   }
 }

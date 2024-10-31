@@ -127,9 +127,19 @@ class AlhPdfView: NSObject, FlutterPlatformView {
             self._embeddedPdfView.zoomPdfView(zoomFactor: zoom)
             result(nil)
             break
-        case "updateCreationParams":
+        case "updateBytes":
             let arguments = call.arguments as! Dictionary<String, Any>
-            _embeddedPdfView.updateConfiguration(newConfiguration: AlhPdfViewConfiguration.init(arguments: arguments))
+            _embeddedPdfView.updateBytes(newConfiguration: AlhPdfViewConfiguration.init(arguments: arguments))
+            result(nil)
+            break
+        case "updateFitPolicy":
+            let arguments = call.arguments as! Dictionary<String, Any>
+            _embeddedPdfView.updateFitPolicy(newConfiguration: AlhPdfViewConfiguration.init(arguments: arguments))
+            result(nil)
+            break
+        case "updateScrollbar":
+            let arguments = call.arguments as! Dictionary<String, Any>
+            _embeddedPdfView.updateScrollbar(newConfiguration: AlhPdfViewConfiguration.init(arguments: arguments))
             result(nil)
             break
         default:
