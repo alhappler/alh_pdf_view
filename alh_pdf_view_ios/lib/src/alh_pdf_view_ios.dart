@@ -209,11 +209,6 @@ class AlhPdfViewIOS extends AlhPdfViewPlatform {
   }
 
   @override
-  Stream<OnPageErrorEvent> onPageError({required int viewId}) {
-    return this._events(viewId).whereType<OnPageErrorEvent>();
-  }
-
-  @override
   Stream<OnZoomChangedEvent> onZoomChanged({required int viewId}) {
     return this._events(viewId).whereType<OnZoomChangedEvent>();
   }
@@ -275,14 +270,6 @@ class AlhPdfViewIOS extends AlhPdfViewPlatform {
         break;
       case 'onError':
         final event = OnErrorEvent(viewId, call.arguments['error']);
-        this._mapEventStreamController.add(event);
-        break;
-      case 'onPageError':
-        final pageChangedObject = PageErrorObject(
-          page: call.arguments['page'],
-          error: call.arguments['error'],
-        );
-        final event = OnPageErrorEvent(viewId, pageChangedObject);
         this._mapEventStreamController.add(event);
         break;
       case 'onZoomChanged':

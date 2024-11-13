@@ -130,15 +130,10 @@ internal class AlhPdfView(
                     }
                 }
                 .onError { throwable ->
-                    val args: MutableMap<String, Any> = HashMap()
-                    args["error"] = throwable.toString()
-                    alhPdfViewChannel.invokeMethod("onError", args)
+                    invokeError("[onError] $throwable")
                 }
                 .onPageError { page, throwable ->
-                    val args: MutableMap<String, Any> = HashMap()
-                    args["page"] = page
-                    args["error"] = throwable.toString()
-                    alhPdfViewChannel.invokeMethod("onPageError", args)
+                    invokeError("[onPageError] Error $throwable with page $page")
                 }
                 .onRender { pages ->
                     val args: MutableMap<String, Any> = HashMap()
@@ -249,5 +244,14 @@ internal class AlhPdfView(
             lastOrientation = newDeviceOrientation
         }
         result.success(null)
+    }
+
+    /**
+     * Invokes any errors which happened during the process which can be logged in flutter.
+     */
+    private fun invokeError(error: String) {
+        val args: MutableMap<String, Any> = HashMap()
+        args["error"] = error
+        alhPdfViewChannel.invokeMethod("onError", args)
     }
 }

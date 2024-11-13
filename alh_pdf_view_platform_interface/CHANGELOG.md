@@ -1,3 +1,6 @@
+## 2.3.0
+* removed `onPageError`
+
 ## 2.2.0
 * Added `updateBytes`, `updateFitPolicy` and `updateScrollbar`
 * Removed `updateCreationParams`

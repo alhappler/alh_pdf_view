@@ -18,7 +18,6 @@ void main() {
     RenderCallback? onRender,
     PageChangedCallback? onPageChanged,
     ErrorCallback? onError,
-    PageErrorCallback? onPageError,
     ZoomChangedCallback? onZoomChanged,
     LinkHandleCallback? onLinkHandle,
     VoidCallback? onTap,
@@ -28,7 +27,6 @@ void main() {
       onRender: onRender,
       onPageChanged: onPageChanged,
       onError: onError,
-      onPageError: onPageError,
       onZoomChanged: onZoomChanged,
       onLinkHandle: onLinkHandle,
       onTap: onTap,
@@ -126,38 +124,6 @@ void main() {
 
       // then
       await completer.future;
-      expect(actualError, equals(givenError));
-    });
-
-    test(
-        'GIVEN onPageError '
-        'WHEN adding OnPageErrorEvent with page and error '
-        'THEN should call onPageError', () async {
-      // given
-      final completer = Completer();
-      const givenPage = 234;
-      const givenError = 'error error';
-
-      int? actualPage;
-      String? actualError;
-      await setUpController(
-        onPageError: (page, error) {
-          actualPage = page;
-          actualError = error;
-          completer.complete();
-        },
-      );
-
-      // when
-      fakeAlhPdfViewPlatform.addOnPageErrorEvent(
-        viewId: givenViewId,
-        page: givenPage,
-        error: givenError,
-      );
-
-      // then
-      await completer.future;
-      expect(actualPage, equals(givenPage));
       expect(actualError, equals(givenError));
     });
 

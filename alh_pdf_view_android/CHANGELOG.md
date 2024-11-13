@@ -1,3 +1,7 @@
+## 2.3.0
+* removed `onPageError` which was replaced with `onError`
+* updated logs which come with `onError` in `AlhPdfView`
+  
 ## 2.2.0
 * Added `updateBytes`
 * Removed `updateCreationParams`
@@ -17,7 +21,7 @@
 ⚽️ **Features**
 * better error handling on iOS
 * added new parameter `spacing` (Issue [#35](https://github.com/alhappler/alh_pdf_view/issues/35) from `SpirikleOfficial`)
-    * adds space between pdf pages
+  * adds space between pdf pages
 
 ## 1.2.1
 
@@ -28,10 +32,10 @@
 
 ⚽️ **Features**
 * added `showScrollbar` (Issue [#33](https://github.com/alhappler/alh_pdf_view/issues/33) from `mirkancal`)
-    * default value is true
-    * if false you can hide the Scrollbar
-    * this solution only works for iOS
-    * on Android, you can use `enableDefaultScrollHandle` to hide the scrolling indicator
+  * default value is true
+  * if false you can hide the Scrollbar
+  * this solution only works for iOS
+  * on Android, you can use `enableDefaultScrollHandle` to hide the scrolling indicator
 
 ## 1.1.0
 
@@ -42,15 +46,15 @@
 
 ⚽️ **Features**
 * added two new functions for Android and iOS (Issue [#18](https://github.com/alhappler/alh_pdf_view/issues/18) from `carman247`)
-    * goToNextPage to navigate to the next page (optionally animated)
-    * goToPreviousPage to navigate to the previous page (optionally animated)
+  * goToNextPage to navigate to the next page (optionally animated)
+  * goToPreviousPage to navigate to the previous page (optionally animated)
 * added `withAnimation` also for iOS when changing the page
 
 ⚡️ **Breaking changes**
 * removed function `setPageWithAnimation`
-    * use instead `setPage` and use the parameter `withAnimation`
+  * use instead `setPage` and use the parameter `withAnimation`
 * updated to flutter `3.3.0` and dart `2.18.0`
-    * minVersion for iOS is now `11.0`
+  * minVersion for iOS is now `11.0`
 
 ## 0.3.4
 🐛 **Bugfix**
@@ -118,8 +122,8 @@
 
 * onZoomChanged removed for Android
 * Fixed rotation bug
-    * Android: resulting to a white screen
-    * iOS: resetting the pdf
+  * Android: resulting to a white screen
+  * iOS: resetting the pdf
 * FitPolicy can be updated on Android and iOS
 
 ## 0.0.1

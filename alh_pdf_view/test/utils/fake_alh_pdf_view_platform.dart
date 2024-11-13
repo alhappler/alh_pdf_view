@@ -128,24 +128,6 @@ class FakeAlhPdfViewPlatform extends AlhPdfViewPlatform {
   }
 
   ///
-  /// onError
-  ///
-
-  @override
-  Stream<OnPageErrorEvent> onPageError({required int viewId}) {
-    return this._events(viewId).whereType<OnPageErrorEvent>();
-  }
-
-  void addOnPageErrorEvent({
-    required int viewId,
-    required int page,
-    required String error,
-  }) {
-    final event = PageErrorObject(page: page, error: error);
-    this.mapEventStreamController.add(OnPageErrorEvent(viewId, event));
-  }
-
-  ///
   /// onZoomChanged
   ///
 

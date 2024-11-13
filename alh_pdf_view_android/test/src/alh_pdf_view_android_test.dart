@@ -570,37 +570,6 @@ void main() {
     });
 
     test(
-        'GIVEN error and page '
-        'WHEN invoking method "onPageError" '
-        'THEN should call #onPageError with given error and page', () async {
-      // given
-      const givenError = 'helpppp!!! errrorrrr 404';
-      const givenPage = 10;
-
-      dynamic actualError;
-      int? actualPage;
-      testController.connectStreams(
-        viewId: givenViewId,
-        onPageError: (page, error) {
-          actualError = error;
-          actualPage = page;
-        },
-      );
-
-      // when
-      await invokeMethodCall(
-        const MethodCall('onPageError', {
-          'error': givenError,
-          'page': givenPage,
-        }),
-      );
-
-      // then
-      expect(actualError, equals(givenError));
-      expect(actualPage, equals(givenPage));
-    });
-
-    test(
         'GIVEN zoom '
         'WHEN invoking method "onZoomChanged" '
         'THEN should call #onZoomChanged with given zoom', () async {
@@ -640,7 +609,6 @@ class _TestAlhPdfViewController {
     RenderCallback? onRender,
     PageChangedCallback? onPageChanged,
     ErrorCallback? onError,
-    PageErrorCallback? onPageError,
     ZoomChangedCallback? onZoomChanged,
   }) {
     this._instance.onRender(viewId: viewId).listen((event) {
@@ -651,9 +619,6 @@ class _TestAlhPdfViewController {
     });
     this._instance.onError(viewId: viewId).listen((event) {
       onError?.call(event.value);
-    });
-    this._instance.onPageError(viewId: viewId).listen((event) {
-      onPageError?.call(event.value.page, event.value.error);
     });
     this._instance.onZoomChanged(viewId: viewId).listen((event) {
       onZoomChanged?.call(event.value);

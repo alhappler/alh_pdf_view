@@ -16,7 +16,7 @@ class EmbeddedPdfView : UIView {
     private var initPdfViewScaleFactor: CGFloat
     
     private var hasInitializedView = false
-    private var hasError = false
+    private var hasInitPdfFailed = false
     
     private var configuration: AlhPdfViewConfiguration
 
@@ -52,7 +52,8 @@ class EmbeddedPdfView : UIView {
     override func layoutSubviews() {
         super.layoutSubviews()
         
-        if(self.hasError){
+        if(self.hasInitPdfFailed){
+            invokeError(error: "[layoutSubviews] Failure initializing pdf document with path \(String(describing: configuration.filePath)) and bytes length \(String(describing: configuration.bytes?.count))!")
             return;
         }
         
@@ -83,11 +84,7 @@ class EmbeddedPdfView : UIView {
             }
         }
         else {
-            self.pdfChannel.invokeMethod("onError", arguments: [
-                "error": "Failure initialising pdf document!"
-            ])
-            
-            self.hasError = true;
+            self.hasInitPdfFailed = true;
         }
     }
     
@@ -226,6 +223,7 @@ class EmbeddedPdfView : UIView {
             
             return true
         }
+        invokeError(error: "[goToPage] Could not find page with index \(pageIndex).")
         return false
     }
     
@@ -233,6 +231,7 @@ class EmbeddedPdfView : UIView {
         if let currentPage = pdfView.currentPage {
             return pdfView.document?.index(for: currentPage)
         }
+        invokeError(error: "[getCurrentPageIndex] Could not get current page index.")
         return nil
     }
     
@@ -240,6 +239,7 @@ class EmbeddedPdfView : UIView {
         if let document = self.pdfView.document {
             return document.pageCount;
         }
+        invokeError(error: "[getPageCount] Could not get page count.")
         return nil
     }
     
@@ -277,6 +277,13 @@ class EmbeddedPdfView : UIView {
             return true
         }
         return false
+    }
+    
+    /**
+     Invokes any errors which happened during the process which can be logged in flutter.
+     */
+    private func invokeError(error: String) {
+        pdfChannel.invokeMethod("onError", arguments: ["error" : error])
     }
 }
 

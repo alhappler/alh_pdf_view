@@ -76,12 +76,6 @@ class _PDFScreenState extends State<PDFScreen> {
                         });
                         print(error.toString());
                       },
-                      onPageError: (page, error) {
-                        setState(() {
-                          this.errorMessage = '$page: ${error.toString()}';
-                        });
-                        print('$page: ${error.toString()}');
-                      },
                       onViewCreated: (controller) {
                         this.pdfViewController = controller;
                       },

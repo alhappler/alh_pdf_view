@@ -176,10 +176,6 @@ abstract class AlhPdfViewPlatform extends PlatformInterface {
     throw UnimplementedError('onError() has not been implemented.');
   }
 
-  Stream<OnPageErrorEvent> onPageError({required int viewId}) {
-    throw UnimplementedError('onPageError() has not been implemented.');
-  }
-
   Stream<OnZoomChangedEvent> onZoomChanged({required int viewId}) {
     throw UnimplementedError('onZoomChanged() has not been implemented.');
   }
