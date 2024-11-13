@@ -10,7 +10,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  alh_pdf_view_platform_interface: ^2.2.0
+  alh_pdf_view_platform_interface: ^2.3.0
   stream_transform: ^2.1.0
 
 dev_dependencies:

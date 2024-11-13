@@ -7,28 +7,28 @@ packages:
       path: ".."
       relative: true
     source: path
-    version: "2.2.0"
+    version: "2.3.0"
   alh_pdf_view_android:
     dependency: "direct overridden"
     description:
       path: "../../alh_pdf_view_android"
       relative: true
     source: path
-    version: "2.2.0"
+    version: "2.3.0"
   alh_pdf_view_ios:
     dependency: "direct overridden"
     description:
       path: "../../alh_pdf_view_ios"
       relative: true
     source: path
-    version: "2.2.0"
+    version: "2.3.0"
   alh_pdf_view_platform_interface:
     dependency: "direct overridden"
     description:
       path: "../../alh_pdf_view_platform_interface"
       relative: true
     source: path
-    version: "2.2.0"
+    version: "2.3.0"
   async:
     dependency: transitive
     description:
