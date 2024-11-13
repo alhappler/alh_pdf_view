@@ -5,7 +5,6 @@ class AlhPdfViewController {
   final RenderCallback? _onRender;
   final PageChangedCallback? _onPageChanged;
   final ErrorCallback? _onError;
-  final PageErrorCallback? _onPageError;
   final ZoomChangedCallback? _onZoomChanged;
   final LinkHandleCallback? _onLinkHandle;
   final VoidCallback? _onTap;
@@ -13,7 +12,6 @@ class AlhPdfViewController {
   StreamSubscription<OnRenderEvent>? _onRenderSubscription;
   StreamSubscription<OnPageChangedEvent>? _onPageChangedSubscription;
   StreamSubscription<OnErrorEvent>? _onErrorSubscription;
-  StreamSubscription<OnPageErrorEvent>? _onPageErrorSubscription;
   StreamSubscription<OnZoomChangedEvent>? _onZoomChangedSubscription;
   StreamSubscription<OnLinkHandleEvent>? _onLinkHandleSubscription;
   StreamSubscription<OnTapEvent>? _onTapSubscription;
@@ -23,14 +21,12 @@ class AlhPdfViewController {
     required RenderCallback? onRender,
     required PageChangedCallback? onPageChanged,
     required ErrorCallback? onError,
-    required PageErrorCallback? onPageError,
     required ZoomChangedCallback? onZoomChanged,
     required LinkHandleCallback? onLinkHandle,
     required VoidCallback? onTap,
   })  : _onRender = onRender,
         _onPageChanged = onPageChanged,
         _onError = onError,
-        _onPageError = onPageError,
         _onZoomChanged = onZoomChanged,
         _onLinkHandle = onLinkHandle,
         _onTap = onTap {
@@ -43,7 +39,6 @@ class AlhPdfViewController {
     required RenderCallback? onRender,
     required PageChangedCallback? onPageChanged,
     required ErrorCallback? onError,
-    required PageErrorCallback? onPageError,
     required ZoomChangedCallback? onZoomChanged,
     required LinkHandleCallback? onLinkHandle,
     required VoidCallback? onTap,
@@ -55,7 +50,6 @@ class AlhPdfViewController {
       onRender: onRender,
       onPageChanged: onPageChanged,
       onError: onError,
-      onPageError: onPageError,
       onZoomChanged: onZoomChanged,
       onLinkHandle: onLinkHandle,
       onTap: onTap,
@@ -84,12 +78,6 @@ class AlhPdfViewController {
       this._onErrorSubscription =
           this._instance.onError(viewId: viewId).listen((event) {
         this._onError(event.value);
-      });
-    }
-    if (this._onPageError != null) {
-      this._onPageErrorSubscription =
-          this._instance.onPageError(viewId: viewId).listen((event) {
-        this._onPageError(event.value.page, event.value.error);
       });
     }
     if (this._onZoomChanged != null) {
@@ -242,7 +230,6 @@ class AlhPdfViewController {
     unawaited(this._onRenderSubscription?.cancel());
     unawaited(this._onPageChangedSubscription?.cancel());
     unawaited(this._onErrorSubscription?.cancel());
-    unawaited(this._onPageErrorSubscription?.cancel());
     unawaited(this._onZoomChangedSubscription?.cancel());
     unawaited(this._onLinkHandleSubscription?.cancel());
     unawaited(this._onTapSubscription?.cancel());

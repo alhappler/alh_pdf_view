@@ -393,7 +393,6 @@ void main() {
         ErrorCallback? onError,
         RenderCallback? onRender,
         PageChangedCallback? onPageChanged,
-        PageErrorCallback? onPageError,
         ZoomChangedCallback? onZoomChanged,
       }) async =>
           tester.pumpWidget(
@@ -405,7 +404,6 @@ void main() {
                   onError: onError,
                   onRender: onRender,
                   onPageChanged: onPageChanged,
-                  onPageError: onPageError,
                   onZoomChanged: onZoomChanged,
                 ),
               ),
@@ -538,41 +536,6 @@ void main() {
         await completer.future;
         expect(actualPage, equals(givenPage));
         expect(actualTotal, equals(givenTotal));
-      });
-
-      testWidgets(
-          "GIVEN path and [AlhPdfView] "
-          "WHEN invoking onPageError "
-          "THEN should call #onPageError with given page and error",
-          (WidgetTester tester) async {
-        // given
-        final completer = Completer();
-
-        const givenPage = 9;
-        const givenError = 'error aaaaaaaaa';
-        int? actualPage;
-        dynamic actualError;
-
-        await pumpWidget(
-          tester,
-          onPageError: (page, error) {
-            actualPage = page;
-            actualError = error;
-            completer.complete();
-          },
-        );
-
-        // when
-        fakeAlhPdfViewPlatform.addOnPageErrorEvent(
-          viewId: expectedViewId,
-          page: givenPage,
-          error: givenError,
-        );
-
-        // then
-        await completer.future;
-        expect(actualPage, equals(givenPage));
-        expect(actualError, equals(givenError));
       });
 
       testWidgets(

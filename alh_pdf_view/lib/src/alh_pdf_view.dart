@@ -147,11 +147,6 @@ class AlhPdfView extends StatefulWidget {
   /// When there are errors happening, this methods returns a message.
   final ErrorCallback? onError;
 
-  /// Called when there are specific errors on a page.
-  ///
-  /// This callback works only for Android.
-  final PageErrorCallback? onPageError;
-
   /// Called when tapped a link in PDF.
   ///
   /// If this function is null, then the Browser will be opened
@@ -169,7 +164,6 @@ class AlhPdfView extends StatefulWidget {
     this.onRender,
     this.onPageChanged,
     this.onError,
-    this.onPageError,
     this.onZoomChanged,
     this.gestureRecognizers,
     this.onLinkHandle,
@@ -296,7 +290,6 @@ class _AlhPdfViewState extends State<AlhPdfView> with WidgetsBindingObserver {
       onRender: this.widget.onRender,
       onPageChanged: this.widget.onPageChanged,
       onError: this.widget.onError,
-      onPageError: this.widget.onPageError,
       onZoomChanged: this.widget.onZoomChanged,
       onLinkHandle: this.widget.onLinkHandle,
       onTap: this.widget.onTap,

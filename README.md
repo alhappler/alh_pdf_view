@@ -78,7 +78,6 @@ This is a list of functional parameters.
 | `onPageChanged`      | When changing the page, this method will be called with the new page. | **-** |
 | `onZoomChanged`      | Called when changing the zoom.                                        | **-** |
 | `onError`            | When there are errors happening, this methods returns a message.      | **-** |
-| `onPageError`        | Called when there are specific errors on a page. (only Android)       | **-** |
 | `onLinkHandle`       | Called when tapping a link in PDF. (only iOS)                         | **-** |
 
 

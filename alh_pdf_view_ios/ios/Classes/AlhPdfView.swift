@@ -76,8 +76,7 @@ class AlhPdfView: NSObject, FlutterPlatformView {
             initObservers()
 
         } else{
-            let arguments = ["error" : "cannot create document: File not in PDF format or corrupted."]
-            _pdfViewChannel.invokeMethod("onError", arguments: arguments)
+            invokeError(error: "[init] Cannot create document: File not in PDF format or corrupted.")
         }
 
     }
@@ -92,12 +91,12 @@ class AlhPdfView: NSObject, FlutterPlatformView {
             removeObservers()
             result(true)
         case "pageCount":
-            let pageCount = _embeddedPdfView.getPageCount() ?? -1
-            result(pageCount)
+            let pageCount = _embeddedPdfView.getPageCount()
+            result(pageCount ?? -1)
             break
         case "currentPage":
-            let currentPageIndex = _embeddedPdfView.getCurrentPageIndex() ?? -1
-            result(currentPageIndex)
+            let currentPageIndex = _embeddedPdfView.getCurrentPageIndex()
+            result(currentPageIndex ?? -1)
             break
         case "previousPage":
             goToPreviousPage(call: call, result: result)
@@ -165,6 +164,13 @@ class AlhPdfView: NSObject, FlutterPlatformView {
         let withAnimation = arguments["withAnimation"] as! Bool
         result(_embeddedPdfView.goToPage(pageIndex: pageIndex, withAnimation: withAnimation))
     }
+    
+    /**
+     Invokes any errors which happened during the process which can be logged in flutter.
+     */
+    private func invokeError(error: String) {
+        _pdfViewChannel.invokeMethod("onError", arguments: ["error" : error])
+    }
 
     func initGestures() {
         let swipeLeft = UISwipeGestureRecognizer.init(target: self, action: #selector(didSwipe))
@@ -197,8 +203,10 @@ class AlhPdfView: NSObject, FlutterPlatformView {
     }
     
     func handleRenderCompleted() {
-        let pagesCount = _embeddedPdfView.getPageCount() ?? -1
-        _pdfViewChannel.invokeMethod("onRender", arguments: ["pages": pagesCount])
+        let pagesCount = _embeddedPdfView.getPageCount()
+        if(pagesCount != nil) {
+            _pdfViewChannel.invokeMethod("onRender", arguments: ["pages": pagesCount])
+        }
     }
     
     @objc func handlePageChanged(notification: NSNotification) {

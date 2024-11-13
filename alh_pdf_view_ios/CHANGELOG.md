@@ -1,3 +1,8 @@
+## 2.3.0
+* removed `onPageError` which was never used
+* Added more error logs if something was not alright
+  * these errors can be logged using `onError` in `AlhPdfView`
+
 ## 2.2.0
 * Added `updateBytes`, `updateFitPolicy` and `updateScrollbar`
 * Removed `updateCreationParams`
