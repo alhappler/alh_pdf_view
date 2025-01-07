@@ -71,6 +71,7 @@ class AlhPdfViewCreationParams {
         'pageSnap': this.pageSnap,
         'defaultPage': this.defaultPage,
         'defaultZoomFactor': this.defaultZoomFactor,
+        // ignore: deprecated_member_use
         'backgroundColor': this.backgroundColor.value,
         'password': this.password,
         'enableDoubleTap': this.enableDoubleTap,
