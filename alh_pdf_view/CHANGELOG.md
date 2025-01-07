@@ -1,3 +1,9 @@
+## 2.3.1
+⚽️ **Features**
+* the PDF now updates automatically after `filePath` was updated
+  * renamed `updateBytes` to `refreshPdf` of `AlhPdfViewPlatform`
+
+
 ## 2.3.0
 ⚽️ **Features**
 * more error logging for `onError` on iOS

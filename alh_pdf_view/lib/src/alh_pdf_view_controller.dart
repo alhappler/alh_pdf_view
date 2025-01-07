@@ -199,12 +199,14 @@ class AlhPdfViewController {
     required Map<String, dynamic> creationParams,
     required Map<String, dynamic> updatedParams,
   }) async {
-    if (creationParams["bytes"] != updatedParams["bytes"]) {
-      await this._instance.updateBytes(
+    if (creationParams["bytes"] != updatedParams["bytes"] ||
+        creationParams["filePath"] != updatedParams["filePath"]) {
+      await this._instance.refreshPdf(
             creationParams: updatedParams,
             viewId: viewId,
           );
     }
+
     // fitPolicy and showScrollbar only necessary to update on iOS.
     if (defaultTargetPlatform == TargetPlatform.iOS) {
       if (creationParams["fitPolicy"] != updatedParams["fitPolicy"]) {

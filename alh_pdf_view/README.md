@@ -86,15 +86,18 @@ This is a list of functional parameters.
 If you want to start specific actions for the displayed PDF file, you can use `AlhPdfViewController`.
 This controller contains some functionalities to update your view. Here is a list of them.
 
-| **Parameter**      | **Description**                                        |
-|:-------------------|:-------------------------------------------------------|
-| `getPageSize`      | Returns the size of the given [page] index. (only iOS) |
-| `getPageCount`     | Returns the number of pages for the PDF.               |
-| `getCurrentPage`   | Returns the current displayed page.                    |
-| `goToNextPage`     | Navigates to the next page of the PDF.                 |
-| `goToPreviousPage` | Navigates to the previous page of the PDF.             |
-| `setPage`          | Jumping to the page optionally animated.               |
-| `resetZoom`        | Setting the scale factor to the default zoom factor.   |
-| `setZoom`          | Zooming to the given zoom.                             |
-| `getZoom`          | Returns the current zoom value.                        |
+| **Parameter**          | **Description**                                                                                                                |
+|:-----------------------|:-------------------------------------------------------------------------------------------------------------------------------|
+| `getPageCount`         | Returns the number of pages for the PDF.                                                                                       |
+| `getCurrentPage`       | Returns the current displayed page.                                                                                            |
+| `setPage`              | Jumping to the page optionally animated.                                                                                       |
+| `goToNextPage`         | Navigates to the next page of the PDF.                                                                                         |
+| `goToPreviousPage`     | Navigates to the previous page of the PDF.                                                                                     |
+| `resetZoom`            | Setting the scale factor to the default zoom factor.                                                                           |
+| `setZoom`              | Zooming to the given zoom.                                                                                                     |
+| `getZoom`              | Returns the current zoom value.                                                                                                |
+| `getPageSize`          | Returns the size of the given [page] index. (only iOS)                                                                         |
+| `setOrientation`       | Rebuilds pdf after the orientation was changed to ensure it is correctly displayed. (only Android for internal use)            |
+| `updateCreationParams` | Reacts to any changes for `bytes`, `filePath`, `fitPolicy` and `showScrollbar`. (only for internal use)                        |
+| `dispose`              | Called to cancel all subscription and disposing on the native part after the `AlhPdfView` was disposed (only for internal use) |
 

@@ -77,7 +77,7 @@ internal class AlhPdfView(
             "setZoom" -> setZoom(call, result)
             "currentZoom" -> getZoom(result)
             "setOrientation" -> handleOrientationChange(call.arguments as Map<*, *>, result)
-            "updateBytes" -> handleUpdateBytes(call.arguments as Map<*, *>, result)
+            "refreshPdf" -> handleRefreshPdf(call.arguments as Map<*, *>, result)
             "nextPage" -> setNextPage(call, result)
             "previousPage" -> setPreviousPage(call, result)
             else -> result.notImplemented()
@@ -220,7 +220,7 @@ internal class AlhPdfView(
         result.success(zoom)
     }
 
-    private fun handleUpdateBytes(arguments: Map<*, *>, result: MethodChannel.Result) {
+    private fun handleRefreshPdf(arguments: Map<*, *>, result: MethodChannel.Result) {
         alhPdfViewConfiguration = AlhPdfViewConfiguration.fromArguments(arguments)
         loadPdfView(alhPdfViewConfiguration.defaultPage)
 

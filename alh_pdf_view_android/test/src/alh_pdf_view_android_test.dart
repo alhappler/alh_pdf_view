@@ -370,8 +370,8 @@ void main() {
 
     test(
         'GIVEN creationParams '
-        'WHEN calling #updateBytes '
-        'THEN should call "setOrientation"', () async {
+        'WHEN calling #refreshPdf '
+        'THEN should call "refreshPdf"', () async {
       // given
       const givenCreationParams = {'hallo': 'hello'};
 
@@ -379,7 +379,7 @@ void main() {
 
       setUpMethodCall(
         (call) async {
-          if (call.method == 'updateBytes') {
+          if (call.method == 'refreshPdf') {
             actualCall = call;
             return true;
           }
@@ -388,14 +388,14 @@ void main() {
       );
 
       // when
-      await platform.updateBytes(
+      await platform.refreshPdf(
         viewId: givenViewId,
         creationParams: givenCreationParams,
       );
 
       // then
       const expectedCall = MethodCall(
-        'updateBytes',
+        'refreshPdf',
         givenCreationParams,
       );
       expect(actualCall.method, equals(expectedCall.method));

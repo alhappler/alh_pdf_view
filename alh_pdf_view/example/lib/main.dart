@@ -2,7 +2,8 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:alh_pdf_view_example/pdf_screen.dart';
-import 'package:alh_pdf_view_example/refresh_example.dart';
+import 'package:alh_pdf_view_example/refresh_bytes_example.dart';
+import 'package:alh_pdf_view_example/refresh_path_example.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:path_provider/path_provider.dart';
@@ -22,37 +23,88 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  String pathSmallPDF = '';
-  Uint8List bytesSmallPDF = Uint8List(0);
-  Uint8List bytesSmallPDFNew = Uint8List(0);
+  String smallPdfPath = '';
+  String linkPdfPath = '';
 
-  String pathPDFWithoutEndingPDF = '';
-  String pathInvalidPDF = '';
+  Uint8List smallPdfBytes = Uint8List(0);
+  Uint8List linkPdfBytes = Uint8List(0);
 
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      await this.fromAsset('assets/sample.pdf', 'sample.pdf').then((f) {
-        setState(
-          () {
-            this.pathSmallPDF = f.path;
-            this.bytesSmallPDF = f.readAsBytesSync();
-          },
-        );
-      });
-
-      await this
-          .fromAsset('assets/sampleWithLink.pdf', 'sampleWithLink.pdf')
-          .then((f) {
-        setState(
-          () {
-            this.pathSmallPDF = f.path;
-            this.bytesSmallPDFNew = f.readAsBytesSync();
-          },
-        );
-      });
+      final pdfFile = await this.fromAsset('assets/sample.pdf', 'sample.pdf');
+      final linkPdfFile = await this.fromAsset(
+        'assets/sampleWithLink.pdf',
+        'sampleWithLink.pdf',
+      );
+      setState(
+        () {
+          this.smallPdfPath = pdfFile.path;
+          this.smallPdfBytes = pdfFile.readAsBytesSync();
+          this.linkPdfPath = linkPdfFile.path;
+          this.linkPdfBytes = linkPdfFile.readAsBytesSync();
+        },
+      );
     });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('Plugin example app')),
+      body: Center(
+        child: Builder(
+          builder: (BuildContext context) {
+            return Column(
+              children: <Widget>[
+                this._getButtonWithPushExample(
+                  title: "Open small PDF with path",
+                  widgetToPush: PDFScreen(path: this.smallPdfPath),
+                ),
+                this._getButtonWithPushExample(
+                  title: "Open small PDF with bytes",
+                  widgetToPush: PDFScreen(bytes: this.smallPdfBytes),
+                ),
+                this._getButtonWithPushExample(
+                  title: "Refresh bytes and all others example",
+                  widgetToPush: RefreshBytesExample(
+                    bytes: this.smallPdfBytes,
+                    updatedBytes: this.linkPdfBytes,
+                  ),
+                ),
+                this._getButtonWithPushExample(
+                  title: "Refresh path example",
+                  widgetToPush: RefreshPathExample(
+                    path: this.smallPdfPath,
+                    updatedPath: this.linkPdfPath,
+                  ),
+                ),
+              ],
+            );
+          },
+        ),
+      ),
+    );
+  }
+
+  Widget _getButtonWithPushExample({
+    required String title,
+    required Widget widgetToPush,
+  }) {
+    return ElevatedButton(
+      onPressed: () {
+        unawaited(
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => widgetToPush,
+            ),
+          ),
+        );
+      },
+      child: Text(title),
+    );
   }
 
   Future<File> fromAsset(String asset, String filename) async {
@@ -71,67 +123,5 @@ class _MyAppState extends State<MyApp> {
     }
 
     return completer.future;
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('Plugin example app')),
-      body: Center(
-        child: Builder(
-          builder: (BuildContext context) {
-            return Column(
-              children: <Widget>[
-                ElevatedButton(
-                  onPressed: () {
-                    unawaited(
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) =>
-                              PDFScreen(path: this.pathSmallPDF),
-                        ),
-                      ),
-                    );
-                  },
-                  child: const Text("Open small PDF with path"),
-                ),
-                ElevatedButton(
-                  onPressed: () {
-                    unawaited(
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => PDFScreen(
-                            bytes: this.bytesSmallPDF,
-                          ),
-                        ),
-                      ),
-                    );
-                  },
-                  child: const Text("Open small PDF with bytes"),
-                ),
-                ElevatedButton(
-                  onPressed: () {
-                    unawaited(
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => RefreshExample(
-                            bytes: this.bytesSmallPDF,
-                            updatedBytes: this.bytesSmallPDFNew,
-                          ),
-                        ),
-                      ),
-                    );
-                  },
-                  child: const Text("Refresh Example"),
-                ),
-              ],
-            );
-          },
-        ),
-      ),
-    );
   }
 }

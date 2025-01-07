@@ -1,3 +1,6 @@
+## 2.3.1
+* updated `updateBytes` to `refreshPdf` to react also to path updates
+
 ## 2.3.0
 * removed `onPageError` which was never used
 * Added more error logs if something was not alright
