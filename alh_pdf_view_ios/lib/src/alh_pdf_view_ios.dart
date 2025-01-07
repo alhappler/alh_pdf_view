@@ -138,14 +138,14 @@ class AlhPdfViewIOS extends AlhPdfViewPlatform {
     return Size(sizeMap["width"], sizeMap["height"]);
   }
 
-  /// Updating bytes for the native PDF View.
+  /// Updating bytes or path for the native PDF View.
   @override
-  Future<void> updateBytes({
+  Future<void> refreshPdf({
     required int viewId,
     required Map<String, dynamic> creationParams,
   }) async {
     await this._channel(viewId).invokeMethod(
-          'updateBytes',
+          'refreshPdf',
           creationParams,
         );
   }

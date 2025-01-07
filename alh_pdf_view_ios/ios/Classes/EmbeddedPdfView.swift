@@ -129,7 +129,7 @@ class EmbeddedPdfView : UIView {
         }
     }
     
-    func updateBytes(newConfiguration: AlhPdfViewConfiguration) {
+    func refreshPdf(newConfiguration: AlhPdfViewConfiguration) {
         self.configuration = newConfiguration
         initPdfView()
         initPdfDefaultScaleFactor()

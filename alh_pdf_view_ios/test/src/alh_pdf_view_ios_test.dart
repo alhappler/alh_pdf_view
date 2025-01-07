@@ -374,15 +374,15 @@ void main() {
 
     test(
         'GIVEN creationParams '
-        'WHEN calling #updateBytes '
-        'THEN should call "updateBytes"', () async {
+        'WHEN calling #refreshPdf '
+        'THEN should call "updateBytesOrPath"', () async {
       // given
       const givenCreationParams = {'bella': 'italia'};
       late final MethodCall actualCall;
 
       setUpMethodCall(
         (call) async {
-          if (call.method == 'updateBytes') {
+          if (call.method == 'refreshPdf') {
             actualCall = call;
             return true;
           }
@@ -391,14 +391,14 @@ void main() {
       );
 
       // when
-      await platform.updateBytes(
+      await platform.refreshPdf(
         viewId: givenViewId,
         creationParams: givenCreationParams,
       );
 
       // then
       const expectedCall = MethodCall(
-        'updateBytes',
+        'refreshPdf',
         givenCreationParams,
       );
       expect(actualCall.method, equals(expectedCall.method));

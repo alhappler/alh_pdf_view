@@ -3,21 +3,21 @@ import 'dart:typed_data';
 import 'package:alh_pdf_view/alh_pdf_view.dart';
 import 'package:flutter/material.dart';
 
-class RefreshExample extends StatefulWidget {
+class RefreshBytesExample extends StatefulWidget {
   final Uint8List bytes;
   final Uint8List updatedBytes;
 
-  const RefreshExample({
+  const RefreshBytesExample({
     required this.bytes,
     required this.updatedBytes,
     super.key,
   });
 
   @override
-  State<RefreshExample> createState() => _RefreshExampleState();
+  State<RefreshBytesExample> createState() => _RefreshBytesExampleState();
 }
 
-class _RefreshExampleState extends State<RefreshExample> {
+class _RefreshBytesExampleState extends State<RefreshBytesExample> {
   late Uint8List bytes = this.widget.bytes;
   FitPolicy fitPolicy = FitPolicy.width;
   bool showScrollbar = false;

@@ -500,22 +500,22 @@ class FakeAlhPdfViewPlatform extends AlhPdfViewPlatform {
   }
 
   ///
-  /// updateBytes
+  /// updateBytesOrPath
   ///
 
-  int _updateBytesCalls = 0;
-  Map<String, dynamic>? _updateBytesActualCreationParams;
+  int _refreshPdfCalls = 0;
+  Map<String, dynamic>? _refreshPdfActualCreationParams;
 
   @override
-  Future<void> updateBytes({
+  Future<void> refreshPdf({
     required int viewId,
     required Map<String, dynamic> creationParams,
   }) async {
-    this._updateBytesActualCreationParams = creationParams;
-    this._updateBytesCalls++;
+    this._refreshPdfActualCreationParams = creationParams;
+    this._refreshPdfCalls++;
   }
 
-  void verifyUpdateBytes({
+  void verifyRefreshPdf({
     int called = 1,
     Map<String, dynamic>? creationParams,
   }) {
@@ -524,13 +524,13 @@ class FakeAlhPdfViewPlatform extends AlhPdfViewPlatform {
       return;
     }
 
-    if (this._updateBytesActualCreationParams == null) {
+    if (this._refreshPdfActualCreationParams == null) {
       throw UnimplementedError(
-        'Call updateBytes before calling this method!',
+        'Call updateBytesOrPath before calling this method!',
       );
     }
-    expect(this._updateBytesCalls--, 1);
-    expect(creationParams, this._updateBytesActualCreationParams);
+    expect(this._refreshPdfCalls--, 1);
+    expect(creationParams, this._refreshPdfActualCreationParams);
   }
 
   ///
@@ -633,6 +633,6 @@ class FakeAlhPdfViewPlatform extends AlhPdfViewPlatform {
     expect(this._getPageSizeCalls, 0);
     expect(this._resetZoomCalls, 0);
     expect(this._getZoomCalls, 0);
-    expect(this._updateBytesCalls, 0);
+    expect(this._refreshPdfCalls, 0);
   }
 }

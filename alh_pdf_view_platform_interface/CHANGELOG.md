@@ -1,3 +1,6 @@
+## 2.3.1
+* updated `updateBytes` to `refreshPdf` to react also to path updates
+
 ## 2.3.0
 * removed `onPageError`
 

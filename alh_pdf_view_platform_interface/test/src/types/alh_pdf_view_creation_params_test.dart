@@ -74,6 +74,7 @@ void main() {
         'pageSnap': givenPageSnap,
         'defaultPage': givenDefaultPage,
         'defaultZoomFactor': givenDefaultZoomFactor,
+        // ignore: deprecated_member_use
         'backgroundColor': givenBackgroundColor.value,
         'password': givenPassword,
         'enableDoubleTap': givenEnableDoubleTap,

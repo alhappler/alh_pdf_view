@@ -458,9 +458,9 @@ void main() {
 
     group('#updateCreationParams', () {
       test(
-          'GIVEN platform = .android and updatedBytes '
+          'GIVEN platform = .android and updated bytes '
           'WHEN calling updateCreationParams '
-          'THEN should call updateBytes of instance', () async {
+          'THEN should call updateBytesOrPath of instance', () async {
         // given
         debugDefaultTargetPlatformOverride = TargetPlatform.android;
 
@@ -474,7 +474,31 @@ void main() {
         );
 
         // then
-        fakeAlhPdfViewPlatform.verifyUpdateBytes(
+        fakeAlhPdfViewPlatform.verifyRefreshPdf(
+          creationParams: givenCreationParams,
+        );
+
+        debugDefaultTargetPlatformOverride = null;
+      });
+
+      test(
+          'GIVEN platform = .android and updated path '
+          'WHEN calling updateCreationParams '
+          'THEN should call updateBytesOrPath of instance', () async {
+        // given
+        debugDefaultTargetPlatformOverride = TargetPlatform.android;
+
+        const givenCreationParams = {'filePath': 'file1'};
+        const givenUpdatedCreationParams = {'filePath': 'file2'};
+
+        // when
+        await controller.updateCreationParams(
+          updatedParams: givenCreationParams,
+          creationParams: givenUpdatedCreationParams,
+        );
+
+        // then
+        fakeAlhPdfViewPlatform.verifyRefreshPdf(
           creationParams: givenCreationParams,
         );
 
