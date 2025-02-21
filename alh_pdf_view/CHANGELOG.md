@@ -1,3 +1,8 @@
+## 2.3.2
+🐛 **Bugfix** in iOS
+* fixed autozoom issue, thanks to `E2-venkat` for opening the issue (Issue [#62](https://github.com/alhappler/alh_pdf_view/issues/62))
+
+
 ## 2.3.1
 ⚽️ **Features**
 * the PDF now updates automatically after `filePath` was updated
