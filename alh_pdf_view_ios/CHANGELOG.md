@@ -1,3 +1,6 @@
+## 2.3.2
+* fixed autozoom issue, thanks to `E2-venkat` for opening the issue (Issue [#62](https://github.com/alhappler/alh_pdf_view/issues/62))
+
 ## 2.3.1
 * updated `updateBytes` to `refreshPdf` to react also to path updates
 
