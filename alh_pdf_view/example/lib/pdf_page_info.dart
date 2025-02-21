@@ -16,7 +16,7 @@ class PdfPageInfo extends StatelessWidget {
       alignment: Alignment.topCenter,
       child: Container(
         // ignore: deprecated_member_use
-        color: Colors.black.withOpacity(0.5),
+        color: Colors.black.withValues(alpha: 0.5),
         margin: const EdgeInsets.only(top: 20),
         padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
         child: Text(

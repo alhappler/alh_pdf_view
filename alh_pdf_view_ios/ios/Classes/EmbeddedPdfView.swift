@@ -71,6 +71,7 @@ class EmbeddedPdfView : UIView {
     private func initPdfView() {
         if let document = initPdfDcoument() {
             self.pdfView.autoresizesSubviews = true
+            self.pdfView.autoScales = true
             self.pdfView.autoresizingMask = .flexibleWidth
             self.pdfView.displayDirection = configuration.swipeHorizontal ? .horizontal : .vertical
             self.pdfView.backgroundColor = configuration.backgroundColor
