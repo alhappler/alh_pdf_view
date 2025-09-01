@@ -1,6 +1,6 @@
 name: alh_pdf_view
 description: Has the functionality to show PDF with bytes of a file path as widget with some extra functionalities.
-version: 2.3.2
+version: 2.3.3
 repository: https://github.com/alhappler/alh_pdf_view
 
 environment:
@@ -18,7 +18,7 @@ flutter:
 dependencies:
   flutter:
     sdk: flutter
-  alh_pdf_view_android: ^2.3.1
+  alh_pdf_view_android: ^2.3.3
   alh_pdf_view_ios: ^2.3.2
   alh_pdf_view_platform_interface: ^2.3.1
 
