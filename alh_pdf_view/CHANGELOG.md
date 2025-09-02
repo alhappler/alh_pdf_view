@@ -1,3 +1,10 @@
+## 2.3.3
+⚽️ **Features**
+* Added support for Android 16 KB memory page size in PDF handling (Issue [#69](https://github.com/alhappler/alh_pdf_view/issues/69) from `E2-venkat`)
+* Migrated native PDF library from "com.github.mhiew:android-pdf-viewer:3.2.0-beta.2" to "com.github.marain87:AndroidPdfViewer:3.2.8".
+* Introduced jitpack package for "com.github.marain87:AndroidPdfViewer:3.2.8".
+
+
 ## 2.3.2
 🐛 **Bugfix** in iOS
 * fixed autozoom issue, thanks to `E2-venkat` for opening the issue (Issue [#62](https://github.com/alhappler/alh_pdf_view/issues/62))
