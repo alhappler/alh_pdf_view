@@ -4,6 +4,19 @@
 * Migrated native PDF library from "com.github.mhiew:android-pdf-viewer:3.2.0-beta.2" to "com.github.marain87:AndroidPdfViewer:3.2.8".
 * Introduced jitpack package for "com.github.marain87:AndroidPdfViewer:3.2.8".
 
+⚡️ **Breaking changes**
+* ⚠️ Add the following line to your `build.gradle` in your `android` folder if not done already ⚠️
+```gradle
+...
+ allprojects {
+    repositories {
+        // Add this line
+        maven { url 'https://jitpack.io' }
+    }
+}
+...
+```
+
 
 ## 2.3.2
 🐛 **Bugfix** in iOS
