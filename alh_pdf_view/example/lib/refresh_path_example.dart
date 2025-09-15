@@ -16,26 +16,26 @@ class RefreshPathExample extends StatefulWidget {
 }
 
 class _RefreshPathExampleState extends State<RefreshPathExample> {
-  late String path = this.widget.path;
+  late String path = widget.path;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Refresh path example"),
+        title: const Text('Refresh path example'),
         actions: [
           IconButton(
             onPressed: () {
-              final path = this.widget.path;
-              this.setState(() {
-                this.path = this.path == path ? this.widget.updatedPath : path;
+              final path = widget.path;
+              setState(() {
+                this.path = this.path == path ? widget.updatedPath : path;
               });
             },
             icon: const Icon(Icons.refresh),
           ),
         ],
       ),
-      body: AlhPdfView(filePath: this.path),
+      body: AlhPdfView(filePath: path),
     );
   }
 }

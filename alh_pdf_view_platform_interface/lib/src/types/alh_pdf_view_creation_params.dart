@@ -58,55 +58,55 @@ class AlhPdfViewCreationParams {
   });
 
   Map<String, dynamic> toMap() => {
-        'filePath': this.filePath,
-        'bytes': this.bytes,
-        'fitPolicy': this.fitPolicy.toString(),
-        'fitEachPage': this.fitEachPage,
-        'enableSwipe': this.enableSwipe,
-        'swipeHorizontal': this.swipeHorizontal,
-        'nightMode': this.nightMode,
-        'autoSpacing': this.autoSpacing,
-        'pageFling': this.pageFling,
-        'showScrollbar': this.showScrollbar,
-        'pageSnap': this.pageSnap,
-        'defaultPage': this.defaultPage,
-        'defaultZoomFactor': this.defaultZoomFactor,
+        'filePath': filePath,
+        'bytes': bytes,
+        'fitPolicy': fitPolicy.toString(),
+        'fitEachPage': fitEachPage,
+        'enableSwipe': enableSwipe,
+        'swipeHorizontal': swipeHorizontal,
+        'nightMode': nightMode,
+        'autoSpacing': autoSpacing,
+        'pageFling': pageFling,
+        'showScrollbar': showScrollbar,
+        'pageSnap': pageSnap,
+        'defaultPage': defaultPage,
+        'defaultZoomFactor': defaultZoomFactor,
         // ignore: deprecated_member_use
-        'backgroundColor': this.backgroundColor.value,
-        'password': this.password,
-        'enableDoubleTap': this.enableDoubleTap,
-        'minZoom': this.minZoom,
-        'maxZoom': this.maxZoom,
-        'enableDefaultScrollHandle': this.enableDefaultScrollHandle,
-        'spacing': this.spacing,
-        'hasOnLinkHandle': this.hasOnLinkHandle,
+        'backgroundColor': backgroundColor.value,
+        'password': password,
+        'enableDoubleTap': enableDoubleTap,
+        'minZoom': minZoom,
+        'maxZoom': maxZoom,
+        'enableDefaultScrollHandle': enableDefaultScrollHandle,
+        'spacing': spacing,
+        'hasOnLinkHandle': hasOnLinkHandle,
       };
 
   @override
   bool operator ==(Object other) =>
       other is AlhPdfViewCreationParams &&
-      other.runtimeType == this.runtimeType &&
-      other.filePath == this.filePath &&
-      other.bytes == this.bytes &&
-      other.fitPolicy == this.fitPolicy &&
-      other.fitEachPage == this.fitEachPage &&
-      other.enableSwipe == this.enableSwipe &&
-      other.swipeHorizontal == this.swipeHorizontal &&
-      other.nightMode == this.nightMode &&
-      other.autoSpacing == this.autoSpacing &&
-      other.pageFling == this.pageFling &&
-      other.showScrollbar == this.showScrollbar &&
-      other.pageSnap == this.pageSnap &&
-      other.defaultPage == this.defaultPage &&
-      other.defaultZoomFactor == this.defaultZoomFactor &&
-      other.backgroundColor == this.backgroundColor &&
-      other.password == this.password &&
-      other.enableDoubleTap == this.enableDoubleTap &&
-      other.minZoom == this.minZoom &&
-      other.maxZoom == this.maxZoom &&
-      other.enableDefaultScrollHandle == this.enableDefaultScrollHandle &&
-      other.spacing == this.spacing &&
-      other.hasOnLinkHandle == this.hasOnLinkHandle;
+      other.runtimeType == runtimeType &&
+      other.filePath == filePath &&
+      other.bytes == bytes &&
+      other.fitPolicy == fitPolicy &&
+      other.fitEachPage == fitEachPage &&
+      other.enableSwipe == enableSwipe &&
+      other.swipeHorizontal == swipeHorizontal &&
+      other.nightMode == nightMode &&
+      other.autoSpacing == autoSpacing &&
+      other.pageFling == pageFling &&
+      other.showScrollbar == showScrollbar &&
+      other.pageSnap == pageSnap &&
+      other.defaultPage == defaultPage &&
+      other.defaultZoomFactor == defaultZoomFactor &&
+      other.backgroundColor == backgroundColor &&
+      other.password == password &&
+      other.enableDoubleTap == enableDoubleTap &&
+      other.minZoom == minZoom &&
+      other.maxZoom == maxZoom &&
+      other.enableDefaultScrollHandle == enableDefaultScrollHandle &&
+      other.spacing == spacing &&
+      other.hasOnLinkHandle == hasOnLinkHandle;
 
   @override
   int get hashCode => filePath.hashCode + bytes.hashCode;

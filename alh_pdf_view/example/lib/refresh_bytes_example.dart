@@ -18,7 +18,7 @@ class RefreshBytesExample extends StatefulWidget {
 }
 
 class _RefreshBytesExampleState extends State<RefreshBytesExample> {
-  late Uint8List bytes = this.widget.bytes;
+  late Uint8List bytes = widget.bytes;
   FitPolicy fitPolicy = FitPolicy.width;
   bool showScrollbar = false;
 
@@ -26,16 +26,16 @@ class _RefreshBytesExampleState extends State<RefreshBytesExample> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Refresh Example"),
+        title: const Text('Refresh Example'),
         actions: [
           IconButton(
             onPressed: () {
               setState(() {
-                this.bytes = this.widget.updatedBytes;
-                this.fitPolicy = this.fitPolicy == FitPolicy.height
+                bytes = widget.updatedBytes;
+                fitPolicy = fitPolicy == FitPolicy.height
                     ? FitPolicy.width
                     : FitPolicy.height;
-                this.showScrollbar = !this.showScrollbar;
+                showScrollbar = !showScrollbar;
               });
             },
             icon: const Icon(Icons.change_circle),
@@ -46,9 +46,9 @@ class _RefreshBytesExampleState extends State<RefreshBytesExample> {
         spacing: 100,
         backgroundColor: Colors.white,
         enableDefaultScrollHandle: true,
-        bytes: this.bytes,
-        fitPolicy: this.fitPolicy,
-        showScrollbar: this.showScrollbar,
+        bytes: bytes,
+        fitPolicy: fitPolicy,
+        showScrollbar: showScrollbar,
       ),
     );
   }

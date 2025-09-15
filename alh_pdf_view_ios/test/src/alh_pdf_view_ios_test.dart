@@ -687,7 +687,7 @@ class _TestAlhPdfViewController {
     required this.platform,
   });
 
-  AlhPdfViewPlatform get _instance => this.platform;
+  AlhPdfViewPlatform get _instance => platform;
 
   void connectStreams({
     required int viewId,
@@ -697,19 +697,19 @@ class _TestAlhPdfViewController {
     ZoomChangedCallback? onZoomChanged,
     LinkHandleCallback? onLinkHandle,
   }) {
-    this._instance.onRender(viewId: viewId).listen((event) {
+    _instance.onRender(viewId: viewId).listen((event) {
       onRender?.call(event.value);
     });
-    this._instance.onPageChanged(viewId: viewId).listen((event) {
+    _instance.onPageChanged(viewId: viewId).listen((event) {
       onPageChanged?.call(event.value.page, event.value.total);
     });
-    this._instance.onError(viewId: viewId).listen((event) {
+    _instance.onError(viewId: viewId).listen((event) {
       onError?.call(event.value);
     });
-    this._instance.onZoomChanged(viewId: viewId).listen((event) {
+    _instance.onZoomChanged(viewId: viewId).listen((event) {
       onZoomChanged?.call(event.value);
     });
-    this._instance.onLinkHandle(viewId: viewId).listen((event) {
+    _instance.onLinkHandle(viewId: viewId).listen((event) {
       onLinkHandle?.call(event.value);
     });
   }

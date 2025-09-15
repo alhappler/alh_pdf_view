@@ -206,21 +206,21 @@ class _AlhPdfViewState extends State<AlhPdfView> with WidgetsBindingObserver {
   void initState() {
     super.initState();
 
-    this._currentCreationParams = this._creationParams;
-    this._zoom = widget.defaultZoomFactor;
+    _currentCreationParams = _creationParams;
+    _zoom = widget.defaultZoomFactor;
     WidgetsBinding.instance.addObserver(this);
   }
 
   @override
   void didUpdateWidget(covariant AlhPdfView oldWidget) {
-    if (this._currentCreationParams != this._creationParams) {
+    if (_currentCreationParams != _creationParams) {
       unawaited(
-        this._alhPdfViewController?.updateCreationParams(
-              creationParams: this._currentCreationParams.toMap(),
-              updatedParams: this._creationParams.toMap(),
-            ),
+        _alhPdfViewController?.updateCreationParams(
+          creationParams: _currentCreationParams.toMap(),
+          updatedParams: _creationParams.toMap(),
+        ),
       );
-      this._currentCreationParams = this._creationParams;
+      _currentCreationParams = _creationParams;
     }
 
     super.didUpdateWidget(oldWidget);
@@ -239,7 +239,7 @@ class _AlhPdfViewState extends State<AlhPdfView> with WidgetsBindingObserver {
       // Calling a native method that reloads the PDF
       // This prevents reloading the whole widget, because on iOS it works
       if (orientationBefore != orientationAfter) {
-        unawaited(this._handleRotationChanged(orientation: orientationAfter));
+        unawaited(_handleRotationChanged(orientation: orientationAfter));
       }
     });
   }
@@ -247,31 +247,31 @@ class _AlhPdfViewState extends State<AlhPdfView> with WidgetsBindingObserver {
   @override
   void dispose() {
     WidgetsBinding.instance.removeObserver(this);
-    this._alhPdfViewController?.dispose();
+    _alhPdfViewController?.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return AlhPdfViewPlatform.instance!.buildView(
-      creationParams: this._creationParams,
+      creationParams: _creationParams,
       widgetConfiguration: WidgetConfiguration(
-        onPlatformViewCreated: this._handlePlatformViewCreated,
-        gestureRecognizers: this.widget.gestureRecognizers,
+        onPlatformViewCreated: _handlePlatformViewCreated,
+        gestureRecognizers: widget.gestureRecognizers,
         // this callback only happens in android
         // to make the onZoomChangedCallback available
         onPointerUp: (PointerUpEvent event) async {
           final onZoomChanged = widget.onZoomChanged;
-          final alhPdfViewController = this._alhPdfViewController;
+          final alhPdfViewController = _alhPdfViewController;
 
-          if (this.mounted &&
+          if (mounted &&
               onZoomChanged != null &&
               alhPdfViewController != null) {
             final newZoom = await alhPdfViewController.getZoom();
 
-            if (newZoom != this._zoom) {
+            if (newZoom != _zoom) {
               onZoomChanged(newZoom);
-              this._zoom = newZoom;
+              _zoom = newZoom;
             }
           }
         },
@@ -287,17 +287,17 @@ class _AlhPdfViewState extends State<AlhPdfView> with WidgetsBindingObserver {
 
     final alhPdfViewController = await AlhPdfViewController.init(
       viewId: id,
-      onRender: this.widget.onRender,
-      onPageChanged: this.widget.onPageChanged,
-      onError: this.widget.onError,
-      onZoomChanged: this.widget.onZoomChanged,
-      onLinkHandle: this.widget.onLinkHandle,
-      onTap: this.widget.onTap,
+      onRender: widget.onRender,
+      onPageChanged: widget.onPageChanged,
+      onError: widget.onError,
+      onZoomChanged: widget.onZoomChanged,
+      onLinkHandle: widget.onLinkHandle,
+      onTap: widget.onTap,
     );
-    this._alhPdfViewController = alhPdfViewController;
-    unawaited(this._handleRotationChanged(orientation: orientation));
+    _alhPdfViewController = alhPdfViewController;
+    unawaited(_handleRotationChanged(orientation: orientation));
 
-    this.widget.onViewCreated?.call(alhPdfViewController);
+    widget.onViewCreated?.call(alhPdfViewController);
   }
 
   /// Calling setOrientation of [_alhPdfViewController] for rebuilding this widget.
@@ -310,10 +310,10 @@ class _AlhPdfViewState extends State<AlhPdfView> with WidgetsBindingObserver {
   Future<void> _handleRotationChanged({
     required Orientation orientation,
   }) async {
-    await this._alhPdfViewController?.setOrientation(
-          orientation: orientation,
-          creationParams: this._creationParams.toMap(),
-        );
+    await _alhPdfViewController?.setOrientation(
+      orientation: orientation,
+      creationParams: _creationParams.toMap(),
+    );
   }
 
   AlhPdfViewCreationParams get _creationParams => AlhPdfViewCreationParams(

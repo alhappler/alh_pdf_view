@@ -38,13 +38,13 @@ class AlhPdfViewIOS extends AlhPdfViewPlatform {
 
   @override
   Future<void> dispose({required int viewId}) async {
-    await this._channel(viewId).invokeMethod('dispose');
+    await _channel(viewId).invokeMethod('dispose');
   }
 
   /// Returns the number of pages  for the PDF.
   @override
   Future<int> getPageCount({required int viewId}) async {
-    final int pageCount = await this._channel(viewId).invokeMethod('pageCount');
+    final int pageCount = await _channel(viewId).invokeMethod('pageCount');
     return pageCount;
   }
 
@@ -53,7 +53,7 @@ class AlhPdfViewIOS extends AlhPdfViewPlatform {
   /// The page index begins at 0.
   @override
   Future<int> getCurrentPage({required int viewId}) async {
-    final currentPage = await this._channel(viewId).invokeMethod('currentPage');
+    final currentPage = await _channel(viewId).invokeMethod('currentPage');
     return currentPage;
   }
 
@@ -67,7 +67,7 @@ class AlhPdfViewIOS extends AlhPdfViewPlatform {
     required int viewId,
     required bool withAnimation,
   }) async {
-    return await this._channel(viewId).invokeMethod('setPage', {
+    return await _channel(viewId).invokeMethod('setPage', {
       'page': page,
       'withAnimation': withAnimation,
     });
@@ -82,7 +82,7 @@ class AlhPdfViewIOS extends AlhPdfViewPlatform {
     required int viewId,
     required bool withAnimation,
   }) async {
-    return await this._channel(viewId).invokeMethod(
+    return await _channel(viewId).invokeMethod(
       'nextPage',
       {'withAnimation': withAnimation},
     );
@@ -97,7 +97,7 @@ class AlhPdfViewIOS extends AlhPdfViewPlatform {
     required int viewId,
     required bool withAnimation,
   }) async {
-    return await this._channel(viewId).invokeMethod(
+    return await _channel(viewId).invokeMethod(
       'previousPage',
       {'withAnimation': withAnimation},
     );
@@ -106,7 +106,7 @@ class AlhPdfViewIOS extends AlhPdfViewPlatform {
   /// Setting the scale factor to the default zoom factor.
   @override
   Future<void> resetZoom({required int viewId}) async {
-    await this._channel(viewId).invokeMethod('resetZoom');
+    await _channel(viewId).invokeMethod('resetZoom');
   }
 
   /// Zooming to the given [zoom].
@@ -117,7 +117,7 @@ class AlhPdfViewIOS extends AlhPdfViewPlatform {
     required double zoom,
     required int viewId,
   }) async {
-    await this._channel(viewId).invokeMethod('setZoom', <String, dynamic>{
+    await _channel(viewId).invokeMethod('setZoom', <String, dynamic>{
       'newZoom': zoom,
     });
   }
@@ -125,17 +125,17 @@ class AlhPdfViewIOS extends AlhPdfViewPlatform {
   /// Returns the current zoom value.
   @override
   Future<double> getZoom({required int viewId}) async {
-    return await this._channel(viewId).invokeMethod('currentZoom');
+    return await _channel(viewId).invokeMethod('currentZoom');
   }
 
   /// Returns the size of the given [page] index.
   @override
   Future<Size> getPageSize({required int viewId, required int page}) async {
-    final sizeMap = await this._channel(viewId).invokeMethod(
+    final sizeMap = await _channel(viewId).invokeMethod(
       'pageSize',
       {'page': page},
     );
-    return Size(sizeMap["width"], sizeMap["height"]);
+    return Size(sizeMap['width'], sizeMap['height']);
   }
 
   /// Updating bytes or path for the native PDF View.
@@ -144,10 +144,10 @@ class AlhPdfViewIOS extends AlhPdfViewPlatform {
     required int viewId,
     required Map<String, dynamic> creationParams,
   }) async {
-    await this._channel(viewId).invokeMethod(
-          'refreshPdf',
-          creationParams,
-        );
+    await _channel(viewId).invokeMethod(
+      'refreshPdf',
+      creationParams,
+    );
   }
 
   /// Updating fitPolicy for the native PDF View.
@@ -156,10 +156,10 @@ class AlhPdfViewIOS extends AlhPdfViewPlatform {
     required int viewId,
     required Map<String, dynamic> creationParams,
   }) async {
-    await this._channel(viewId).invokeMethod(
-          'updateFitPolicy',
-          creationParams,
-        );
+    await _channel(viewId).invokeMethod(
+      'updateFitPolicy',
+      creationParams,
+    );
   }
 
   /// Shows or remove the scrollbar for the native Pdf view.
@@ -168,10 +168,10 @@ class AlhPdfViewIOS extends AlhPdfViewPlatform {
     required int viewId,
     required Map<String, dynamic> creationParams,
   }) async {
-    await this._channel(viewId).invokeMethod(
-          'updateScrollbar',
-          creationParams,
-        );
+    await _channel(viewId).invokeMethod(
+      'updateScrollbar',
+      creationParams,
+    );
   }
 
   @override
@@ -195,32 +195,32 @@ class AlhPdfViewIOS extends AlhPdfViewPlatform {
 
   @override
   Stream<OnRenderEvent> onRender({required int viewId}) {
-    return this._events(viewId).whereType<OnRenderEvent>();
+    return _events(viewId).whereType<OnRenderEvent>();
   }
 
   @override
   Stream<OnPageChangedEvent> onPageChanged({required int viewId}) {
-    return this._events(viewId).whereType<OnPageChangedEvent>();
+    return _events(viewId).whereType<OnPageChangedEvent>();
   }
 
   @override
   Stream<OnErrorEvent> onError({required int viewId}) {
-    return this._events(viewId).whereType<OnErrorEvent>();
+    return _events(viewId).whereType<OnErrorEvent>();
   }
 
   @override
   Stream<OnZoomChangedEvent> onZoomChanged({required int viewId}) {
-    return this._events(viewId).whereType<OnZoomChangedEvent>();
+    return _events(viewId).whereType<OnZoomChangedEvent>();
   }
 
   @override
   Stream<OnLinkHandleEvent> onLinkHandle({required int viewId}) {
-    return this._events(viewId).whereType<OnLinkHandleEvent>();
+    return _events(viewId).whereType<OnLinkHandleEvent>();
   }
 
   @override
   Stream<OnTapEvent> onTap({required int viewId}) {
-    return this._events(viewId).whereType<OnTapEvent>();
+    return _events(viewId).whereType<OnTapEvent>();
   }
 
   ///
@@ -244,7 +244,7 @@ class AlhPdfViewIOS extends AlhPdfViewPlatform {
     if (channel == null) {
       channel = MethodChannel('alh_pdf_view_$viewId');
       channel.setMethodCallHandler(
-        (MethodCall call) async => this._handleMethodCall(call, viewId),
+        (MethodCall call) async => _handleMethodCall(call, viewId),
       );
       channels[viewId] = channel;
     }
@@ -258,7 +258,7 @@ class AlhPdfViewIOS extends AlhPdfViewPlatform {
           viewId,
           call.arguments['pages'],
         );
-        this._mapEventStreamController.add(event);
+        _mapEventStreamController.add(event);
         break;
       case 'onPageChanged':
         final pageChangedObject = PageChangedObject(
@@ -266,29 +266,29 @@ class AlhPdfViewIOS extends AlhPdfViewPlatform {
           total: call.arguments['total'],
         );
         final event = OnPageChangedEvent(viewId, pageChangedObject);
-        this._mapEventStreamController.add(event);
+        _mapEventStreamController.add(event);
         break;
       case 'onError':
         final event = OnErrorEvent(viewId, call.arguments['error']);
-        this._mapEventStreamController.add(event);
+        _mapEventStreamController.add(event);
         break;
       case 'onZoomChanged':
         final event = OnZoomChangedEvent(
           viewId,
           call.arguments['zoom'],
         );
-        this._mapEventStreamController.add(event);
+        _mapEventStreamController.add(event);
         break;
       case 'onLinkHandle':
         final event = OnLinkHandleEvent(
           viewId,
           call.arguments['url'],
         );
-        this._mapEventStreamController.add(event);
+        _mapEventStreamController.add(event);
         break;
       case 'onTap':
         final event = OnTapEvent(viewId);
-        this._mapEventStreamController.add(event);
+        _mapEventStreamController.add(event);
         break;
       default:
         throw MissingPluginException(
