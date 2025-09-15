@@ -17,6 +17,7 @@ See more about the functionalities in the parameter section.
 
 ### Android
 - implemented in Kotlin with the dependency [AndroidPdfViewer](https://github.com/barteksc/AndroidPdfViewer) of **barteksc**
+- supports Android 16 KB memory page size
 
 ### iOS
 - implemented in Swift with the dependency [PDFKit](https://developer.apple.com/documentation/pdfkit)
