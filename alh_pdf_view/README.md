@@ -22,6 +22,23 @@ See more about the functionalities in the parameter section.
 ### iOS
 - implemented in Swift with the dependency [PDFKit](https://developer.apple.com/documentation/pdfkit)
 
+### ⚠️ Android Setup
+This package depends on a library hosted on JitPack.
+To make it work on Android, you must add JitPack to your Gradle repositories.
+
+Open your `android/build.gradle` file and ensure the repositories block contains:
+```gradle
+allprojects {
+    repositories {
+        ...
+        // Add this line
+        maven { url 'https://jitpack.io' }
+        ...
+    }
+}
+
+```
+
 ## Example
 ___
 ```dart

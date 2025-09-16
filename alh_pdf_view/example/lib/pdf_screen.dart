@@ -38,7 +38,7 @@ class _PDFScreenState extends State<PDFScreen> {
       builder: (context, orientation) {
         return Scaffold(
           appBar: AppBar(
-            title: const Text("Document Portrait"),
+            title: const Text('Document Portrait'),
           ),
           body: Stack(
             children: <Widget>[
@@ -62,56 +62,56 @@ class _PDFScreenState extends State<PDFScreen> {
                       swipeHorizontal: false,
                       autoSpacing: true,
                       pageFling: false,
-                      defaultZoomFactor: this.defaultScale,
+                      defaultZoomFactor: defaultScale,
                       pageSnap: true,
                       onRender: (pages) {
                         setState(() {
                           this.pages = pages + 1;
-                          this.isReady = true;
+                          isReady = true;
                         });
                       },
                       onError: (error) {
                         setState(() {
-                          this.errorMessage = error.toString();
+                          errorMessage = error.toString();
                         });
                         print(error.toString());
                       },
                       onViewCreated: (controller) {
-                        this.pdfViewController = controller;
+                        pdfViewController = controller;
                       },
                       onPageChanged: (int page, int total) {
                         setState(() {
-                          this.currentPage = page;
+                          currentPage = page;
                         });
                       },
                       onZoomChanged: (zoom) {
                         print('On zoom changed: $zoom');
                       },
                       onTap: () {
-                        print("onTap called");
+                        print('onTap called');
                       },
                     ),
                   ),
                   if (orientation == Orientation.portrait)
                     PdfViewBottomBar(
-                      pdfViewController: this.pdfViewController,
-                      currentPage: this.currentPage,
-                      totalPages: this.pages,
+                      pdfViewController: pdfViewController,
+                      currentPage: currentPage,
+                      totalPages: pages,
                     ),
                 ],
               ),
-              if (this.errorMessage.isEmpty)
-                if (!this.isReady)
+              if (errorMessage.isEmpty)
+                if (!isReady)
                   const Center(
                     child: CircularProgressIndicator(),
                   )
                 else
                   PdfPageInfo(
-                    currentPage: this.currentPage,
-                    totalPages: this.pages,
+                    currentPage: currentPage,
+                    totalPages: pages,
                   )
               else
-                Center(child: Text(this.errorMessage)),
+                Center(child: Text(errorMessage)),
             ],
           ),
         );

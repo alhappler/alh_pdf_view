@@ -29,7 +29,7 @@ class FakeAlhPdfViewPlatform extends AlhPdfViewPlatform {
   Widget? _buildViewResult;
 
   void setUpBuildView({required Widget result}) {
-    this._buildViewResult = result;
+    _buildViewResult = result;
   }
 
   @override
@@ -38,21 +38,21 @@ class FakeAlhPdfViewPlatform extends AlhPdfViewPlatform {
     required WidgetConfiguration widgetConfiguration,
     int viewId = 0,
   }) {
-    if (this._buildViewResult == null) {
+    if (_buildViewResult == null) {
       throw UnimplementedError(
         'Call setUpBuildView before calling this method!',
       );
     }
 
-    if (this._buildViewCalls == 0) {
+    if (_buildViewCalls == 0) {
       widgetConfiguration.onPlatformViewCreated(viewId);
     }
 
-    this._buildViewCreationParams = creationParams;
-    this._buildViewWidgetConfiguration = widgetConfiguration;
-    this._buildViewCalls++;
+    _buildViewCreationParams = creationParams;
+    _buildViewWidgetConfiguration = widgetConfiguration;
+    _buildViewCalls++;
 
-    return this._buildViewResult!;
+    return _buildViewResult!;
   }
 
   void verifyBuildView({
@@ -60,20 +60,20 @@ class FakeAlhPdfViewPlatform extends AlhPdfViewPlatform {
     required WidgetConfiguration widgetConfiguration,
     int called = 1,
   }) {
-    if (this._buildViewCreationParams == null ||
-        this._buildViewWidgetConfiguration == null) {
+    if (_buildViewCreationParams == null ||
+        _buildViewWidgetConfiguration == null) {
       throw UnimplementedError(
         'Call buildView before calling this method!',
       );
     }
-    expect(this._buildViewCalls, called);
-    this._buildViewCalls -= called;
+    expect(_buildViewCalls, called);
+    _buildViewCalls -= called;
 
     // compare creationParams
-    expect(this._buildViewCreationParams, equals(creationParams));
+    expect(_buildViewCreationParams, equals(creationParams));
 
     // compare widgetConfiguration
-    final actualConfig = this._buildViewWidgetConfiguration!;
+    final actualConfig = _buildViewWidgetConfiguration!;
     expect(
       actualConfig.gestureRecognizers,
       widgetConfiguration.gestureRecognizers,
@@ -86,11 +86,11 @@ class FakeAlhPdfViewPlatform extends AlhPdfViewPlatform {
 
   @override
   Stream<OnRenderEvent> onRender({required int viewId}) {
-    return this._events(viewId).whereType<OnRenderEvent>();
+    return _events(viewId).whereType<OnRenderEvent>();
   }
 
   void addOnRenderEvent({required int viewId, required int pageCount}) {
-    this.mapEventStreamController.add(OnRenderEvent(viewId, pageCount));
+    mapEventStreamController.add(OnRenderEvent(viewId, pageCount));
   }
 
   ///
@@ -99,7 +99,7 @@ class FakeAlhPdfViewPlatform extends AlhPdfViewPlatform {
 
   @override
   Stream<OnPageChangedEvent> onPageChanged({required int viewId}) {
-    return this._events(viewId).whereType<OnPageChangedEvent>();
+    return _events(viewId).whereType<OnPageChangedEvent>();
   }
 
   void addOnPageChangedEvent({
@@ -108,7 +108,7 @@ class FakeAlhPdfViewPlatform extends AlhPdfViewPlatform {
     required int total,
   }) {
     final event = PageChangedObject(total: total, page: page);
-    this.mapEventStreamController.add(OnPageChangedEvent(viewId, event));
+    mapEventStreamController.add(OnPageChangedEvent(viewId, event));
   }
 
   ///
@@ -117,14 +117,14 @@ class FakeAlhPdfViewPlatform extends AlhPdfViewPlatform {
 
   @override
   Stream<OnErrorEvent> onError({required int viewId}) {
-    return this._events(viewId).whereType<OnErrorEvent>();
+    return _events(viewId).whereType<OnErrorEvent>();
   }
 
   void addOnErrorEvent({
     required int viewId,
     required String error,
   }) {
-    this.mapEventStreamController.add(OnErrorEvent(viewId, error));
+    mapEventStreamController.add(OnErrorEvent(viewId, error));
   }
 
   ///
@@ -133,14 +133,14 @@ class FakeAlhPdfViewPlatform extends AlhPdfViewPlatform {
 
   @override
   Stream<OnZoomChangedEvent> onZoomChanged({required int viewId}) {
-    return this._events(viewId).whereType<OnZoomChangedEvent>();
+    return _events(viewId).whereType<OnZoomChangedEvent>();
   }
 
   void addOnZoomChangedEvent({
     required int viewId,
     required double zoom,
   }) {
-    this.mapEventStreamController.add(OnZoomChangedEvent(viewId, zoom));
+    mapEventStreamController.add(OnZoomChangedEvent(viewId, zoom));
   }
 
   ///
@@ -149,14 +149,14 @@ class FakeAlhPdfViewPlatform extends AlhPdfViewPlatform {
 
   @override
   Stream<OnLinkHandleEvent> onLinkHandle({required int viewId}) {
-    return this._events(viewId).whereType<OnLinkHandleEvent>();
+    return _events(viewId).whereType<OnLinkHandleEvent>();
   }
 
   void addOnLinkHandleEvent({
     required int viewId,
     required String link,
   }) {
-    this.mapEventStreamController.add(OnLinkHandleEvent(viewId, link));
+    mapEventStreamController.add(OnLinkHandleEvent(viewId, link));
   }
 
   ///
@@ -165,13 +165,13 @@ class FakeAlhPdfViewPlatform extends AlhPdfViewPlatform {
 
   @override
   Stream<OnTapEvent> onTap({required int viewId}) {
-    return this._events(viewId).whereType<OnTapEvent>();
+    return _events(viewId).whereType<OnTapEvent>();
   }
 
   void addOnTapEvent({
     required int viewId,
   }) {
-    this.mapEventStreamController.add(OnTapEvent(viewId));
+    mapEventStreamController.add(OnTapEvent(viewId));
   }
 
   ///
@@ -182,23 +182,23 @@ class FakeAlhPdfViewPlatform extends AlhPdfViewPlatform {
   int? _pageCount;
 
   void setUpGetPageCount({required int pageCount}) {
-    this._pageCount = pageCount;
+    _pageCount = pageCount;
   }
 
   @override
   Future<int> getPageCount({required int viewId}) async {
-    if (this._pageCount == null) {
+    if (_pageCount == null) {
       throw UnimplementedError(
         'Call setUpGetPageCount before calling this method!',
       );
     }
 
-    this._getPageCountCalls++;
-    return this._pageCount!;
+    _getPageCountCalls++;
+    return _pageCount!;
   }
 
   void verifyGetPageCount() {
-    expect(this._getPageCountCalls--, 1);
+    expect(_getPageCountCalls--, 1);
   }
 
   ///
@@ -209,22 +209,22 @@ class FakeAlhPdfViewPlatform extends AlhPdfViewPlatform {
   int? _getCurrentPageResult;
 
   void setUpGetCurrentPage({required int page}) {
-    this._getCurrentPageResult = page;
+    _getCurrentPageResult = page;
   }
 
   @override
   Future<int> getCurrentPage({required int viewId}) async {
-    if (this._getCurrentPageResult == null) {
+    if (_getCurrentPageResult == null) {
       throw UnimplementedError(
         'Call setUpGetCurrentPage before calling this method!',
       );
     }
-    this._getCurrentPageCalls++;
-    return this._getCurrentPageResult!;
+    _getCurrentPageCalls++;
+    return _getCurrentPageResult!;
   }
 
   void verifyGetCurrentPage() {
-    expect(this._getCurrentPageCalls--, 1);
+    expect(_getCurrentPageCalls--, 1);
   }
 
   ///
@@ -237,7 +237,7 @@ class FakeAlhPdfViewPlatform extends AlhPdfViewPlatform {
   bool? _setPageWithAnimation;
 
   void setUpSetPage({required bool result}) {
-    this._setPageResult = result;
+    _setPageResult = result;
   }
 
   @override
@@ -246,31 +246,31 @@ class FakeAlhPdfViewPlatform extends AlhPdfViewPlatform {
     required int page,
     required bool withAnimation,
   }) async {
-    if (this._setPageResult == null) {
+    if (_setPageResult == null) {
       throw UnimplementedError(
         'Call setUpSetPage before calling this method!',
       );
     }
-    this._setPageActualPage = page;
-    this._setPageWithAnimation = withAnimation;
-    this._setPageCalls++;
+    _setPageActualPage = page;
+    _setPageWithAnimation = withAnimation;
+    _setPageCalls++;
 
-    return this._setPageResult!;
+    return _setPageResult!;
   }
 
   void verifySetPage({
     required int page,
     required bool withAnimation,
   }) {
-    if (this._setPageActualPage == null || this._setPageWithAnimation == null) {
+    if (_setPageActualPage == null || _setPageWithAnimation == null) {
       throw UnimplementedError(
         'Call setPage before calling this method!',
       );
     }
 
-    expect(this._setPageCalls--, 1);
-    expect(page, this._setPageActualPage);
-    expect(withAnimation, this._setPageWithAnimation);
+    expect(_setPageCalls--, 1);
+    expect(page, _setPageActualPage);
+    expect(withAnimation, _setPageWithAnimation);
   }
 
   ///
@@ -282,7 +282,7 @@ class FakeAlhPdfViewPlatform extends AlhPdfViewPlatform {
   bool? _goToNextPageWithAnimation;
 
   void setUpGoToNextPage({required bool result}) {
-    this._goToNextPageResult = result;
+    _goToNextPageResult = result;
   }
 
   @override
@@ -290,28 +290,28 @@ class FakeAlhPdfViewPlatform extends AlhPdfViewPlatform {
     required int viewId,
     required bool withAnimation,
   }) async {
-    if (this._goToNextPageResult == null) {
+    if (_goToNextPageResult == null) {
       throw UnimplementedError(
         'Call setUpGoToNextPage before calling this method!',
       );
     }
-    this._goToNextPageWithAnimation = withAnimation;
-    this._goToNextPageCalls++;
+    _goToNextPageWithAnimation = withAnimation;
+    _goToNextPageCalls++;
 
-    return this._goToNextPageResult!;
+    return _goToNextPageResult!;
   }
 
   void verifyGoToNextPage({
     required bool withAnimation,
   }) {
-    if (this._goToNextPageWithAnimation == null) {
+    if (_goToNextPageWithAnimation == null) {
       throw UnimplementedError(
         'Call goToNextPage before calling this method!',
       );
     }
 
-    expect(this._goToNextPageCalls--, 1);
-    expect(withAnimation, this._goToNextPageWithAnimation);
+    expect(_goToNextPageCalls--, 1);
+    expect(withAnimation, _goToNextPageWithAnimation);
   }
 
   ///
@@ -323,7 +323,7 @@ class FakeAlhPdfViewPlatform extends AlhPdfViewPlatform {
   bool? _goToPreviousPageWithAnimation;
 
   void setUpGoToPreviousPage({required bool result}) {
-    this._goToPreviousPageResult = result;
+    _goToPreviousPageResult = result;
   }
 
   @override
@@ -331,28 +331,28 @@ class FakeAlhPdfViewPlatform extends AlhPdfViewPlatform {
     required int viewId,
     required bool withAnimation,
   }) async {
-    if (this._goToPreviousPageResult == null) {
+    if (_goToPreviousPageResult == null) {
       throw UnimplementedError(
         'Call setUpGoToPreviousPage before calling this method!',
       );
     }
-    this._goToPreviousPageWithAnimation = withAnimation;
-    this._goToPreviousPageCalls++;
+    _goToPreviousPageWithAnimation = withAnimation;
+    _goToPreviousPageCalls++;
 
-    return this._goToPreviousPageResult!;
+    return _goToPreviousPageResult!;
   }
 
   void verifyGoToPreviousPage({
     required bool withAnimation,
   }) {
-    if (this._goToPreviousPageWithAnimation == null) {
+    if (_goToPreviousPageWithAnimation == null) {
       throw UnimplementedError(
         'Call goToPreviousPage before calling this method!',
       );
     }
 
-    expect(this._goToPreviousPageCalls--, 1);
-    expect(withAnimation, this._goToPreviousPageWithAnimation);
+    expect(_goToPreviousPageCalls--, 1);
+    expect(withAnimation, _goToPreviousPageWithAnimation);
   }
 
   ///
@@ -363,11 +363,11 @@ class FakeAlhPdfViewPlatform extends AlhPdfViewPlatform {
 
   @override
   Future<void> resetZoom({required int viewId}) async {
-    this._resetZoomCalls++;
+    _resetZoomCalls++;
   }
 
   void verifyResetZoom() {
-    expect(this._resetZoomCalls--, 1);
+    expect(_resetZoomCalls--, 1);
   }
 
   ///
@@ -382,13 +382,13 @@ class FakeAlhPdfViewPlatform extends AlhPdfViewPlatform {
     required int viewId,
     required double zoom,
   }) async {
-    this._setZoomCalls++;
-    this._actualSetZoom = zoom;
+    _setZoomCalls++;
+    _actualSetZoom = zoom;
   }
 
   void verifySetZoom({required double zoom}) {
-    expect(this._setZoomCalls--, 1);
-    expect(zoom, this._actualSetZoom);
+    expect(_setZoomCalls--, 1);
+    expect(zoom, _actualSetZoom);
   }
 
   ///
@@ -399,24 +399,24 @@ class FakeAlhPdfViewPlatform extends AlhPdfViewPlatform {
   double? _getZoomResult;
 
   void setUpGetZoom({required double zoom}) {
-    this._getZoomResult = zoom;
+    _getZoomResult = zoom;
   }
 
   @override
   Future<double> getZoom({required int viewId}) async {
-    if (this._getZoomResult == null) {
+    if (_getZoomResult == null) {
       throw UnimplementedError(
         'Call setUpGetZoom before calling this method!',
       );
     }
 
-    this._getZoomCalls++;
+    _getZoomCalls++;
 
-    return this._getZoomResult!;
+    return _getZoomResult!;
   }
 
   void verifyGetZoom() {
-    expect(this._getZoomCalls--, 1);
+    expect(_getZoomCalls--, 1);
   }
 
   ///
@@ -428,7 +428,7 @@ class FakeAlhPdfViewPlatform extends AlhPdfViewPlatform {
   Size? _getPageSizeResult;
 
   void setUpGetPageSize({required Size pageSize}) {
-    this._getPageSizeResult = pageSize;
+    _getPageSizeResult = pageSize;
   }
 
   @override
@@ -436,26 +436,26 @@ class FakeAlhPdfViewPlatform extends AlhPdfViewPlatform {
     required int viewId,
     required int page,
   }) async {
-    if (this._getPageSizeResult == null) {
+    if (_getPageSizeResult == null) {
       throw UnimplementedError(
         'Call setUpGetPageSize before calling this method!',
       );
     }
 
-    this._getPageSizePage = page;
-    this._getPageSizeCalls++;
+    _getPageSizePage = page;
+    _getPageSizeCalls++;
 
-    return this._getPageSizeResult!;
+    return _getPageSizeResult!;
   }
 
   void verifyGetPageSize({required int page}) {
-    if (this._getPageSizePage == null) {
+    if (_getPageSizePage == null) {
       throw UnimplementedError(
         'Call getPageSize before calling this method!',
       );
     }
-    expect(this._getPageSizeCalls--, 1);
-    expect(page, this._getPageSizePage);
+    expect(_getPageSizeCalls--, 1);
+    expect(page, _getPageSizePage);
   }
 
   ///
@@ -472,9 +472,9 @@ class FakeAlhPdfViewPlatform extends AlhPdfViewPlatform {
     required Orientation orientation,
     required Map<String, dynamic> creationParams,
   }) async {
-    this._setOrientationActualOrientation = orientation;
-    this._setOrientationCreationParams = creationParams;
-    this._setOrientationCalls++;
+    _setOrientationActualOrientation = orientation;
+    _setOrientationCreationParams = creationParams;
+    _setOrientationCalls++;
   }
 
   void verifySetOrientation({
@@ -483,20 +483,20 @@ class FakeAlhPdfViewPlatform extends AlhPdfViewPlatform {
     int called = 1,
   }) {
     if (called == 0) {
-      expect(this._setOrientationCalls, 0);
+      expect(_setOrientationCalls, 0);
       return;
     }
 
-    if (this._setOrientationActualOrientation == null ||
-        this._setOrientationCreationParams == null) {
+    if (_setOrientationActualOrientation == null ||
+        _setOrientationCreationParams == null) {
       throw UnimplementedError(
         'Call setOrientation before calling this method!',
       );
     }
-    expect(this._setOrientationCalls, called);
-    this._setOrientationCalls -= called;
-    expect(orientation, this._setOrientationActualOrientation);
-    expect(creationParams, this._setOrientationCreationParams);
+    expect(_setOrientationCalls, called);
+    _setOrientationCalls -= called;
+    expect(orientation, _setOrientationActualOrientation);
+    expect(creationParams, _setOrientationCreationParams);
   }
 
   ///
@@ -511,8 +511,8 @@ class FakeAlhPdfViewPlatform extends AlhPdfViewPlatform {
     required int viewId,
     required Map<String, dynamic> creationParams,
   }) async {
-    this._refreshPdfActualCreationParams = creationParams;
-    this._refreshPdfCalls++;
+    _refreshPdfActualCreationParams = creationParams;
+    _refreshPdfCalls++;
   }
 
   void verifyRefreshPdf({
@@ -520,17 +520,17 @@ class FakeAlhPdfViewPlatform extends AlhPdfViewPlatform {
     Map<String, dynamic>? creationParams,
   }) {
     if (called == 0) {
-      expect(this._setOrientationCalls, 0);
+      expect(_setOrientationCalls, 0);
       return;
     }
 
-    if (this._refreshPdfActualCreationParams == null) {
+    if (_refreshPdfActualCreationParams == null) {
       throw UnimplementedError(
         'Call updateBytesOrPath before calling this method!',
       );
     }
-    expect(this._refreshPdfCalls--, 1);
-    expect(creationParams, this._refreshPdfActualCreationParams);
+    expect(_refreshPdfCalls--, 1);
+    expect(creationParams, _refreshPdfActualCreationParams);
   }
 
   ///
@@ -545,8 +545,8 @@ class FakeAlhPdfViewPlatform extends AlhPdfViewPlatform {
     required int viewId,
     required Map<String, dynamic> creationParams,
   }) async {
-    this._updateFitPolicyCallsActualCreationParams = creationParams;
-    this._updateFitPolicyCalls++;
+    _updateFitPolicyCallsActualCreationParams = creationParams;
+    _updateFitPolicyCalls++;
   }
 
   void verifyUpdateFitPolicy({
@@ -554,17 +554,17 @@ class FakeAlhPdfViewPlatform extends AlhPdfViewPlatform {
     Map<String, dynamic>? creationParams,
   }) {
     if (called == 0) {
-      expect(this._setOrientationCalls, 0);
+      expect(_setOrientationCalls, 0);
       return;
     }
 
-    if (this._updateFitPolicyCallsActualCreationParams == null) {
+    if (_updateFitPolicyCallsActualCreationParams == null) {
       throw UnimplementedError(
         'Call updateFitPolicy before calling this method!',
       );
     }
-    expect(this._updateFitPolicyCalls--, 1);
-    expect(creationParams, this._updateFitPolicyCallsActualCreationParams);
+    expect(_updateFitPolicyCalls--, 1);
+    expect(creationParams, _updateFitPolicyCallsActualCreationParams);
   }
 
   ///
@@ -579,8 +579,8 @@ class FakeAlhPdfViewPlatform extends AlhPdfViewPlatform {
     required int viewId,
     required Map<String, dynamic> creationParams,
   }) async {
-    this._updateScrollbarCallsActualCreationParams = creationParams;
-    this._updateScrollbarCalls++;
+    _updateScrollbarCallsActualCreationParams = creationParams;
+    _updateScrollbarCalls++;
   }
 
   void verifyUpdateScrollbar({
@@ -588,17 +588,17 @@ class FakeAlhPdfViewPlatform extends AlhPdfViewPlatform {
     Map<String, dynamic>? creationParams,
   }) {
     if (called == 0) {
-      expect(this._setOrientationCalls, 0);
+      expect(_setOrientationCalls, 0);
       return;
     }
 
-    if (this._updateScrollbarCallsActualCreationParams == null) {
+    if (_updateScrollbarCallsActualCreationParams == null) {
       throw UnimplementedError(
         'Call updateScrollbar before calling this method!',
       );
     }
-    expect(this._updateScrollbarCalls--, 1);
-    expect(creationParams, this._updateScrollbarCallsActualCreationParams);
+    expect(_updateScrollbarCalls--, 1);
+    expect(creationParams, _updateScrollbarCallsActualCreationParams);
   }
 
   ///
@@ -609,30 +609,30 @@ class FakeAlhPdfViewPlatform extends AlhPdfViewPlatform {
 
   @override
   Future<void> dispose({required int viewId}) async {
-    this._disposeCalls++;
+    _disposeCalls++;
   }
 
   void verifyDispose({int called = 1}) {
     if (called == 0) {
-      expect(this._disposeCalls, 0);
+      expect(_disposeCalls, 0);
       return;
     }
 
-    expect(this._disposeCalls--, 1);
+    expect(_disposeCalls--, 1);
   }
 
   void verifyNoMoreInteraction() {
-    expect(this._buildViewCalls, 0);
-    expect(this._getPageCountCalls, 0);
-    expect(this._getCurrentPageCalls, 0);
-    expect(this._setOrientationCalls, 0);
-    expect(this._setPageCalls, 0);
-    expect(this._goToPreviousPageCalls, 0);
-    expect(this._goToNextPageCalls, 0);
-    expect(this._getZoomCalls, 0);
-    expect(this._getPageSizeCalls, 0);
-    expect(this._resetZoomCalls, 0);
-    expect(this._getZoomCalls, 0);
-    expect(this._refreshPdfCalls, 0);
+    expect(_buildViewCalls, 0);
+    expect(_getPageCountCalls, 0);
+    expect(_getCurrentPageCalls, 0);
+    expect(_setOrientationCalls, 0);
+    expect(_setPageCalls, 0);
+    expect(_goToPreviousPageCalls, 0);
+    expect(_goToNextPageCalls, 0);
+    expect(_getZoomCalls, 0);
+    expect(_getPageSizeCalls, 0);
+    expect(_resetZoomCalls, 0);
+    expect(_getZoomCalls, 0);
+    expect(_refreshPdfCalls, 0);
   }
 }

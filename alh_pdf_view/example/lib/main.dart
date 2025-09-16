@@ -33,17 +33,17 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      final pdfFile = await this.fromAsset('assets/sample.pdf', 'sample.pdf');
-      final linkPdfFile = await this.fromAsset(
+      final pdfFile = await fromAsset('assets/sample.pdf', 'sample.pdf');
+      final linkPdfFile = await fromAsset(
         'assets/sampleWithLink.pdf',
         'sampleWithLink.pdf',
       );
       setState(
         () {
-          this.smallPdfPath = pdfFile.path;
-          this.smallPdfBytes = pdfFile.readAsBytesSync();
-          this.linkPdfPath = linkPdfFile.path;
-          this.linkPdfBytes = linkPdfFile.readAsBytesSync();
+          smallPdfPath = pdfFile.path;
+          smallPdfBytes = pdfFile.readAsBytesSync();
+          linkPdfPath = linkPdfFile.path;
+          linkPdfBytes = linkPdfFile.readAsBytesSync();
         },
       );
     });
@@ -58,26 +58,26 @@ class _MyAppState extends State<MyApp> {
           builder: (BuildContext context) {
             return Column(
               children: <Widget>[
-                this._getButtonWithPushExample(
-                  title: "Open small PDF with path",
-                  widgetToPush: PDFScreen(path: this.smallPdfPath),
+                _getButtonWithPushExample(
+                  title: 'Open small PDF with path',
+                  widgetToPush: PDFScreen(path: smallPdfPath),
                 ),
-                this._getButtonWithPushExample(
-                  title: "Open small PDF with bytes",
-                  widgetToPush: PDFScreen(bytes: this.smallPdfBytes),
+                _getButtonWithPushExample(
+                  title: 'Open small PDF with bytes',
+                  widgetToPush: PDFScreen(bytes: smallPdfBytes),
                 ),
-                this._getButtonWithPushExample(
-                  title: "Refresh bytes and all others example",
+                _getButtonWithPushExample(
+                  title: 'Refresh bytes and all others example',
                   widgetToPush: RefreshBytesExample(
-                    bytes: this.smallPdfBytes,
-                    updatedBytes: this.linkPdfBytes,
+                    bytes: smallPdfBytes,
+                    updatedBytes: linkPdfBytes,
                   ),
                 ),
-                this._getButtonWithPushExample(
-                  title: "Refresh path example",
+                _getButtonWithPushExample(
+                  title: 'Refresh path example',
                   widgetToPush: RefreshPathExample(
-                    path: this.smallPdfPath,
-                    updatedPath: this.linkPdfPath,
+                    path: smallPdfPath,
+                    updatedPath: linkPdfPath,
                   ),
                 ),
               ],
@@ -113,7 +113,7 @@ class _MyAppState extends State<MyApp> {
 
     try {
       final dir = await getApplicationDocumentsDirectory();
-      final File file = File("${dir.path}/$filename");
+      final File file = File('${dir.path}/$filename');
       final data = await rootBundle.load(asset);
       final bytes = data.buffer.asUint8List();
       await file.writeAsBytes(bytes, flush: true);

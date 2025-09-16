@@ -30,7 +30,7 @@ class AlhPdfViewController {
         _onZoomChanged = onZoomChanged,
         _onLinkHandle = onLinkHandle,
         _onTap = onTap {
-    this._connectStreams();
+    _connectStreams();
   }
 
   /// Initialize control of a [AlhPdfView] with [viewId].
@@ -62,54 +62,52 @@ class AlhPdfViewController {
   AlhPdfViewPlatform get _instance => AlhPdfViewPlatform.instance!;
 
   void _connectStreams() {
-    if (this._onRender != null) {
-      this._onRenderSubscription =
-          this._instance.onRender(viewId: viewId).listen((event) {
-        this._onRender(event.value);
+    if (_onRender != null) {
+      _onRenderSubscription =
+          _instance.onRender(viewId: viewId).listen((event) {
+        _onRender(event.value);
       });
     }
-    if (this._onPageChanged != null) {
-      this._onPageChangedSubscription =
-          this._instance.onPageChanged(viewId: viewId).listen((event) {
-        this._onPageChanged(event.value.page, event.value.total);
+    if (_onPageChanged != null) {
+      _onPageChangedSubscription =
+          _instance.onPageChanged(viewId: viewId).listen((event) {
+        _onPageChanged(event.value.page, event.value.total);
       });
     }
-    if (this._onError != null) {
-      this._onErrorSubscription =
-          this._instance.onError(viewId: viewId).listen((event) {
-        this._onError(event.value);
+    if (_onError != null) {
+      _onErrorSubscription = _instance.onError(viewId: viewId).listen((event) {
+        _onError(event.value);
       });
     }
-    if (this._onZoomChanged != null) {
-      this._onZoomChangedSubscription =
-          this._instance.onZoomChanged(viewId: viewId).listen((event) {
-        this._onZoomChanged(event.value);
+    if (_onZoomChanged != null) {
+      _onZoomChangedSubscription =
+          _instance.onZoomChanged(viewId: viewId).listen((event) {
+        _onZoomChanged(event.value);
       });
     }
-    if (this._onLinkHandle != null) {
-      this._onLinkHandleSubscription =
-          this._instance.onLinkHandle(viewId: viewId).listen((event) {
-        this._onLinkHandle(event.value);
+    if (_onLinkHandle != null) {
+      _onLinkHandleSubscription =
+          _instance.onLinkHandle(viewId: viewId).listen((event) {
+        _onLinkHandle(event.value);
       });
     }
-    if (this._onTap != null) {
-      this._onTapSubscription =
-          this._instance.onTap(viewId: viewId).listen((event) {
-        this._onTap();
+    if (_onTap != null) {
+      _onTapSubscription = _instance.onTap(viewId: viewId).listen((event) {
+        _onTap();
       });
     }
   }
 
   /// Returns the number of pages  for the PDF.
   Future<int> getPageCount() async {
-    return this._instance.getPageCount(viewId: viewId);
+    return _instance.getPageCount(viewId: viewId);
   }
 
   /// Returns the current page that is shown.
   ///
   /// The page index begins at 0.
   Future<int> getCurrentPage() async {
-    return this._instance.getCurrentPage(viewId: viewId);
+    return _instance.getCurrentPage(viewId: viewId);
   }
 
   /// Jumping to the given [page].
@@ -117,11 +115,11 @@ class AlhPdfViewController {
   /// By default, [withAnimation] is true and takes 400ms to animate the page change.
   /// Returns true if page change was possible.
   Future<bool> setPage({required int page, bool withAnimation = true}) async {
-    return this._instance.setPage(
-          page: page,
-          withAnimation: withAnimation,
-          viewId: viewId,
-        );
+    return _instance.setPage(
+      page: page,
+      withAnimation: withAnimation,
+      viewId: viewId,
+    );
   }
 
   /// Goes to the next page.
@@ -129,10 +127,10 @@ class AlhPdfViewController {
   /// By default, [withAnimation] is true and takes 400ms to animate the page change.
   /// Returns true if page change was possible.
   Future<bool> goToNextPage({bool withAnimation = true}) async {
-    return this._instance.goToNextPage(
-          viewId: viewId,
-          withAnimation: withAnimation,
-        );
+    return _instance.goToNextPage(
+      viewId: viewId,
+      withAnimation: withAnimation,
+    );
   }
 
   /// Goes to the previous page.
@@ -140,37 +138,37 @@ class AlhPdfViewController {
   /// By default, [withAnimation] is true and takes 400ms to animate the page change.
   /// Returns true if page change was possible.
   Future<bool> goToPreviousPage({bool withAnimation = true}) async {
-    return this._instance.goToPreviousPage(
-          viewId: viewId,
-          withAnimation: withAnimation,
-        );
+    return _instance.goToPreviousPage(
+      viewId: viewId,
+      withAnimation: withAnimation,
+    );
   }
 
   /// Setting the scale factor to the default zoom factor.
   Future<void> resetZoom() async {
-    await this._instance.resetZoom(viewId: viewId);
+    await _instance.resetZoom(viewId: viewId);
   }
 
   /// Zooming to the given [zoom].
   ///
   /// By default, the zoom animation duration is 400 ms.
   Future<void> setZoom({required double zoom}) async {
-    await this._instance.setZoom(viewId: viewId, zoom: zoom);
+    await _instance.setZoom(viewId: viewId, zoom: zoom);
   }
 
   /// Returns the current zoom value.
   Future<double> getZoom() async {
-    return this._instance.getZoom(viewId: viewId);
+    return _instance.getZoom(viewId: viewId);
   }
 
   /// Returns the size of the given [page] index.
   ///
   /// Only working for iOS.
   Future<Size> getPageSize({required int page}) async {
-    return this._instance.getPageSize(
-          page: page,
-          viewId: viewId,
-        );
+    return _instance.getPageSize(
+      page: page,
+      viewId: viewId,
+    );
   }
 
   /// Notifies the current [orientation].
@@ -186,11 +184,11 @@ class AlhPdfViewController {
     required Map<String, dynamic> creationParams,
   }) async {
     if (defaultTargetPlatform == TargetPlatform.android) {
-      await this._instance.setOrientation(
-            orientation: orientation,
-            creationParams: creationParams,
-            viewId: viewId,
-          );
+      await _instance.setOrientation(
+        orientation: orientation,
+        creationParams: creationParams,
+        viewId: viewId,
+      );
     }
   }
 
@@ -199,27 +197,27 @@ class AlhPdfViewController {
     required Map<String, dynamic> creationParams,
     required Map<String, dynamic> updatedParams,
   }) async {
-    if (creationParams["bytes"] != updatedParams["bytes"] ||
-        creationParams["filePath"] != updatedParams["filePath"]) {
-      await this._instance.refreshPdf(
-            creationParams: updatedParams,
-            viewId: viewId,
-          );
+    if (creationParams['bytes'] != updatedParams['bytes'] ||
+        creationParams['filePath'] != updatedParams['filePath']) {
+      await _instance.refreshPdf(
+        creationParams: updatedParams,
+        viewId: viewId,
+      );
     }
 
     // fitPolicy and showScrollbar only necessary to update on iOS.
     if (defaultTargetPlatform == TargetPlatform.iOS) {
-      if (creationParams["fitPolicy"] != updatedParams["fitPolicy"]) {
-        await this._instance.updateFitPolicy(
-              creationParams: updatedParams,
-              viewId: viewId,
-            );
+      if (creationParams['fitPolicy'] != updatedParams['fitPolicy']) {
+        await _instance.updateFitPolicy(
+          creationParams: updatedParams,
+          viewId: viewId,
+        );
       }
-      if (creationParams["showScrollbar"] != updatedParams["showScrollbar"]) {
-        await this._instance.updateScrollbar(
-              creationParams: updatedParams,
-              viewId: viewId,
-            );
+      if (creationParams['showScrollbar'] != updatedParams['showScrollbar']) {
+        await _instance.updateScrollbar(
+          creationParams: updatedParams,
+          viewId: viewId,
+        );
       }
     }
   }
@@ -229,13 +227,13 @@ class AlhPdfViewController {
   /// Currently the dispose call has only an effect on iOS to remove
   /// observers which are triggered if the user is zooming on the pdf.
   void dispose() {
-    unawaited(this._onRenderSubscription?.cancel());
-    unawaited(this._onPageChangedSubscription?.cancel());
-    unawaited(this._onErrorSubscription?.cancel());
-    unawaited(this._onZoomChangedSubscription?.cancel());
-    unawaited(this._onLinkHandleSubscription?.cancel());
-    unawaited(this._onTapSubscription?.cancel());
+    unawaited(_onRenderSubscription?.cancel());
+    unawaited(_onPageChangedSubscription?.cancel());
+    unawaited(_onErrorSubscription?.cancel());
+    unawaited(_onZoomChangedSubscription?.cancel());
+    unawaited(_onLinkHandleSubscription?.cancel());
+    unawaited(_onTapSubscription?.cancel());
 
-    unawaited(this._instance.dispose(viewId: this.viewId));
+    unawaited(_instance.dispose(viewId: viewId));
   }
 }

@@ -63,9 +63,9 @@ void main() {
 
   group('Throws Errors', () {
     testWidgets(
-        "GIVEN no bytes and no filePath "
-        "WHEN pumping [AlhPdfView] "
-        "THEN should throw [AssertionError]", (WidgetTester tester) async {
+        'GIVEN no bytes and no filePath '
+        'WHEN pumping [AlhPdfView] '
+        'THEN should throw [AssertionError]', (WidgetTester tester) async {
       // given
 
       // when
@@ -82,9 +82,9 @@ void main() {
     });
 
     testWidgets(
-        "GIVEN bytes and defaultZoomFactor < 0 "
-        "WHEN pumping [AlhPdfView] "
-        "THEN should throw [AssertionError]", (WidgetTester tester) async {
+        'GIVEN bytes and defaultZoomFactor < 0 '
+        'WHEN pumping [AlhPdfView] '
+        'THEN should throw [AssertionError]', (WidgetTester tester) async {
       // given
 
       // when
@@ -104,9 +104,9 @@ void main() {
     });
 
     testWidgets(
-        "GIVEN bytes and minZoom < 0 "
-        "WHEN pumping [AlhPdfView] "
-        "THEN should throw [AssertionError]", (WidgetTester tester) async {
+        'GIVEN bytes and minZoom < 0 '
+        'WHEN pumping [AlhPdfView] '
+        'THEN should throw [AssertionError]', (WidgetTester tester) async {
       // given
 
       // when
@@ -126,9 +126,9 @@ void main() {
     });
 
     testWidgets(
-        "GIVEN bytes and maxZoom < 0 "
-        "WHEN pumping [AlhPdfView] "
-        "THEN should throw [AssertionError]", (WidgetTester tester) async {
+        'GIVEN bytes and maxZoom < 0 '
+        'WHEN pumping [AlhPdfView] '
+        'THEN should throw [AssertionError]', (WidgetTester tester) async {
       // given
 
       // when
@@ -150,11 +150,11 @@ void main() {
 
   group('platform == TargetPlatform.android', () {
     testWidgets(
-        "GIVEN platform == TargetPlatform.android, filePath and no other parameters "
-        "WHEN pumping [AlhPdfView] "
-        "THEN should have expected default parameters and "
-        "should show [UiKitView] with expected creationParams and "
-        "should call setOrientation of [AlhPdfController]",
+        'GIVEN platform == TargetPlatform.android, filePath and no other parameters '
+        'WHEN pumping [AlhPdfView] '
+        'THEN should have expected default parameters and '
+        'should show [UiKitView] with expected creationParams and '
+        'should call setOrientation of [AlhPdfController]',
         (WidgetTester tester) async {
       // given
 
@@ -210,9 +210,9 @@ void main() {
     });
 
     testWidgets(
-        "GIVEN platform == TargetPlatform.android, [AlhPdfView] and orientation = portrait "
-        "WHEN changing orientation "
-        "THEN should call setRotation of [AlhPdfController]",
+        'GIVEN platform == TargetPlatform.android, [AlhPdfView] and orientation = portrait '
+        'WHEN changing orientation '
+        'THEN should call setRotation of [AlhPdfController]',
         (WidgetTester tester) async {
       // given
       debugDefaultTargetPlatformOverride = TargetPlatform.android;
@@ -254,9 +254,9 @@ void main() {
 
   group('platform == TargetPlatform.iOS', () {
     testWidgets(
-        "GIVEN bytes and all parameters "
-        "WHEN pumping [AlhPdfView] "
-        "THEN should show [UiKitView] with expected creationParams",
+        'GIVEN bytes and all parameters '
+        'WHEN pumping [AlhPdfView] '
+        'THEN should show [UiKitView] with expected creationParams',
         (WidgetTester tester) async {
       // given
       debugDefaultTargetPlatformOverride = TargetPlatform.iOS;
@@ -342,9 +342,9 @@ void main() {
     });
 
     testWidgets(
-        "GIVEN filePath, updated fitPolicy and [AlhPdfView] "
-        "WHEN updating fitPolicy "
-        "THEN should updateCreationParams of [AlhPdfController]",
+        'GIVEN filePath, updated fitPolicy and [AlhPdfView] '
+        'WHEN updating fitPolicy '
+        'THEN should updateCreationParams of [AlhPdfController]',
         (WidgetTester tester) async {
       // given
       debugDefaultTargetPlatformOverride = TargetPlatform.iOS;
@@ -424,9 +424,9 @@ void main() {
       });
 
       testWidgets(
-          "GIVEN path and [AlhPdfView] "
-          "WHEN pumping finished "
-          "THEN should call #onViewCreated", (WidgetTester tester) async {
+          'GIVEN path and [AlhPdfView] '
+          'WHEN pumping finished '
+          'THEN should call #onViewCreated', (WidgetTester tester) async {
         // given
         AlhPdfViewController? actualController;
 
@@ -444,9 +444,9 @@ void main() {
       });
 
       testWidgets(
-          "GIVEN path and [AlhPdfView] "
-          "WHEN invoking onError "
-          "THEN should call #onError with given error",
+          'GIVEN path and [AlhPdfView] '
+          'WHEN invoking onError '
+          'THEN should call #onError with given error',
           (WidgetTester tester) async {
         // given
         final completer = Completer();
@@ -474,9 +474,9 @@ void main() {
       });
 
       testWidgets(
-          "GIVEN path and [AlhPdfView] "
-          "WHEN invoking onRender "
-          "THEN should call #onRender with given pages",
+          'GIVEN path and [AlhPdfView] '
+          'WHEN invoking onRender '
+          'THEN should call #onRender with given pages',
           (WidgetTester tester) async {
         // given
         final completer = Completer();
@@ -504,9 +504,9 @@ void main() {
       });
 
       testWidgets(
-          "GIVEN path and [AlhPdfView] "
-          "WHEN invoking onPageChanged "
-          "THEN should call #onPageChanged with given page and total",
+          'GIVEN path and [AlhPdfView] '
+          'WHEN invoking onPageChanged '
+          'THEN should call #onPageChanged with given page and total',
           (WidgetTester tester) async {
         // given
         final completer = Completer();
@@ -539,9 +539,9 @@ void main() {
       });
 
       testWidgets(
-          "GIVEN path and [AlhPdfView] "
-          "WHEN invoking onZoomChanged "
-          "THEN should call #onZoomChanged with given zoom",
+          'GIVEN path and [AlhPdfView] '
+          'WHEN invoking onZoomChanged '
+          'THEN should call #onZoomChanged with given zoom',
           (WidgetTester tester) async {
         // given
         final completer = Completer();
@@ -591,7 +591,7 @@ class _UpdateAlhPdfViewTestState extends State<_UpdateAlhPdfViewTest> {
 
   @override
   void initState() {
-    this.fitPolicy = widget.fitPolicy;
+    fitPolicy = widget.fitPolicy;
     super.initState();
   }
 
@@ -602,13 +602,13 @@ class _UpdateAlhPdfViewTestState extends State<_UpdateAlhPdfViewTest> {
         Expanded(
           child: AlhPdfView(
             filePath: widget.filePath,
-            fitPolicy: this.fitPolicy,
+            fitPolicy: fitPolicy,
           ),
         ),
         TextButton(
           onPressed: () {
             setState(() {
-              this.fitPolicy = widget.updatedFitPolicy;
+              fitPolicy = widget.updatedFitPolicy;
             });
           },
           child: const Text('update'),

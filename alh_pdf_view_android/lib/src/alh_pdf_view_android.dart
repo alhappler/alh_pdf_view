@@ -47,7 +47,7 @@ class AlhPdfViewAndroid extends AlhPdfViewPlatform {
   /// Returns the number of pages  for the PDF.
   @override
   Future<int> getPageCount({required int viewId}) async {
-    final int pageCount = await this._channel(viewId).invokeMethod('pageCount');
+    final int pageCount = await _channel(viewId).invokeMethod('pageCount');
     return pageCount;
   }
 
@@ -56,7 +56,7 @@ class AlhPdfViewAndroid extends AlhPdfViewPlatform {
   /// The page index begins at 0.
   @override
   Future<int> getCurrentPage({required int viewId}) async {
-    final currentPage = await this._channel(viewId).invokeMethod('currentPage');
+    final currentPage = await _channel(viewId).invokeMethod('currentPage');
     return currentPage;
   }
 
@@ -70,7 +70,7 @@ class AlhPdfViewAndroid extends AlhPdfViewPlatform {
     required int viewId,
     required bool withAnimation,
   }) async {
-    return await this._channel(viewId).invokeMethod('setPage', {
+    return await _channel(viewId).invokeMethod('setPage', {
       'page': page,
       'withAnimation': withAnimation,
     });
@@ -85,7 +85,7 @@ class AlhPdfViewAndroid extends AlhPdfViewPlatform {
     required int viewId,
     required bool withAnimation,
   }) async {
-    return await this._channel(viewId).invokeMethod(
+    return await _channel(viewId).invokeMethod(
       'nextPage',
       {'withAnimation': withAnimation},
     );
@@ -100,7 +100,7 @@ class AlhPdfViewAndroid extends AlhPdfViewPlatform {
     required int viewId,
     required bool withAnimation,
   }) async {
-    return await this._channel(viewId).invokeMethod(
+    return await _channel(viewId).invokeMethod(
       'previousPage',
       {'withAnimation': withAnimation},
     );
@@ -109,7 +109,7 @@ class AlhPdfViewAndroid extends AlhPdfViewPlatform {
   /// Setting the scale factor to the default zoom factor.
   @override
   Future<void> resetZoom({required int viewId}) async {
-    await this._channel(viewId).invokeMethod('resetZoom');
+    await _channel(viewId).invokeMethod('resetZoom');
   }
 
   /// Zooming to the given [zoom].
@@ -120,7 +120,7 @@ class AlhPdfViewAndroid extends AlhPdfViewPlatform {
     required double zoom,
     required int viewId,
   }) async {
-    await this._channel(viewId).invokeMethod('setZoom', <String, dynamic>{
+    await _channel(viewId).invokeMethod('setZoom', <String, dynamic>{
       'newZoom': zoom,
     });
   }
@@ -128,7 +128,7 @@ class AlhPdfViewAndroid extends AlhPdfViewPlatform {
   /// Returns the current zoom value.
   @override
   Future<double> getZoom({required int viewId}) async {
-    return await this._channel(viewId).invokeMethod('currentZoom');
+    return await _channel(viewId).invokeMethod('currentZoom');
   }
 
   /// Notifies the current [orientation].
@@ -138,7 +138,7 @@ class AlhPdfViewAndroid extends AlhPdfViewPlatform {
     required Map<String, dynamic> creationParams,
     required int viewId,
   }) async {
-    await this._channel(viewId).invokeMethod('setOrientation', {
+    await _channel(viewId).invokeMethod('setOrientation', {
       'orientation': orientation.toString(),
       ...creationParams,
     });
@@ -150,10 +150,10 @@ class AlhPdfViewAndroid extends AlhPdfViewPlatform {
     required int viewId,
     required Map<String, dynamic> creationParams,
   }) async {
-    await this._channel(viewId).invokeMethod(
-          'refreshPdf',
-          creationParams,
-        );
+    await _channel(viewId).invokeMethod(
+      'refreshPdf',
+      creationParams,
+    );
   }
 
   @override
@@ -207,32 +207,32 @@ class AlhPdfViewAndroid extends AlhPdfViewPlatform {
 
   @override
   Stream<OnRenderEvent> onRender({required int viewId}) {
-    return this._events(viewId).whereType<OnRenderEvent>();
+    return _events(viewId).whereType<OnRenderEvent>();
   }
 
   @override
   Stream<OnPageChangedEvent> onPageChanged({required int viewId}) {
-    return this._events(viewId).whereType<OnPageChangedEvent>();
+    return _events(viewId).whereType<OnPageChangedEvent>();
   }
 
   @override
   Stream<OnErrorEvent> onError({required int viewId}) {
-    return this._events(viewId).whereType<OnErrorEvent>();
+    return _events(viewId).whereType<OnErrorEvent>();
   }
 
   @override
   Stream<OnZoomChangedEvent> onZoomChanged({required int viewId}) {
-    return this._events(viewId).whereType<OnZoomChangedEvent>();
+    return _events(viewId).whereType<OnZoomChangedEvent>();
   }
 
   @override
   Stream<OnLinkHandleEvent> onLinkHandle({required int viewId}) {
-    return this._events(viewId).whereType<OnLinkHandleEvent>();
+    return _events(viewId).whereType<OnLinkHandleEvent>();
   }
 
   @override
   Stream<OnTapEvent> onTap({required int viewId}) {
-    return this._events(viewId).whereType<OnTapEvent>();
+    return _events(viewId).whereType<OnTapEvent>();
   }
 
   ///
@@ -251,14 +251,14 @@ class AlhPdfViewAndroid extends AlhPdfViewPlatform {
 
   /// Returns the channel for [viewId], creating it if it doesn't already exist.
   void _ensureChannelInitialized(int viewId) {
-    MethodChannel? channel = this.channels[viewId];
+    MethodChannel? channel = channels[viewId];
 
     if (channel == null) {
       channel = MethodChannel('alh_pdf_view_$viewId');
       channel.setMethodCallHandler(
-        (MethodCall call) async => this._handleMethodCall(call, viewId),
+        (MethodCall call) async => _handleMethodCall(call, viewId),
       );
-      this.channels[viewId] = channel;
+      channels[viewId] = channel;
     }
   }
 
@@ -269,7 +269,7 @@ class AlhPdfViewAndroid extends AlhPdfViewPlatform {
           viewId,
           call.arguments['pages'],
         );
-        this._mapEventStreamController.add(event);
+        _mapEventStreamController.add(event);
         break;
       case 'onPageChanged':
         final pageChangedObject = PageChangedObject(
@@ -277,22 +277,22 @@ class AlhPdfViewAndroid extends AlhPdfViewPlatform {
           total: call.arguments['total'],
         );
         final event = OnPageChangedEvent(viewId, pageChangedObject);
-        this._mapEventStreamController.add(event);
+        _mapEventStreamController.add(event);
         break;
       case 'onError':
         final event = OnErrorEvent(viewId, call.arguments['error']);
-        this._mapEventStreamController.add(event);
+        _mapEventStreamController.add(event);
         break;
       case 'onZoomChanged':
         final event = OnZoomChangedEvent(
           viewId,
           call.arguments['zoom'],
         );
-        this._mapEventStreamController.add(event);
+        _mapEventStreamController.add(event);
         break;
       case 'onTap':
         final event = OnTapEvent(viewId);
-        this._mapEventStreamController.add(event);
+        _mapEventStreamController.add(event);
         break;
       default:
         throw MissingPluginException(
