@@ -13,7 +13,7 @@ A new Flutter plugin project.
   s.license          = { :file => '../LICENSE' }
   s.author           = { 'Your Company' => 'email@example.com' }
   s.source           = { :path => '.' }
-  s.source_files = 'alh_pdf_view_ios/Sources/plugin_name/**/*.swift'
+  s.source_files = 'alh_pdf_view_ios/Sources/alh_pdf_view_ios/**/*.swift'
   s.dependency 'Flutter'
   s.platform = :ios, '11.0'
 
