@@ -4,7 +4,7 @@
 #
 Pod::Spec.new do |s|
   s.name             = 'alh_pdf_view_ios'
-  s.version          = '0.0.1'
+  s.version          = '2.4.0'
   s.summary          = 'A Flutter plugin to display PDF files on iOS.'
   s.description      = <<-DESC
 A Flutter plugin to display PDF files on iOS using the native PDFKit framework.
