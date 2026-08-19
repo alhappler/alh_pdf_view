@@ -4,16 +4,16 @@
 #
 Pod::Spec.new do |s|
   s.name             = 'alh_pdf_view_ios'
-  s.version          = '0.0.1'
-  s.summary          = 'A new Flutter plugin project.'
+  s.version          = '2.4.0'
+  s.summary          = 'A Flutter plugin to display PDF files on iOS.'
   s.description      = <<-DESC
-A new Flutter plugin project.
+A Flutter plugin to display PDF files on iOS using the native PDFKit framework.
                        DESC
-  s.homepage         = 'http://example.com'
-  s.license          = { :file => '../LICENSE' }
-  s.author           = { 'Your Company' => 'email@example.com' }
-  s.source           = { :path => '.' }
-  s.source_files = 'Classes/**/*'
+  s.homepage         = 'https://github.com/alhappler/alh_pdf_view'
+  s.license          = { :type => 'BSD', :file => '../LICENSE' }
+  s.author           = { 'alhappler' => 'email@example.com' }
+  s.source           = { :git => 'https://github.com/alhappler/alh_pdf_view.git', :tag => s.version.to_s }
+  s.source_files = 'alh_pdf_view_ios/Sources/alh_pdf_view_ios/**/*.swift'
   s.dependency 'Flutter'
   s.platform = :ios, '11.0'
 

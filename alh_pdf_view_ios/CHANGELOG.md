@@ -1,3 +1,6 @@
+## 2.4.0
+* Added Swift Package Manager support.
+
 ## 2.3.2
 * fixed autozoom issue, thanks to `E2-venkat` for opening the issue (Issue [#62](https://github.com/alhappler/alh_pdf_view/issues/62))
 

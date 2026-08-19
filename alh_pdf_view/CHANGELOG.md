@@ -1,3 +1,6 @@
+## 2.4.0
+* Added Swift Package Manager support for iOS.
+
 ## 2.3.3
 ⚽️ **Features**
 * Added support for Android 16 KB memory page size in PDF handling (Issue [#69](https://github.com/alhappler/alh_pdf_view/issues/69) from `E2-venkat`)

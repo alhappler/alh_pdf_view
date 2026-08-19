@@ -5,7 +5,7 @@
 //  Created by André Börger on 29.03.22.
 //
 
-import Foundation
+import UIKit
 
 extension UInt {
     func toUIColor() -> UIColor {
